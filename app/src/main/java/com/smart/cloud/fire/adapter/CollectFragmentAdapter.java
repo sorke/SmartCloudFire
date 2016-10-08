@@ -13,9 +13,6 @@ import com.smart.cloud.fire.global.InitBaiduNavi;
 import com.smart.cloud.fire.mvp.fragment.CollectFragment.AlarmMessageModel;
 import com.smart.cloud.fire.mvp.fragment.CollectFragment.CollectFragmentPresenter;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
-import com.smart.cloud.fire.utils.T;
-import com.smart.cloud.fire.utils.Utils;
-import com.smart.cloud.fire.view.NormalDialog;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -118,19 +115,19 @@ public class CollectFragmentAdapter extends BaseAdapter {
         RxView.clicks(holder.userSmokeMarkPhoneTv).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
-                telPhoneAction(mNormalAlarmMessage.getPrincipal1Phone());
+                collectFragmentPresenter.telPhoneAction(mContext,mNormalAlarmMessage.getPrincipal1Phone());
             }
         });
         RxView.clicks(holder.userSmokeMarkPhoneTvTwo).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
-                telPhoneAction(mNormalAlarmMessage.getPrincipal2Phone());
+                collectFragmentPresenter.telPhoneAction(mContext,mNormalAlarmMessage.getPrincipal2Phone());
             }
         });
         return convertView;
     }
 
-    private void telPhoneAction(String phoneNum){
+    /*private void telPhoneAction(String phoneNum){
         if(Utils.isPhoneNumber(phoneNum)){
             NormalDialog mNormalDialog = new NormalDialog(mContext, "是否需要拨打电话：", phoneNum,
                     "是", "否");
@@ -138,7 +135,7 @@ public class CollectFragmentAdapter extends BaseAdapter {
         }else{
             T.showShort(mContext, "电话号码不合法");
         }
-    }
+    }*/
 
     class ViewHolder {
         @Bind(R.id.alarm_time_tv)
