@@ -258,6 +258,10 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                         mvpPresenter.getAllSmoke(userID,privilege+"",page,list,1);
                         break;
                     case 1:
+                        if(mCameraList.size()<20){
+                            refreshlistview.hideFooterView();
+                            return;
+                        }
                         mvpPresenter.getAllCamera(userID,privilege+"",page,mCameraList);
                         break;
                     case 2:
@@ -326,7 +330,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     public void getDataSuccess(List<Smoke> smokeList) {
         list.clear();
         list.addAll(smokeList);
-        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext,list);
+        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext,list,mShopInfoFragmentPresenter);
         refreshlistview.setAdapter(shopInfoFragmentAdapter);
         refreshlistview.hideHeaderView();
     }
@@ -357,7 +361,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getOffLineData(List<Smoke> smokeList) {
-        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext,smokeList);
+        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext,smokeList,mShopInfoFragmentPresenter);
         refreshlistview.setAdapter(shopInfoFragmentAdapter);
         refreshlistview.hideHeaderView();
     }
@@ -366,7 +370,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     public void getAllCamera(List<Camera> cameraList) {
         mCameraList.clear();
         mCameraList.addAll(cameraList);
-        mShopInfoCameraAdapter = new ShopInfoCameraAdapter(mContext,mCameraList);
+        mShopInfoCameraAdapter = new ShopInfoCameraAdapter(mContext,mCameraList,mShopInfoFragmentPresenter);
         refreshlistview.setAdapter(mShopInfoCameraAdapter);
         refreshlistview.hideHeaderView();
     }

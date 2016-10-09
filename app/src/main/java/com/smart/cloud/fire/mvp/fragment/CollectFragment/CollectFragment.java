@@ -484,6 +484,8 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
 
     @Override
     public void getDataFail(String msg) {
+        msgRefreshListView.hideFooterView();
+        msgRefreshListView.hideHeaderView();
         T.showShort(mContext, msg);
     }
 

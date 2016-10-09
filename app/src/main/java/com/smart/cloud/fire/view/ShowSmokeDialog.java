@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -31,26 +29,16 @@ public class ShowSmokeDialog {
     Activity context;
     @Bind(R.id.user_smoke_dialog_tv2)
     TextView userSmokeDialogTv2;
-    @Bind(R.id.user_smoke_dialog_stute)
-    TextView userSmokeDialogStute;
     @Bind(R.id.user_smoke_dialog_tv3)
     TextView userSmokeDialogTv3;
     @Bind(R.id.user_smoke_mark_principal)
     TextView userSmokeMarkPrincipal;
-    @Bind(R.id.user_smoke_mark_phone_image)
-    ImageView userSmokeMarkPhoneImage;
     @Bind(R.id.user_smoke_mark_phone_tv)
     TextView userSmokeMarkPhoneTv;
-    @Bind(R.id.user_phone_lin_one)
-    LinearLayout userPhoneLinOne;
     @Bind(R.id.user_smoke_mark_principal2)
     TextView userSmokeMarkPrincipal2;
-    @Bind(R.id.user_smoke_mark_phone_image2)
-    ImageView userSmokeMarkPhoneImage2;
     @Bind(R.id.user_smoke_mark_phone_tv2)
     TextView userSmokeMarkPhoneTv2;
-    @Bind(R.id.user_phone_lin_two)
-    LinearLayout userPhoneLinTwo;
     @Bind(R.id.normal_lead_btn)
     Button normalLeadBtn;
     private Smoke smoke;

@@ -262,7 +262,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         addFireManPhone.setText(smoke.getPrincipal1Phone());
         addFireManTwo.setText(smoke.getPrincipal2());
         addFireManPhoneTwo.setText(smoke.getPrincipal2Phone());
-        List<String> repeaters = smoke.getRepeater();
+        List<String> repeaters = smoke.getRepeaters();
         if(repeaters!=null&&repeaters.size()>0){
             addRepeaterMac.setText(repeaters.get(0));
         }

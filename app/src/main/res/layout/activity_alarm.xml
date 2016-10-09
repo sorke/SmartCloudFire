@@ -102,13 +102,14 @@
         android:textSize="14sp"
         android:gravity="center"
         android:textColor="#000000" />
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp">
@@ -125,12 +126,11 @@
 
         <LinearLayout
             android:id="@+id/alarm_phone_lin_one"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_weight="1"
             android:layout_marginTop="10dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp">
+            android:layout_centerVertical="true">
             <ImageView
                 android:id="@+id/alarm_smoke_mark_phone_image"
                 android:layout_width="wrap_content"
@@ -143,14 +143,15 @@
                 android:layout_height="wrap_content"
                 android:text="12548454848"/>
         </LinearLayout>
-    </RelativeLayout>
-    <RelativeLayout
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
             >
@@ -167,11 +168,11 @@
 
         <LinearLayout
             android:id="@+id/phone_lin_one"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_weight="1"
             android:layout_centerVertical="true"
-            android:layout_marginRight="30dp">
+            >
             <ImageView
                 android:id="@+id/smoke_mark_phone_image"
                 android:layout_width="wrap_content"
@@ -184,5 +185,5 @@
                 android:layout_height="wrap_content"
                 android:text="12548454848"/>
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

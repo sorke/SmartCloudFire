@@ -127,16 +127,6 @@ public class CollectFragmentAdapter extends BaseAdapter {
         return convertView;
     }
 
-    /*private void telPhoneAction(String phoneNum){
-        if(Utils.isPhoneNumber(phoneNum)){
-            NormalDialog mNormalDialog = new NormalDialog(mContext, "是否需要拨打电话：", phoneNum,
-                    "是", "否");
-            mNormalDialog.showNormalDialog();
-        }else{
-            T.showShort(mContext, "电话号码不合法");
-        }
-    }*/
-
     class ViewHolder {
         @Bind(R.id.alarm_time_tv)
         TextView alarmTimeTv;
@@ -148,12 +138,8 @@ public class CollectFragmentAdapter extends BaseAdapter {
         ImageView alarmMarkImage;
         @Bind(R.id.repeater_address_tv)
         TextView repeaterAddressTv;
-        @Bind(R.id.repeater_name)
-        TextView repeaterName;
         @Bind(R.id.repeater_name_tv)
         TextView repeaterNameTv;
-        @Bind(R.id.repeater_mac)
-        TextView repeaterMac;
         @Bind(R.id.repeater_mac_tv)
         TextView repeaterMacTv;
         @Bind(R.id.user_smoke_mark_principal)

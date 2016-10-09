@@ -23,6 +23,7 @@ public class Smoke implements Serializable {
      * principal1Phone : 13724309809
      * principal2 :
      * principal2Phone :
+     * repeater
      */
 
     private int type=2;
@@ -40,7 +41,8 @@ public class Smoke implements Serializable {
     private String principal1Phone;
     private String principal2;
     private String principal2Phone;
-    private List<String> repeater;
+    private List<String> repeaters;
+    private String repeater;
 
     public String getAddress() {
         return address;
@@ -162,11 +164,19 @@ public class Smoke implements Serializable {
         this.type = type;
     }
 
-    public  List<String> getRepeater() {
+    public List<String> getRepeaters() {
+        return repeaters;
+    }
+
+    public void setRepeaters(List<String> repeaters) {
+        this.repeaters = repeaters;
+    }
+
+    public String getRepeater() {
         return repeater;
     }
 
-    public void setRepeater( List<String> repeater) {
+    public void setRepeater(String repeater) {
         this.repeater = repeater;
     }
 }

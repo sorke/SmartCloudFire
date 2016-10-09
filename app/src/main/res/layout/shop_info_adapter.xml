@@ -35,6 +35,30 @@
                 android:text="送达回复哈哈对付韩"
                 />
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/repeater_rela"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/repeater_tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textColor="#404040"
+                android:layout_marginTop="10dp"
+                android:text="所属中继："
+                />
+            <TextView
+                android:id="@+id/repeater_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/repeater_tv1"
+                android:layout_marginLeft="5dp"
+                android:textColor="#404040"
+                android:layout_marginTop="10dp"
+                />
+        </RelativeLayout>
         <TextView
             android:id="@+id/group_tv_address"
             android:layout_width="wrap_content"
@@ -101,10 +125,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
                 <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#404040"
-                android:text="@string/principal"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#404040"
+                    android:text="@string/principal"/>
                 <TextView
                     android:id="@+id/group_principal1"
                     android:layout_width="wrap_content"
