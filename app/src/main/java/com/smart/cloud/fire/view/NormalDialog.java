@@ -18,19 +18,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.smart.cloud.fire.utils.TestAuthorityUtil;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import fire.cloud.smart.com.smartcloudfire.R;
 
 public class NormalDialog {
     Context context;
     String title_str, content_str, btn1_str, btn2_str;
     AlertDialog dialog;
+    @Bind(R.id.bind_smoke_id)
+    EditText bindSmokeId;
+    @Bind(R.id.bind_camera_id)
+    EditText bindCameraId;
+    @Bind(R.id.button1_text)
+    TextView button1Text;
+    @Bind(R.id.button2_text)
+    TextView button2Text;
     private int style = 999;
-    String[] list_data = new String[] {};
+    String[] list_data = new String[]{};
     private OnButtonOkListener onButtonOkListener;
     private OnButtonCancelListener onButtonCancelListener;
     private OnItemClickListener onItemClickListener;
@@ -68,7 +79,7 @@ public class NormalDialog {
     }
 
     public void showNormalDialog() {
-        if(!TestAuthorityUtil.testPhone(context)){
+        if (!TestAuthorityUtil.testPhone(context)) {
             return;
         }
         View view = LayoutInflater.from(context).inflate(
@@ -124,6 +135,24 @@ public class NormalDialog {
         dialog.setCanceledOnTouchOutside(false);
     }
 
+    public void bindDialog() {
+        final View view = LayoutInflater.from(context).inflate(
+                R.layout.dialog_bind, null);
+        ButterKnife.bind(this, view);
+        button2Text.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ButterKnife.unbind(view);
+                dismiss();
+            }
+        });
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(false);
+    }
 
 
     public void setTitle(String title) {
@@ -192,21 +221,18 @@ public class NormalDialog {
         Log.i("dxsSMTP", "setlistener");
     }
 
-    private ListView listrView,alarm_statusList;
+    private ListView listrView, alarm_statusList;
 
 
-    OnKeyListener keylistener = new OnKeyListener(){
+    OnKeyListener keylistener = new OnKeyListener() {
         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-            if (keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0)
-            {
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
-    } ;
+    };
 
 
 }

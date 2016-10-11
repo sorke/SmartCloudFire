@@ -133,7 +133,7 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
 
     public void addSmoke(String userID,String privilege,String smokeName,String smokeMac,String address,String longitude,
                          String latitude,String placeAddress,String placeTypeId,String principal1,String principal1Phone,String principal2,
-                         String principal2Phone,String areaId,String repeater){
+                         String principal2Phone,String areaId,String repeater,String camera){
         if(longitude.length()==0||latitude.length()==0){
             mvpView.addSmokeResult("请获取经纬度",1);
             return;
@@ -145,7 +145,7 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
         mvpView.showLoading();
         Observable mObservable = apiStores1.addSmoke(userID,smokeName,privilege,smokeMac,address,
                 longitude,latitude,placeAddress,placeTypeId,principal1,principal1Phone,principal2,
-                principal2Phone,areaId,repeater);
+                principal2Phone,areaId,repeater,camera);
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ConfireFireModel>() {
             @Override
             public void onSuccess(ConfireFireModel model) {

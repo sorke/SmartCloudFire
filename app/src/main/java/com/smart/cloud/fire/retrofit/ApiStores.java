@@ -90,7 +90,7 @@ public interface ApiStores {
                                           @Query("placeTypeId") String placeTypeId, @Query("principal1") String principal1,
                                           @Query("principal1Phone") String principal1Phone, @Query("principal2") String principal2,
                                           @Query("principal2Phone") String principal2Phone, @Query("areaId") String areaId,
-                                          @Query("repeater") String repeater);
+                                          @Query("repeater") String repeater,@Query("camera") String camera);
     //获取用户报警消息
     @GET("getAllAlarm")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
@@ -112,5 +112,10 @@ public interface ApiStores {
                                           @Query("principal1") String principal1, @Query("principal1Phone") String principal1Phone,
                                           @Query("principal2") String principal2, @Query("principal2Phone") String principal2Phone,
                                           @Query("areaId") String areaId, @Query("placeTypeId") String placeTypeId);
+
+    //绑定烟感与摄像头
+    @GET("bindCameraSmoke")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<HttpError> bindCameraSmoke(@Query("cameraId") String cameraId, @Query("smoke") String smoke);
 
 }

@@ -119,6 +119,41 @@
                     android:src="@drawable/saoma_selector"/>
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/add_camera_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:visibility="gone"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add_camera_name"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/edit_view_bg">
+                    <EditText
+                        android:id="@+id/add_camera_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:textSize="14sp"
+                        android:background="@null"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="@string/add_camera_hint_name"
+                        android:textColorHint="@color/hint_color_text"
+                        android:textColor="@color/text_view_and_kuang"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

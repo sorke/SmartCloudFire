@@ -7,4 +7,6 @@ public interface SettingFragmentView {
     void showLoading();
 
     void hideLoading();
+
+    void bindResult(String msg);
 }

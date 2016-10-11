@@ -43,6 +43,7 @@ public class Smoke implements Serializable {
     private String principal2Phone;
     private List<String> repeaters;
     private String repeater;
+    private Camera camera;
 
     public String getAddress() {
         return address;
@@ -178,5 +179,13 @@ public class Smoke implements Serializable {
 
     public void setRepeater(String repeater) {
         this.repeater = repeater;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 }

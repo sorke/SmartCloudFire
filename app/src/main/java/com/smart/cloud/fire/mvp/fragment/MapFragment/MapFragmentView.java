@@ -7,7 +7,8 @@ import java.util.List;
  * Created by Administrator on 2016/9/21.
  */
 public interface MapFragmentView {
-    void getDataSuccess(List<Smoke> smokeList,List<Camera> cameraList);
+//    void getDataSuccess(List<Smoke> smokeList,List<Camera> cameraList);
+    void getDataSuccess(List<Smoke> smokeList);
 
     void getDataFail(String msg);
 

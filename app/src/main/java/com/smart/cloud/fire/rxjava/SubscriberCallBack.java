@@ -26,15 +26,13 @@ public class SubscriberCallBack<T> extends Subscriber<T> {
             HttpException httpException = (HttpException) e;
             //httpException.response().errorBody().string()
             int code = httpException.code();
-            String msg = httpException.getMessage();
+            String msg = "连接超时";
             if (code == 504) {
                 msg = "网络不给力";
-            }else{
-                msg = "连接超时";
             }
             apiCallback.onFailure(code, msg);
         } else {
-            apiCallback.onFailure(0, e.getMessage());
+            apiCallback.onFailure(0, "网络不给力");
         }
         apiCallback.onCompleted();
     }

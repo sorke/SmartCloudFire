@@ -224,9 +224,9 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
     }
 
     @Override
-    public void getDataSuccess(List<Smoke> smokeList, List<Camera> cameraList) {
+    public void getDataSuccess(List<Smoke> smokeList) {
         mBaiduMap.clear();
-        final MyOverlayManager mMyOverlayManager = new MyOverlayManager(mBaiduMap, smokeList, cameraList, MyApp.app);
+        final MyOverlayManager mMyOverlayManager = new MyOverlayManager(mBaiduMap, smokeList, MyApp.app);
         mMyOverlayManager.removeFromMap();
         mBaiduMap.setOnMarkerClickListener(mMyOverlayManager);
         mMyOverlayManager.addToMap();

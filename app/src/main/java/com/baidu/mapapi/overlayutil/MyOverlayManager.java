@@ -30,14 +30,12 @@ public class MyOverlayManager extends OverlayManager {
     private static List<Smoke> mapNormalSmoke;
     private static Context context;
     private static BaiduMap baiduMap;
-    private List<Camera> listCamera;
 
-    public  MyOverlayManager(BaiduMap baiduMap, List<Smoke> mapNormalSmoke, List<Camera> listCamera, Context context){
+    public  MyOverlayManager(BaiduMap baiduMap, List<Smoke> mapNormalSmoke, Context context){
         super(baiduMap);
         this.mapNormalSmoke = mapNormalSmoke;
         this.context = context;
         this.baiduMap = baiduMap;
-        this.listCamera = listCamera;
     }
 
     @Override
@@ -72,39 +70,52 @@ public class MyOverlayManager extends OverlayManager {
             ArrayList<BitmapDescriptor> giflist = new ArrayList<>();
             giflist.add(bdA);
             giflist.add(bdC);
-            for (Smoke smoke : mapNormalSmoke) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("mNormalSmoke",smoke);
-                double latitude = Double.parseDouble(smoke.getLatitude());
-                double longitude = Double.parseDouble(smoke.getLongitude());
-                LatLng l = new LatLng(latitude, longitude);
-                if(smoke.getIfDealAlarm()==0){
-                    overlayOptionses.add(new MarkerOptions().position(l).icons(giflist).extraInfo(bundle)
-                            .zIndex(0).period(10)
-                            .animateType(MarkerOptions.MarkerAnimateType.drop));
-                }else{
-                    overlayOptionses.add(new MarkerOptions().position(l).icon(bdA).extraInfo(bundle)
-                            .zIndex(0).draggable(true).perspective(true)
-                            .animateType(MarkerOptions.MarkerAnimateType.drop));
-                }
-            }
-        }
-
-        if(listCamera!=null&&listCamera.size()>0){
             View view = LayoutInflater.from(context).inflate(
                     R.layout.image_test, null);
+            View view2 = LayoutInflater.from(context).inflate(
+                    R.layout.image_test2, null);
             BitmapDescriptor cameraImage = BitmapDescriptorFactory
                     .fromView(view);
-            for(int i=0;i<listCamera.size();i++){
-                Camera mCamera = listCamera.get(i);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("mNormalSmoke",mCamera);
-                double latitude = Double.parseDouble(mCamera.getLatitude());
-                double longitude = Double.parseDouble(mCamera.getLongitude());
-                LatLng latLng = new LatLng(latitude, longitude);
-                overlayOptionses.add(new MarkerOptions().position(latLng).icon(cameraImage).extraInfo(bundle)
-                        .zIndex(0).draggable(true).perspective(true)
-                        .animateType(MarkerOptions.MarkerAnimateType.drop));
+            BitmapDescriptor cameraImage2 = BitmapDescriptorFactory
+                    .fromView(view2);
+            ArrayList<BitmapDescriptor> giflist2 = new ArrayList<>();
+            giflist2.add(cameraImage);
+            giflist2.add(cameraImage2);
+            for (Smoke smoke : mapNormalSmoke) {
+                Camera mCamera = smoke.getCamera();
+                int alarmState = smoke.getIfDealAlarm();
+                if(mCamera!=null){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("mNormalSmoke",mCamera);
+                    double latitude = Double.parseDouble(mCamera.getLatitude());
+                    double longitude = Double.parseDouble(mCamera.getLongitude());
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    if(alarmState==0){
+                        overlayOptionses.add(new MarkerOptions().position(latLng).icons(giflist2).extraInfo(bundle)
+                                .zIndex(0).period(10)
+                                .animateType(MarkerOptions.MarkerAnimateType.drop));
+                    }else{
+                        overlayOptionses.add(new MarkerOptions().position(latLng).icon(cameraImage).extraInfo(bundle)
+                                .zIndex(0).draggable(true).perspective(true)
+                                .animateType(MarkerOptions.MarkerAnimateType.drop));
+                    }
+
+                }else{
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("mNormalSmoke",smoke);
+                    double latitude = Double.parseDouble(smoke.getLatitude());
+                    double longitude = Double.parseDouble(smoke.getLongitude());
+                    LatLng l = new LatLng(latitude, longitude);
+                    if(alarmState==0){
+                        overlayOptionses.add(new MarkerOptions().position(l).icons(giflist).extraInfo(bundle)
+                                .zIndex(0).period(10)
+                                .animateType(MarkerOptions.MarkerAnimateType.drop));
+                    }else{
+                        overlayOptionses.add(new MarkerOptions().position(l).icon(bdA).extraInfo(bundle)
+                                .zIndex(0).draggable(true).perspective(true)
+                                .animateType(MarkerOptions.MarkerAnimateType.drop));
+                    }
+                }
             }
         }
         return overlayOptionses;

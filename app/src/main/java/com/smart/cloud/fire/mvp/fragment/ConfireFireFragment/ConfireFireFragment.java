@@ -20,6 +20,7 @@ import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
+import com.smart.cloud.fire.mvp.fragment.MapFragment.Camera;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
@@ -73,6 +74,10 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
     RelativeLayout addFireDevBtn;
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
+    @Bind(R.id.add_camera_name)
+    EditText addCameraName;
+    @Bind(R.id.add_camera_relative)
+    RelativeLayout addCameraRelative;
     private Context mContext;
     private int scanType = 0;//0表示扫描中继器，1表示扫描烟感
     private int privilege;
@@ -81,6 +86,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
     private Area mArea;
     private String areaId = "";
     private String shopTypeId = "";
+    private String camera = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -102,6 +108,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
     }
 
     private void init() {
+        addCameraRelative.setVisibility(View.VISIBLE);
         addFireZjq.setEditTextHint("区域");
         addFireType.setEditTextHint("类型");
         RxView.clicks(addFireDevBtn).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
@@ -112,11 +119,11 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         });
     }
 
-    private void addFire(){
-        if(mShopType!=null){
+    private void addFire() {
+        if (mShopType != null) {
             shopTypeId = mShopType.getPlaceTypeId();
         }
-        if(mArea!=null){
+        if (mArea != null) {
             areaId = mArea.getAreaId();
         }
         String longitude = addFireLon.getText().toString().trim();
@@ -124,15 +131,16 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         String smokeName = addFireName.getText().toString().trim();
         String smokeMac = addFireMac.getText().toString().trim();
         String address = addFireAddress.getText().toString().trim();
-        String placeAddress="";
+        String placeAddress = "";
         String principal1 = addFireMan.getText().toString().trim();
         String principal2 = addFireManTwo.getText().toString().trim();
         String principal1Phone = addFireManPhone.getText().toString().trim();
         String principal2Phone = addFireManPhoneTwo.getText().toString().trim();
         String repeater = addRepeaterMac.getText().toString().trim();
-        mvpPresenter.addSmoke(userID,privilege+"",smokeName,smokeMac,address,longitude,
-                latitude,placeAddress,shopTypeId,principal1,principal1Phone,principal2,
-                principal2Phone,areaId,repeater);
+        camera = addCameraName.getText().toString().trim();
+        mvpPresenter.addSmoke(userID, privilege + "", smokeName, smokeMac, address, longitude,
+                latitude, placeAddress, shopTypeId, principal1, principal1Phone, principal2,
+                principal2Phone, areaId, repeater, camera);
     }
 
     private void regFilter() {
@@ -141,15 +149,16 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         filter.addAction("GET_SHOP_TYPE_ACTION");
         mContext.registerReceiver(mReceiver, filter);
     }
+
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             //获取商店类型
-            if(intent.getAction().equals("GET_SHOP_TYPE_ACTION")){
+            if (intent.getAction().equals("GET_SHOP_TYPE_ACTION")) {
                 mShopType = (ShopType) intent.getExtras().getSerializable("mShopType");
             }
             //获取区域
-            if(intent.getAction().equals("GET_AREA_ACTION")){
+            if (intent.getAction().equals("GET_AREA_ACTION")) {
                 mArea = (Area) intent.getExtras().getSerializable("mArea");
             }
         }
@@ -191,17 +200,17 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         super.onStart();
     }
 
-    @OnClick({R.id.scan_repeater_ma,R.id.scan_er_wei_ma,R.id.location_image,R.id.add_fire_zjq,R.id.add_fire_type})
+    @OnClick({R.id.scan_repeater_ma, R.id.scan_er_wei_ma, R.id.location_image, R.id.add_fire_zjq, R.id.add_fire_type})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.scan_repeater_ma:
-                scanType=0;
-                Intent scanRepeater = new Intent(mContext,CaptureActivity.class);
+                scanType = 0;
+                Intent scanRepeater = new Intent(mContext, CaptureActivity.class);
                 startActivityForResult(scanRepeater, 0);
                 break;
             case R.id.scan_er_wei_ma:
-                scanType=1;
-                Intent openCameraIntent = new Intent(mContext,CaptureActivity.class);
+                scanType = 1;
+                Intent openCameraIntent = new Intent(mContext, CaptureActivity.class);
                 startActivityForResult(openCameraIntent, 0);
                 break;
             case R.id.location_image:
@@ -249,21 +258,25 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
 
     @Override
     public void getDataFail(String msg) {
-        T.showShort(mContext,msg);
+        T.showShort(mContext, msg);
     }
 
     @Override
     public void getDataSuccess(Smoke smoke) {
-        addFireLon.setText(smoke.getLongitude() +"");
-        addFireLat.setText(smoke.getLatitude()+"");
+        addFireLon.setText(smoke.getLongitude() + "");
+        addFireLat.setText(smoke.getLatitude() + "");
         addFireAddress.setText(smoke.getAddress());
         addFireName.setText(smoke.getName());
         addFireMan.setText(smoke.getPrincipal1());
         addFireManPhone.setText(smoke.getPrincipal1Phone());
         addFireManTwo.setText(smoke.getPrincipal2());
         addFireManPhoneTwo.setText(smoke.getPrincipal2Phone());
+        Camera mCamera = smoke.getCamera();
+        if (mCamera != null) {
+            addCameraName.setText(mCamera.getCameraId());
+        }
         List<String> repeaters = smoke.getRepeaters();
-        if(repeaters!=null&&repeaters.size()>0){
+        if (repeaters != null && repeaters.size() > 0) {
             addRepeaterMac.setText(repeaters.get(0));
         }
     }
@@ -300,13 +313,14 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
 
     @Override
     public void addSmokeResult(String msg, int errorCode) {
-        T.showShort(mContext,msg);
-        if(errorCode==0){
-            mShopType=null;
-            mArea=null;
+        T.showShort(mContext, msg);
+        if (errorCode == 0) {
+            mShopType = null;
+            mArea = null;
             clearText();
             areaId = "";
             shopTypeId = "";
+            camera = "";
             addFireMac.setText("");
             addFireZjq.addFinish();
             addFireType.addFinish();
@@ -319,17 +333,17 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         if (resultCode == getActivity().RESULT_OK) {
             Bundle bundle = data.getExtras();
             String scanResult = bundle.getString("result");
-            if(scanType==0){
+            if (scanType == 0) {
                 addRepeaterMac.setText(scanResult);
-            }else{
+            } else {
                 addFireMac.setText(scanResult);
                 clearText();
-                mvpPresenter.getOneSmoke(userID,privilege+"",scanResult);
+                mvpPresenter.getOneSmoke(userID, privilege + "", scanResult);
             }
         }
     }
 
-    private void clearText(){
+    private void clearText() {
         addFireLon.setText("");
         addFireLat.setText("");
         addFireAddress.setText("");
@@ -340,5 +354,6 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         addFireManPhoneTwo.setText("");
         addFireZjq.setEditTextData("");
         addFireType.setEditTextData("");
+        addCameraName.setText("");
     }
 }

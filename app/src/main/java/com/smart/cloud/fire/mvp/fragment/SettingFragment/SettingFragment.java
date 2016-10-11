@@ -15,6 +15,7 @@ import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.mvp.camera.AddCameraFirstActivity;
 import com.smart.cloud.fire.ui.AboutActivity;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
+import com.smart.cloud.fire.utils.T;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +40,8 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
     RelativeLayout settingHelpExit;
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
+    @Bind(R.id.setting_camera_relative)
+    RelativeLayout settingCameraRelative;
     private Context mContext;
 
     @Override
@@ -68,10 +71,11 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
         int privilege = MyApp.app.getPrivilege();
         if (privilege == 3) {
             settingHelpRela.setVisibility(View.VISIBLE);
+            settingCameraRelative.setVisibility(View.VISIBLE);
         }
     }
 
-    @OnClick({R.id.app_update, R.id.setting_help_about, R.id.setting_help_rela, R.id.setting_help_exit})
+    @OnClick({R.id.app_update, R.id.setting_help_about, R.id.setting_help_rela, R.id.setting_help_exit,R.id.setting_camera_relative})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.app_update:
@@ -89,6 +93,9 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
                 Intent in = new Intent();
                 in.setAction("APP_EXIT");
                 mContext.sendBroadcast(in);
+                break;
+            case R.id.setting_camera_relative:
+                mvpPresenter.bindDialog(mContext);
                 break;
             default:
                 break;
@@ -126,5 +133,10 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
     @Override
     public void hideLoading() {
         mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void bindResult(String msg) {
+        T.showShort(mContext,msg);
     }
 }
