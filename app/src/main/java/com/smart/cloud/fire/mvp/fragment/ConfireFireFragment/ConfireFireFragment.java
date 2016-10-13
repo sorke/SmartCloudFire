@@ -242,8 +242,6 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
     public void getLocationData(BDLocation location) {
         addFireLon.setText(location.getLongitude() + "");
         addFireAddress.setText(location.getAddrStr());
-        String dis = location.getDistrict();
-        String str = location.getStreet();
         addFireLat.setText(location.getLatitude() + "");
     }
 
