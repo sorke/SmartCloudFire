@@ -14,12 +14,13 @@ import android.widget.RelativeLayout;
 import com.smart.cloud.fire.base.presenter.BasePresenter;
 import com.smart.cloud.fire.base.ui.BaseFragment;
 import com.smart.cloud.fire.global.ConstantValues;
-import com.smart.cloud.fire.mvp.main.view.MainView;
+import com.smart.cloud.fire.mvp.fragment.CallAlarmFragment.CallAlarmFragment;
 import com.smart.cloud.fire.mvp.fragment.CollectFragment.CollectFragment;
 import com.smart.cloud.fire.mvp.fragment.ConfireFireFragment.ConfireFireFragment;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.MapFragment;
 import com.smart.cloud.fire.mvp.fragment.SettingFragment.SettingFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragment;
+import com.smart.cloud.fire.mvp.main.view.MainView;
 import com.smart.cloud.fire.utils.T;
 import com.smart.cloud.fire.view.MyRadioButton;
 
@@ -38,6 +39,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private CollectFragment mCollectFragment;
     private SettingFragment mSettingFragment;
     private MapFragment mMapFragment;
+    private CallAlarmFragment mCallAlarmFragment;
     private FragmentTransaction mTransaction;
     private FragmentManager manager;
     private int clickNum = 0;
@@ -53,22 +55,50 @@ public class MainPresenter extends BasePresenter<MainView> {
         otherFrameLayout.setVisibility(View.INVISIBLE);
         switch (privilege){
             case ConstantValues.Privilege.NORMAL_MAN:
-                for(int i=0;i<4;i++){
-                    if(i==2){
-                        continue;
+//                for(int i=0;i<5;i++){
+//                    if(i==2){
+//                        continue;
+//                    }
+//                    myRadioButton.get(i).setVisibility(View.GONE);
+//                }
+//                clickNumBefore=3;
+//                mMapFragment = new MapFragment();
+//                mTransaction = manager.beginTransaction();
+//                mTransaction.replace(R.id.main_content, mMapFragment, "mMapFragment").commit();
+                RelativeLayout.LayoutParams linearParams1 =(RelativeLayout.LayoutParams) radioGroup.getLayoutParams(); //取控件textView当前的布局参数
+                linearParams1.height = 85;// 控件的高强制设成20
+                radioGroup.setLayoutParams(linearParams1);
+                for(int i=0;i<5;i++){
+                    RadioButton mRadioButton = myRadioButton.get(i);
+                    switch (i){
+                        case 0:
+                            mRadioButton.setVisibility(View.VISIBLE);
+                            mRadioButton.setChecked(true);
+                            break;
+                        case 1:
+                            mRadioButton.setVisibility(View.GONE);
+                            break;
+                        case 2:
+                            mRadioButton.setVisibility(View.GONE);
+                            break;
+                        case 3:
+                            mRadioButton.setVisibility(View.GONE);
+                            break;
+                        case 4:
+                            mRadioButton.setVisibility(View.VISIBLE);
+                            break;
                     }
-                    myRadioButton.get(i).setVisibility(View.GONE);
                 }
-                clickNumBefore=3;
+                clickNumBefore=0;
                 mMapFragment = new MapFragment();
                 mTransaction = manager.beginTransaction();
-                mTransaction.replace(R.id.main_content, mMapFragment, "mMapFragment").commit();
+                mTransaction.replace(R.id.main_content, mMapFragment, "mAgencyMapFragment").commit();
                 break;
             case ConstantValues.Privilege.AGENCY_MAN:
                 RelativeLayout.LayoutParams linearParams2 =(RelativeLayout.LayoutParams) radioGroup.getLayoutParams(); //取控件textView当前的布局参数
                 linearParams2.height = 85;// 控件的高强制设成20
                 radioGroup.setLayoutParams(linearParams2);
-                for(int i=0;i<4;i++){
+                for(int i=0;i<5;i++){
                     RadioButton mRadioButton = myRadioButton.get(i);
                     switch (i){
                         case 0:
@@ -172,6 +202,18 @@ public class MainPresenter extends BasePresenter<MainView> {
                 }
                 if (clickNumBefore != clickNum) {
                     changeFragment(manager, mTransaction, mSettingFragment, R.id.otherFrameLayout, clickNumBefore, clickNum);
+                    clickNumBefore = clickNum;
+                }
+                break;
+            case R.id.call_alarm:
+                clickNum = 6;
+                mainContent.setVisibility(View.INVISIBLE);
+                otherFrameLayout.setVisibility(View.VISIBLE);
+                if (mCallAlarmFragment == null) {
+                    mCallAlarmFragment = new CallAlarmFragment();
+                }
+                if (clickNumBefore != clickNum) {
+                    changeFragment(manager, mTransaction, mCallAlarmFragment, R.id.otherFrameLayout, clickNumBefore, clickNum);
                     clickNumBefore = clickNum;
                 }
                 break;

@@ -119,6 +119,23 @@
                 android:textSize="12sp" />
 
             <com.smart.cloud.fire.view.MyRadioButton
+                android:id="@+id/call_alarm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/alpha"
+                android:button="@null"
+                android:checked="false"
+                android:visibility="gone"
+                android:clickable="true"
+                myradio:drawableTop="@drawable/fire_radio_button_selector"
+                myradio:myDrawableSize="25dp"
+                android:gravity="center"
+                android:text="报警"
+                android:textColor="@color/color_radio_button"
+                android:textSize="12sp" />
+
+            <com.smart.cloud.fire.view.MyRadioButton
                 android:id="@+id/radio_more"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

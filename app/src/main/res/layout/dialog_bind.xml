@@ -110,7 +110,7 @@
 					android:text="@string/bind"
 					android:layout_centerInParent="true"
 					android:textStyle="bold"
-					android:background="@anim/list_item_color_bg"
+					android:background="@drawable/list_item_color_bg"
 					/>
 			</RelativeLayout>
 			<ImageView
@@ -135,7 +135,7 @@
 					android:gravity="center"
 					android:textStyle="bold"
 					android:layout_centerInParent="true"
-					android:background="@anim/list_item_color_bg"
+					android:background="@drawable/list_item_color_bg"
 					/>
 			</RelativeLayout>
 		</LinearLayout>

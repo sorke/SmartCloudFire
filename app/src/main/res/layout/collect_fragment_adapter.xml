@@ -202,7 +202,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
 
-        android:background="@anim/list_item_color_bg">
+        android:background="@drawable/list_item_color_bg">
         <TextView
             android:id="@+id/deal_alarm_action_tv"
             android:layout_width="0dp"

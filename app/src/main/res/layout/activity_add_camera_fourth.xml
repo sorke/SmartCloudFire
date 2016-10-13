@@ -20,7 +20,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:layout_below="@id/add_camera_four_tv"
-        android:background="@anim/edit_view"
+        android:background="@drawable/edit_view"
         >
         <EditText
             android:id="@+id/camera_name_et"
@@ -40,7 +40,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/camera_name_rela"
         android:layout_marginTop="15dp"
-        android:background="@anim/edit_view"
+        android:background="@drawable/edit_view"
         >
         <EditText
             android:id="@+id/camera_pwd_et"

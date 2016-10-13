@@ -27,7 +27,6 @@ import com.smart.cloud.fire.utils.T;
 import com.smart.cloud.fire.view.XCDropDownListView;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
@@ -243,6 +242,8 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
     public void getLocationData(BDLocation location) {
         addFireLon.setText(location.getLongitude() + "");
         addFireAddress.setText(location.getAddrStr());
+        String dis = location.getDistrict();
+        String str = location.getStreet();
         addFireLat.setText(location.getLatitude() + "");
     }
 
@@ -275,10 +276,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         if (mCamera != null) {
             addCameraName.setText(mCamera.getCameraId());
         }
-        List<String> repeaters = smoke.getRepeaters();
-        if (repeaters != null && repeaters.size() > 0) {
-            addRepeaterMac.setText(repeaters.get(0));
-        }
+        addRepeaterMac.setText(smoke.getRepeater().trim());
     }
 
     @Override

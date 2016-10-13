@@ -133,7 +133,7 @@
                 android:layout_above="@+id/l_control_bottom"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="10dp"
-                android:background="@anim/control_bar_bg"
+                android:background="@drawable/control_bar_bg"
                 android:orientation="vertical"
                 android:visibility="gone" >
 
@@ -190,7 +190,7 @@
                     android:id="@+id/control_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="@anim/control_bar_bg"
+                    android:background="@drawable/control_bar_bg"
                     android:visibility="invisible"
                     >
 

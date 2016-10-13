@@ -27,6 +27,7 @@ import com.p2p.core.P2PHandler;
 import com.p2p.core.update.UpdateManager;
 import com.smart.cloud.fire.base.ui.MvpActivity;
 import com.smart.cloud.fire.global.ConstantValues;
+import com.smart.cloud.fire.global.MainService;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.mvp.login.SplashActivity;
 import com.smart.cloud.fire.mvp.main.presenter.MainPresenter;
@@ -49,6 +50,8 @@ import fire.cloud.smart.com.smartcloudfire.R;
  */
 public class MainActivity extends MvpActivity<MainPresenter> implements MainView {
 
+    @Bind(R.id.call_alarm)
+    MyRadioButton callAlarm;
     private Context mContext;
     private AlertDialog dialog_update;
     @Bind(R.id.bottom_group)
@@ -87,21 +90,23 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         list.add(radio_letter);
         list.add(radio_comment);
         list.add(radio_home);
-        mvpPresenter.initWidget(bottom_group, list, MyApp.app.getPrivilege(),this,otherFrameLayout,mainContent);
+        list.add(callAlarm);
+        mvpPresenter.initWidget(bottom_group, list, MyApp.app.getPrivilege(), this, otherFrameLayout, mainContent);
         mainContent.setVisibility(View.VISIBLE);
         otherFrameLayout.setVisibility(View.INVISIBLE);
         bottom_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mvpPresenter.replaceFragment(checkedId,otherFrameLayout,mainContent);
+                mvpPresenter.replaceFragment(checkedId, otherFrameLayout, mainContent);
             }
         });
     }
 
     private void connect() {
-        Intent service = new Intent(mContext,com.smart.cloud.fire.global.MainService.class);
+        Intent service = new Intent(mContext, MainService.class);
         startService(service);
     }
+
     private void regFilter() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("Constants.Action.ACTION_UPDATE");
@@ -110,11 +115,11 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         mContext.registerReceiver(mReceiver, filter);
     }
 
-    private BroadcastReceiver mReceiver = new BroadcastReceiver(){
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals("APP_EXIT")){
+            if (intent.getAction().equals("APP_EXIT")) {
                 SharedPreferencesManager.getInstance().putData(mContext,
                         SharedPreferencesManager.SP_FILE_GWELL,
                         SharedPreferencesManager.KEY_RECENTPASS,
@@ -125,7 +130,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                 finish();
             }
 
-            if(intent.getAction().equals("Constants.Action.ACTION_UPDATE_NO")){
+            if (intent.getAction().equals("Constants.Action.ACTION_UPDATE_NO")) {
                 View view = LayoutInflater.from(mContext).inflate(
                         R.layout.dialog_update, null);
                 TextView title = (TextView) view.findViewById(R.id.title_text);
@@ -162,7 +167,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                 });
             }
 
-            if(intent.getAction().equals("Constants.Action.ACTION_UPDATE")){
+            if (intent.getAction().equals("Constants.Action.ACTION_UPDATE")) {
                 if (null != dialog_update && dialog_update.isShowing()) {
                     return;
                 }
@@ -199,7 +204,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                                 UpdateManager.HANDLE_MSG_DOWNING, 0);
                         new Thread() {
                             public void run() {
-                                UpdateManager.getInstance().downloadApk(handler, ConstantValues.Update.SAVE_PATH, ConstantValues.Update.FILE_NAME,downloadPath);
+                                UpdateManager.getInstance().downloadApk(handler, ConstantValues.Update.SAVE_PATH, ConstantValues.Update.FILE_NAME, downloadPath);
                             }
                         }.start();
                     }
@@ -272,17 +277,17 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
-        if(keyCode == KeyEvent.KEYCODE_BACK ){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             mvpPresenter.exitBy2Click(mContext);
             return true;
-        }else{
+        } else {
             return super.onKeyDown(keyCode, event);
         }
     }
 
     @Override
     public void exitBy2Click(boolean isExit) {
-        if (isExit){
+        if (isExit) {
             moveTaskToBack(false);
         }
     }
