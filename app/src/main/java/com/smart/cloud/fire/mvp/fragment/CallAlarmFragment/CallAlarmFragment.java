@@ -35,6 +35,7 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
         View view = inflater.inflate(R.layout.fragment_call_alarm, container,
                 false);
         ButterKnife.bind(this, view);
+        cancelAlarm.setClickable(false);
         return view;
     }
 
@@ -44,6 +45,9 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
             case R.id.call_alarm_image:
                 mvpPresenter.countdown(5);
                 callAlarmImage.setLongClickable(false);
+                cancelAlarm.setBackgroundResource(R.drawable.cancel_alarm_btn);
+                cancelAlarm.setClickable(true);
+                alarmTime.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -99,16 +103,23 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
 
     @Override
     public void stopCountDown(String msg) {
-        cancelAlarm.setVisibility(View.GONE);
         T.showShort(mContext, msg);
         callAlarmImage.setLongClickable(true);
+        cancelAlarm.setClickable(false);
+        cancelAlarm.setBackgroundResource(R.drawable.cancel_alarm_btn_an);
+        alarmTime.setText("");
+        alarmTime.setVisibility(View.GONE);
     }
 
     @Override
     public void sendAlarmMessage(String result) {
-        cancelAlarm.setVisibility(View.GONE);
         T.showShort(mContext, result);
         callAlarmImage.setLongClickable(true);
+        cancelAlarm.setClickable(false);
+        cancelAlarm.setBackgroundResource(R.drawable.cancel_alarm_btn_an);
+        alarmTime.setText("");
+        alarmTime.setVisibility(View.GONE);
     }
+
 
 }

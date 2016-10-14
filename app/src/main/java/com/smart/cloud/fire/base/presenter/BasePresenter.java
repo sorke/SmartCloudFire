@@ -24,6 +24,7 @@ public class BasePresenter<V> implements Presenter<V> {
         public V mvpView;
         public ApiStores apiStores = AppClient.retrofit(ConstantValues.SERVER_YOOSEE_IP).create(ApiStores.class);
         public ApiStores apiStores1 = AppClient.retrofit(ConstantValues.SERVER_IP_NEW).create(ApiStores.class);
+        public ApiStores apiStores2 = AppClient.retrofit(ConstantValues.SERVER_PUSH).create(ApiStores.class);
         private CompositeSubscription mCompositeSubscription;
 
         @Override

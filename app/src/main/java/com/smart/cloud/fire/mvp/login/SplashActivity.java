@@ -62,6 +62,11 @@ public class SplashActivity extends MvpActivity<LoginPresenter> implements Login
     }
 
     @Override
+    public void bindAlias() {
+
+    }
+
+    @Override
     protected LoginPresenter createPresenter() {
         return new LoginPresenter(this);
     }

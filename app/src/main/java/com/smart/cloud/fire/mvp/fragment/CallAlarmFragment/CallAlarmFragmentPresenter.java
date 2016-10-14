@@ -16,7 +16,6 @@ import rx.functions.Func1;
  */
 public class CallAlarmFragmentPresenter extends BasePresenter<CallAlarmFragmentView> {
     private  Subscription mSubscription;
-
     public CallAlarmFragmentPresenter(CallAlarmFragmentView view){
         attachView(view);
     }
@@ -57,10 +56,12 @@ public class CallAlarmFragmentPresenter extends BasePresenter<CallAlarmFragmentV
     }
 
     public void stopCountDown(){
-        if(!mSubscription.isUnsubscribed()){
-            mSubscription.unsubscribe();
-            mSubscription=null;
-            mvpView.stopCountDown("已取消报警");
+        if(mSubscription!=null){
+            if(!mSubscription.isUnsubscribed()){
+                mSubscription.unsubscribe();
+                mSubscription=null;
+                mvpView.stopCountDown("已取消报警");
+            }
         }
     }
 }

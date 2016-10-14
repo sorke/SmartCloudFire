@@ -22,7 +22,6 @@ public class IfSetTag {
             PushManager.getInstance().initialize(activity.getApplicationContext().getApplicationContext());
             boolean resultB = PushManager.getInstance().bindAlias(
                     activity.getApplicationContext(), userid);
-//            T.showLong(activity.getApplicationContext(),resultB+"");
             if(resultB==false){
                 Intent setTagIntent = new Intent(activity.getApplicationContext(),SetTagService.class);
                 setTagIntent.putExtra("UserNum",userid);

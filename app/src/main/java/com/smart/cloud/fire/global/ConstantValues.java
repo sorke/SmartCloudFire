@@ -10,6 +10,7 @@ public class ConstantValues {
     //正式IP:
     public static final String SERVER_IP_NEW ="http://119.29.155.148:51090/fireSystem/";
 
+    public static final String SERVER_PUSH="http://119.29.155.148/GeTuiPush/";
     public static final String SERVER_YOOSEE_IP="http://api1.cloudlinks.cn/";
     public static final String[] fragmentStr ={"mAgencyMapFragment","mHomeFragment","mCategoryFragment","mMapFragment","mCollectFragment","mSettingFragment","mCallAlarmFragment"};
     public static final String PACKAGE_NAME = "com.smart.cloud.fire.utils.";

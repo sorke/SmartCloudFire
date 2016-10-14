@@ -31,23 +31,16 @@ public class SetTagService extends Service{
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
-        // TODO Auto-generated method stub
-        super.onStart(intent, startId);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        mContext = getApplicationContext();
         userNum = intent.getExtras().getString("UserNum");
         if(userNum!=null){
             mTimer = new Timer();
             setTimerdoAction(doActionHandler,mTimer);
         }
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
-    public void onCreate() {
-        // TODO Auto-generated method stub
-        super.onCreate();
-        mContext = getApplicationContext();
-
-    }
 
     private void setTimerdoAction(final Handler oj,Timer t) {
         t.schedule(new TimerTask() {

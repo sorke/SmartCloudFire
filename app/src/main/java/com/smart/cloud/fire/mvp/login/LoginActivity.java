@@ -22,6 +22,7 @@ import com.smart.cloud.fire.mvp.login.view.LoginView;
 import com.smart.cloud.fire.mvp.main.MainActivity;
 import com.smart.cloud.fire.mvp.register.RegisterPhoneActivity;
 import com.smart.cloud.fire.utils.IfSetTag;
+import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
 
 import java.util.concurrent.TimeUnit;
@@ -88,9 +89,11 @@ public class LoginActivity extends MvpActivity<LoginPresenter> implements LoginV
     @Override
     public void getDataSuccess() {
         new IfSetTag().ifSetTag(LoginActivity.this,userId);
-        Intent intent = new Intent(mContext, MainActivity.class);
-        startActivity(intent);
-        finish();
+        String cid = SharedPreferencesManager.getInstance().getData(mContext,
+                SharedPreferencesManager.SP_FILE_GWELL,
+                SharedPreferencesManager.CID);
+        String projectName = "scfire";
+        mvpPresenter.bindAlias(userId,cid,projectName);
     }
 
     @Override
@@ -114,6 +117,13 @@ public class LoginActivity extends MvpActivity<LoginPresenter> implements LoginV
 
     @Override
     public void autoLoginFail() {
+    }
+
+    @Override
+    public void bindAlias() {
+        Intent intent = new Intent(mContext, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

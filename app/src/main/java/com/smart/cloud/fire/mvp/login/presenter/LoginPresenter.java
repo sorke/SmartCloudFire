@@ -10,6 +10,7 @@ import com.smart.cloud.fire.global.Account;
 import com.smart.cloud.fire.global.AccountPersist;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.NpcCommon;
+import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
 import com.smart.cloud.fire.mvp.login.model.LoginModel;
 import com.smart.cloud.fire.mvp.login.view.LoginView;
 import com.smart.cloud.fire.rxjava.ApiCallback;
@@ -140,6 +141,30 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             mvpView.autoLogin(userId,userPwd);
         }else {
             mvpView.autoLoginFail();
+        }
+    }
+
+    public void bindAlias(String alias,String cid,String projectName){
+        if(cid!=null&cid.length()>0){
+            mvpView.showLoading();
+            addSubscription(apiStores2.bindAlias( alias,cid,projectName),new SubscriberCallBack<>(new ApiCallback<HttpError>() {
+                @Override
+                public void onSuccess(HttpError model) {
+                    mvpView.bindAlias();
+                }
+
+                @Override
+                public void onFailure(int code, String msg) {
+                    mvpView.bindAlias();
+                }
+
+                @Override
+                public void onCompleted() {
+                    mvpView.hideLoading();
+                }
+            }));
+        }else{
+            mvpView.bindAlias();
         }
     }
 }

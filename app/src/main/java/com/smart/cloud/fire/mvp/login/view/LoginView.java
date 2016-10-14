@@ -15,4 +15,6 @@ public interface LoginView {
     void autoLogin(String userId,String pwd);
 
     void autoLoginFail();
+
+    void bindAlias();
 }
