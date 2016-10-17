@@ -1,7 +1,12 @@
 package com.smart.cloud.fire.mvp.fragment.CallAlarmFragment;
 
 import com.smart.cloud.fire.base.presenter.BasePresenter;
+import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
+import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
+import com.smart.cloud.fire.rxjava.ApiCallback;
+import com.smart.cloud.fire.rxjava.SubscriberCallBack;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -20,7 +25,11 @@ public class CallAlarmFragmentPresenter extends BasePresenter<CallAlarmFragmentV
         attachView(view);
     }
 
-    public void countdown(int time){
+    public void countdown(int time,Smoke smoke){
+        if(smoke==null){
+            mvpView.getDataResult("网络错误，请检查网络是否通畅");
+            return;
+        }
         if (time < 0) time = 0;
         final int countTime = time;
         Observable<Integer> mObservable = Observable.interval(0, 1, TimeUnit.SECONDS)
@@ -63,5 +72,30 @@ public class CallAlarmFragmentPresenter extends BasePresenter<CallAlarmFragmentV
                 mvpView.stopCountDown("已取消报警");
             }
         }
+    }
+
+    public void getAllSmoke(String userId, String privilege){
+        Observable mObservable = apiStores1.getAllSmoke(userId,privilege,"");
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
+            @Override
+            public void onSuccess(HttpError model) {
+                if(model!=null){
+                    int errorCode = model.getErrorCode();
+                    if(errorCode==0){
+                        List<Smoke> smokes = model.getSmoke();
+                        mvpView.getDataSuccess(smokes);
+                    }else{
+                        mvpView.getDataResult("无数据");
+                    }
+                }
+            }
+            @Override
+            public void onFailure(int code, String msg) {
+                mvpView.getDataResult("网络错误");
+            }
+            @Override
+            public void onCompleted() {
+            }
+        }));
     }
 }
