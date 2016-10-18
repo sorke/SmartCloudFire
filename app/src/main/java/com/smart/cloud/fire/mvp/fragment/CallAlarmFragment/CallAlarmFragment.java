@@ -206,7 +206,7 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
                 }else {
                     iv.setImageResource(R.drawable.bj_qh_b);
                 }
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(20, 20));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(15, 15));
                 lp.leftMargin = 5;
                 lp.rightMargin = 5;
                 viewGroup.addView(iv,lp);
