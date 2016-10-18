@@ -81,6 +81,7 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
         switch (view.getId()) {
             case R.id.cancel_alarm:
                 mvpPresenter.stopCountDown();
+
                 break;
             default:
                 break;
