@@ -7,12 +7,24 @@
     
     <!-- title bar -->
     <include android:id="@+id/title_include" layout="@layout/title_bar"/>
-    <com.smart.cloud.fire.view.TopIndicator
-        android:id="@+id/top_indicator"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        >
-    </com.smart.cloud.fire.view.TopIndicator>
+        android:layout_height="42dp">
+        <com.smart.cloud.fire.view.TopIndicator
+            android:id="@+id/top_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <TextView
+            android:id="@+id/lost_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
     <include android:id="@+id/search_include" layout="@layout/include_search"/>
     <RelativeLayout
         android:layout_width="match_parent"

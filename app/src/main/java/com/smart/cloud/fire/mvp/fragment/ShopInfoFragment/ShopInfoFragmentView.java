@@ -33,4 +33,6 @@ public interface ShopInfoFragmentView {
     void getAreaType(ArrayList<Object> shopTypes);
 
     void getAreaTypeFail(String msg);
+
+    void unSubscribe(String type);
 }

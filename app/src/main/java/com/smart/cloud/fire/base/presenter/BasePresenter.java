@@ -42,6 +42,7 @@ public class BasePresenter<V> implements Presenter<V> {
         public void onUnsubscribe() {
             if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
                 mCompositeSubscription.unsubscribe();
+                mCompositeSubscription=null;
             }
         }
 

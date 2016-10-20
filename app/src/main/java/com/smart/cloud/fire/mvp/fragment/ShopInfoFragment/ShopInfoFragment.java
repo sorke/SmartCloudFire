@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.smart.cloud.fire.adapter.ShopInfoCameraAdapter;
 import com.smart.cloud.fire.adapter.ShopInfoFragmentAdapter;
@@ -27,8 +28,10 @@ import com.smart.cloud.fire.utils.T;
 import com.smart.cloud.fire.utils.Utils;
 import com.smart.cloud.fire.view.TopIndicator;
 import com.smart.cloud.fire.view.XCDropDownListViewMapSearch;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -54,14 +57,16 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     ImageView addFire;
     @Bind(R.id.search_fire)
     ImageView searchFire;
+    @Bind(R.id.lost_count)
+    TextView lostCount;
     private Context mContext;
     private ShopInfoFragmentPresenter mShopInfoFragmentPresenter;
     private String userID;
     private int privilege;
     private String page;
     private ShopInfoFragmentAdapter shopInfoFragmentAdapter;
-    private boolean research=false;
-    private int devType=0;
+    private boolean research = false;
+    private int devType = 0;
     private List<Smoke> list;
     private List<Camera> mCameraList;
     private ShopInfoCameraAdapter mShopInfoCameraAdapter;
@@ -86,10 +91,10 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 SharedPreferencesManager.SP_FILE_GWELL,
                 SharedPreferencesManager.KEY_RECENTNAME);
         privilege = MyApp.app.getPrivilege();
-        page="1";
+        page = "1";
         list = new ArrayList<>();
         mCameraList = new ArrayList<>();
-        mvpPresenter.getAllSmoke(userID,privilege+"",page,list,1);
+        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
         topIndicator.setOnTopIndicatorListener(this);
         refreshlistview();
         addFire.setVisibility(View.VISIBLE);
@@ -141,21 +146,21 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         }
     };
 
-    @OnClick({R.id.add_fire,R.id.area_condition,R.id.shop_type_condition,R.id.search_fire})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.add_fire, R.id.area_condition, R.id.shop_type_condition, R.id.search_fire})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.add_fire:
-                if(visibility){
-                    visibility=false;
+                if (visibility) {
+                    visibility = false;
                     lin1.setVisibility(View.GONE);
-                    if(areaCondition.ifShow()){
+                    if (areaCondition.ifShow()) {
                         areaCondition.closePopWindow();
                     }
-                    if(shopTypeCondition.ifShow()){
+                    if (shopTypeCondition.ifShow()) {
                         shopTypeCondition.closePopWindow();
                     }
-                }else{
-                    visibility=true;
+                } else {
+                    visibility = true;
                     areaCondition.setEditText("");
                     shopTypeCondition.setEditText("");
                     areaCondition.setEditTextHint("区域");
@@ -164,56 +169,56 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 }
                 break;
             case R.id.area_condition:
-                if(areaCondition.ifShow()){
+                if (areaCondition.ifShow()) {
                     areaCondition.closePopWindow();
-                }else{
-                    mvpPresenter.getPlaceTypeId(userID,privilege+"",2);
+                } else {
+                    mvpPresenter.getPlaceTypeId(userID, privilege + "", 2);
                     areaCondition.setClickable(false);
                     areaCondition.showLoading();
                 }
                 break;
             case R.id.shop_type_condition:
-                if(shopTypeCondition.ifShow()){
+                if (shopTypeCondition.ifShow()) {
                     shopTypeCondition.closePopWindow();
-                }else{
-                    mvpPresenter.getPlaceTypeId(userID,privilege+"",1);
+                } else {
+                    mvpPresenter.getPlaceTypeId(userID, privilege + "", 1);
                     shopTypeCondition.setClickable(false);
                     shopTypeCondition.showLoading();
                 }
                 break;
             case R.id.search_fire:
-                if(!Utils.isNetworkAvailable(getActivity())){
+                if (!Utils.isNetworkAvailable(getActivity())) {
                     return;
                 }
-                if(shopTypeCondition.ifShow()){
+                if (shopTypeCondition.ifShow()) {
                     shopTypeCondition.closePopWindow();
                 }
-                if(areaCondition.ifShow()){
+                if (areaCondition.ifShow()) {
                     areaCondition.closePopWindow();
                 }
-                if ((mShopType!=null&&mShopType.getPlaceTypeId() != null) || (mArea!=null&&mArea.getAreaId() != null)) {
+                if ((mShopType != null && mShopType.getPlaceTypeId() != null) || (mArea != null && mArea.getAreaId() != null)) {
                     lin1.setVisibility(View.GONE);
                     searchFire.setVisibility(View.GONE);
                     addFire.setVisibility(View.VISIBLE);
                     areaCondition.searchClose();
                     shopTypeCondition.searchClose();
-                    visibility=false;
-                    if(mArea!=null&&mArea.getAreaId()!=null){
-                        areaId= mArea.getAreaId();
-                    }else{
-                        areaId="";
+                    visibility = false;
+                    if (mArea != null && mArea.getAreaId() != null) {
+                        areaId = mArea.getAreaId();
+                    } else {
+                        areaId = "";
                     }
-                    if(mShopType!=null&&mShopType.getPlaceTypeId()!=null){
-                        shopTypeId=mShopType.getPlaceTypeId();
-                    }else{
-                        shopTypeId="";
+                    if (mShopType != null && mShopType.getPlaceTypeId() != null) {
+                        shopTypeId = mShopType.getPlaceTypeId();
+                    } else {
+                        shopTypeId = "";
                     }
-                    research=true;
-                    page="1";
-                    mvpPresenter.getNeedSmoke(userID,privilege+"",areaId,shopTypeId,devType);
-                    mShopType=null;
-                    mArea=null;
-                }else{
+                    research = true;
+                    page = "1";
+                    mvpPresenter.getNeedSmoke(userID, privilege + "", areaId, shopTypeId, devType);
+                    mShopType = null;
+                    mArea = null;
+                } else {
                     lin1.setVisibility(View.GONE);
                     return;
                 }
@@ -223,23 +228,23 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         }
     }
 
-    private void refreshlistview(){
+    private void refreshlistview() {
         refreshlistview.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onDownPullRefresh() {
                 research = false;
                 page = "1";
-                switch (devType){
+                switch (devType) {
                     case 0:
                         list.clear();
-                        mvpPresenter.getAllSmoke(userID,privilege+"",page,list,1);
+                        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
                         break;
                     case 1:
                         mCameraList.clear();
-                        mvpPresenter.getAllCamera(userID,privilege+"",page,mCameraList);
+                        mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList);
                         break;
                     case 2:
-                        mvpPresenter.getAllSmoke(userID,privilege+"","",list,2);
+                        mvpPresenter.getAllSmoke(userID, privilege + "", "", list, 2);
                         break;
                     default:
                         break;
@@ -248,21 +253,21 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
             @Override
             public void onLoadingMore() {
-                if(research){
+                if (research) {
                     refreshlistview.hideFooterView();
                     return;
                 }
-                page = Integer.parseInt(page)+1+"";
-                switch (devType){
+                page = Integer.parseInt(page) + 1 + "";
+                switch (devType) {
                     case 0:
-                        mvpPresenter.getAllSmoke(userID,privilege+"",page,list,1);
+                        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
                         break;
                     case 1:
-                        if(mCameraList.size()<20){
+                        if (mCameraList.size() < 20) {
                             refreshlistview.hideFooterView();
                             return;
                         }
-                        mvpPresenter.getAllCamera(userID,privilege+"",page,mCameraList);
+                        mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList);
                         break;
                     case 2:
                         refreshlistview.hideFooterView();
@@ -290,24 +295,14 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         topIndicator.setTabsDisplay(mContext, index);
         switch (index) {
             case 0:
-                research = false;
-                page="1";
-                devType=0;
-                list.clear();
-                mvpPresenter.getAllSmoke(userID,privilege+"",page,list,1);
+                mvpPresenter.unsubscribe("allSmoke");
                 break;
             case 1:
-                research = false;
-                page="1";
-                devType=1;
-                mCameraList.clear();
-                mvpPresenter.getAllCamera(userID,privilege+"",page,mCameraList);
+                mvpPresenter.unsubscribe("allCamera");
+
                 break;
             case 2:
-                research = false;
-                page="1";
-                devType=2;
-                mvpPresenter.getAllSmoke(userID,privilege+"","",list,2);
+                mvpPresenter.unsubscribe("lostSmoke");
                 break;
             default:
                 break;
@@ -330,14 +325,15 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     public void getDataSuccess(List<Smoke> smokeList) {
         list.clear();
         list.addAll(smokeList);
-        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext,list,mShopInfoFragmentPresenter);
+        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext, list, mShopInfoFragmentPresenter);
         refreshlistview.setAdapter(shopInfoFragmentAdapter);
         refreshlistview.hideHeaderView();
     }
 
     @Override
     public void getDataFail(String msg) {
-        T.showShort(mContext,msg);
+        T.showShort(mContext, msg);
+        lostCount.setText("");
         refreshlistview.hideHeaderView();
         refreshlistview.hideFooterView();
     }
@@ -361,7 +357,9 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getOffLineData(List<Smoke> smokeList) {
-        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext,smokeList,mShopInfoFragmentPresenter);
+        int count = smokeList.size();
+        lostCount.setText(count+"");
+        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext, smokeList, mShopInfoFragmentPresenter);
         refreshlistview.setAdapter(shopInfoFragmentAdapter);
         refreshlistview.hideHeaderView();
     }
@@ -370,7 +368,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     public void getAllCamera(List<Camera> cameraList) {
         mCameraList.clear();
         mCameraList.addAll(cameraList);
-        mShopInfoCameraAdapter = new ShopInfoCameraAdapter(mContext,mCameraList,mShopInfoFragmentPresenter);
+        mShopInfoCameraAdapter = new ShopInfoCameraAdapter(mContext, mCameraList, mShopInfoFragmentPresenter);
         refreshlistview.setAdapter(mShopInfoCameraAdapter);
         refreshlistview.hideHeaderView();
     }
@@ -410,5 +408,35 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         T.showShort(mContext, msg);
         areaCondition.setClickable(true);
         areaCondition.closeLoading();
+    }
+
+    @Override
+    public void unSubscribe(String type) {
+        switch (type){
+            case "allSmoke":
+                lostCount.setText("");
+                research = false;
+                page = "1";
+                devType = 0;
+                list.clear();
+                mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
+                break;
+            case "allCamera":
+                lostCount.setText("");
+                research = false;
+                page = "1";
+                devType = 1;
+                mCameraList.clear();
+                mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList);
+                break;
+            case "lostSmoke":
+                research = false;
+                page = "1";
+                devType = 2;
+                mvpPresenter.getAllSmoke(userID, privilege + "", "", list, 2);
+                break;
+            default:
+                break;
+        }
     }
 }

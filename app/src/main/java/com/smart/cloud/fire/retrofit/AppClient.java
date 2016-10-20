@@ -15,6 +15,7 @@ public class AppClient {
     private static final int DEFAULT_TIMEOUT = 5;
     public static Retrofit mRetrofit;
 
+
     public static Retrofit retrofit(String url) {
         if(mRetrofit!=null){
             mRetrofit=null;

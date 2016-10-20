@@ -48,6 +48,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                         if(mSmokeList.size()>0){
                             mvpView.getOffLineData(mSmokeList);
                         }else{
+                            mvpView.getOffLineData(mSmokeList);
                             mvpView.getDataFail("无数据");
                         }
                     }
@@ -58,6 +59,10 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
 
             @Override
             public void onFailure(int code, String msg) {
+                if(type!=1){
+                    List<Smoke> mSmokeList = new ArrayList<>();
+                    mvpView.getOffLineData(mSmokeList);
+                }
                 mvpView.getDataFail("网络错误");
             }
 
@@ -83,12 +88,16 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                         mvpView.getCameraOnLoadingMore(cameraList);
                     }
                 }else{
+                    List<Camera> cameraList = new ArrayList<>();
+                    mvpView.getAllCamera(cameraList);
                     mvpView.getDataFail("无数据");
                 }
             }
 
             @Override
             public void onFailure(int code, String msg) {
+                List<Camera> cameraList = new ArrayList<>();
+                mvpView.getAllCamera(cameraList);
                 mvpView.getDataFail("网络错误");
             }
 
@@ -186,5 +195,11 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 mvpView.hideLoading();
             }
         }));
+    }
+
+    public void unsubscribe(String type){
+        mvpView.hideLoading();
+        onUnsubscribe();
+        mvpView.unSubscribe(type);
     }
 }

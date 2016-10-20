@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="取消报警"
-            android:textColor="#ffffff"
+            android:textColor="#ffdbbf"
             android:textSize="16sp"
             android:layout_centerVertical="true"
             />

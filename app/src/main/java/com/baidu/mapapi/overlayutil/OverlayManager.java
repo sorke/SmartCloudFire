@@ -61,13 +61,11 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
         if (mBaiduMap == null) {
             return;
         }
-
         removeFromMap();
         List<OverlayOptions> overlayOptions = getOverlayOptions();
         if (overlayOptions != null) {
             mOverlayOptionList.addAll(getOverlayOptions());
         }
-
         for (OverlayOptions option : mOverlayOptionList) {
             mOverlayList.add(mBaiduMap.addOverlay(option));
         }
