@@ -32,6 +32,7 @@ import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.mvp.login.SplashActivity;
 import com.smart.cloud.fire.mvp.main.presenter.MainPresenter;
 import com.smart.cloud.fire.mvp.main.view.MainView;
+import com.smart.cloud.fire.service.RemoteService;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.view.MyRadioButton;
 import com.smart.cloud.fire.yoosee.P2PListener;
@@ -77,6 +78,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         mContext = this;
         initView();
         regFilter();
+        startService(new Intent(MainActivity.this, RemoteService.class));
     }
 
     private void initView() {
