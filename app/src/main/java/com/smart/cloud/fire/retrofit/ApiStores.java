@@ -123,4 +123,14 @@ public interface ApiStores {
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     Observable<HttpError> bindAlias(@Query("alias") String alias, @Query("cid") String cid,@Query("projectName") String projectName);
 
+    //一键报警
+    @GET("textAlarm")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<HttpError> textAlarm(@Query("userId") String userId, @Query("privilege") String privilege,
+                                    @Query("smokeMac") String smokeMac,@Query("info") String info);
+
+    //一键报警确认回复
+    @GET("textAlarmAck")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<HttpError> textAlarmAck(@Query("userId") String userId, @Query("alarmSerialNumber") String alarmSerialNumber);
 }

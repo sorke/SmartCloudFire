@@ -160,6 +160,10 @@
             android:name="com.smart.cloud.fire.mvp.Alarm.AlarmActivity"
             android:label="@string/title_activity_bndemo_guide"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.smart.cloud.fire.mvp.Alarm.UserAlarmActivity"
+            android:label="@string/title_activity_bndemo_guide"
+            android:theme="@style/AppTheme" />
         <service
             android:name="com.smart.cloud.fire.service.DaemonService"
             android:process="com.example.maat.daemon"/>

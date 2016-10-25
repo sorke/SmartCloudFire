@@ -95,6 +95,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mTransaction.replace(R.id.main_content, mMapFragment, "mAgencyMapFragment").commit();
                 break;
             case ConstantValues.Privilege.AGENCY_MAN:
+            case ConstantValues.Privilege.POLICEMAEN:
                 RelativeLayout.LayoutParams linearParams2 =(RelativeLayout.LayoutParams) radioGroup.getLayoutParams(); //取控件textView当前的布局参数
                 linearParams2.height = 85;// 控件的高强制设成20
                 radioGroup.setLayoutParams(linearParams2);
@@ -126,6 +127,7 @@ public class MainPresenter extends BasePresenter<MainView> {
                 mTransaction = manager.beginTransaction();
                 mTransaction.replace(R.id.main_content, mMapFragment, "mMapFragment").commit();
                 break;
+
             default:
                 break;
         }

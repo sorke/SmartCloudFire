@@ -4,14 +4,14 @@ package com.smart.cloud.fire.global;
  * Created by Administrator on 2016/7/27.
  */
 public class ConstantValues {
-    //public static final String SERVER_IP_NEW ="http://192.168.4.111:51090/fireSystem/";
+    public static final String SERVER_IP_NEW ="http://192.168.4.111:51091/fireSystem/";
     //测试IP:
-    //public static final String SERVER_IP_NEW ="http://119.29.155.148:51090/fireSystem/";
+    //public static final String SERVER_IP_NEW ="http://119.29.224.28:51091/fireSystem/";
     //正式IP:
-    public static final String SERVER_IP_NEW ="http://119.29.155.148:51091/fireSystem/";
+    //public static final String SERVER_IP_NEW ="http://119.29.155.148:51091/fireSystem/";
 
-    public static final String SERVER_PUSH="http://119.29.155.148/GeTuiPush/";
-    public static final String SERVER_YOOSEE_IP="http://api1.cloudlinks.cn/";
+    public static final String SERVER_PUSH ="http://119.29.155.148/GeTuiPush/";
+    public static final String SERVER_YOOSEE_IP ="http://api1.cloudlinks.cn/";
     public static final String[] fragmentStr ={"mAgencyMapFragment","mHomeFragment","mCategoryFragment","mMapFragment","mCollectFragment","mSettingFragment","mCallAlarmFragment"};
     public static final String PACKAGE_NAME = "com.smart.cloud.fire.utils.";
     public static final String FORGET_PASSWORD_URL = "http://cloudlinks.cn/pw/";
@@ -23,6 +23,7 @@ public class ConstantValues {
         public static final int NORMAL_MAN = 1;
         public static final int AGENCY_MAN = 2;
         public static final int ADMINISTATOR = 3;
+        public static final int POLICEMAEN = 5;
     }
 
     public static class Update{

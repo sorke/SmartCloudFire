@@ -25,7 +25,7 @@ public class CallAlarmFragmentPresenter extends BasePresenter<CallAlarmFragmentV
         attachView(view);
     }
 
-    public void countdown(int time,Smoke smoke){
+    public void countdown(int time, final Smoke smoke, final String userId, final String privilege, final String info){
         if(smoke==null){
             mvpView.getDataResult("网络错误，请检查网络是否通畅");
             return;
@@ -51,7 +51,7 @@ public class CallAlarmFragmentPresenter extends BasePresenter<CallAlarmFragmentV
                 .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onCompleted() {
-                        mvpView.sendAlarmMessage("已发送报警消息");
+                        textAlarm(userId,privilege,smoke.getMac(),info);
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -72,6 +72,26 @@ public class CallAlarmFragmentPresenter extends BasePresenter<CallAlarmFragmentV
                 mvpView.stopCountDown("已取消报警");
             }
         }
+    }
+
+    private void textAlarm( String userId,String privilege, String smokeMac,String info){
+        Observable mObservable = apiStores1.textAlarm(userId,privilege,smokeMac,info);
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
+            @Override
+            public void onSuccess(HttpError model) {
+                mvpView.sendAlarmMessage("已发送报警消息");
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                mvpView.sendAlarmMessage("发送报警消息失败，请检查网络");
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        }));
     }
 
     public void getAllSmoke(String userId, String privilege){

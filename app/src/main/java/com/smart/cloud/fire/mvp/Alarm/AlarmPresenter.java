@@ -3,10 +3,16 @@ package com.smart.cloud.fire.mvp.Alarm;
 import android.content.Context;
 
 import com.smart.cloud.fire.base.presenter.BasePresenter;
+import com.smart.cloud.fire.global.MyApp;
+import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
+import com.smart.cloud.fire.rxjava.ApiCallback;
 import com.smart.cloud.fire.rxjava.RxTimeCount;
+import com.smart.cloud.fire.rxjava.SubscriberCallBack;
 import com.smart.cloud.fire.utils.MusicManger;
+import com.smart.cloud.fire.utils.T;
 import com.smart.cloud.fire.utils.Utils;
 
+import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action0;
 
@@ -55,6 +61,26 @@ public class AlarmPresenter extends BasePresenter<AlarmView>{
                 MusicManger.getInstance().stopVibrate();
             }
         }.start();
+    }
+
+    public void disposeAlarm(String userId,String alarmSerialNumber){
+        Observable mObservable = apiStores1.textAlarmAck(userId,alarmSerialNumber);
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
+            @Override
+            public void onSuccess(HttpError model) {
+                T.showShort(MyApp.app,"已处理");
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        }));
     }
 
     public void startMusic(){
