@@ -30,8 +30,8 @@ public class AppClient {
                 //设置 Debug Log 模式
                 builder.addInterceptor(loggingInterceptor);
             }
-            OkHttpClient okHttpClient = builder.build();
             builder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+            OkHttpClient okHttpClient = builder.build();
             mRetrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(ArbitraryResponseBodyConverterFactory.create())
