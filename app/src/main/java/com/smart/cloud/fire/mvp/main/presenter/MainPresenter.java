@@ -7,9 +7,9 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.smart.cloud.fire.base.presenter.BasePresenter;
 import com.smart.cloud.fire.base.ui.BaseFragment;
@@ -55,18 +55,9 @@ public class MainPresenter extends BasePresenter<MainView> {
         otherFrameLayout.setVisibility(View.INVISIBLE);
         switch (privilege){
             case ConstantValues.Privilege.NORMAL_MAN:
-//                for(int i=0;i<5;i++){
-//                    if(i==2){
-//                        continue;
-//                    }
-//                    myRadioButton.get(i).setVisibility(View.GONE);
-//                }
-//                clickNumBefore=3;
-//                mMapFragment = new MapFragment();
-//                mTransaction = manager.beginTransaction();
-//                mTransaction.replace(R.id.main_content, mMapFragment, "mMapFragment").commit();
-                RelativeLayout.LayoutParams linearParams1 =(RelativeLayout.LayoutParams) radioGroup.getLayoutParams(); //取控件textView当前的布局参数
-                linearParams1.height = 85;// 控件的高强制设成20
+                LinearLayout.LayoutParams linearParams1 =(LinearLayout.LayoutParams) radioGroup.getLayoutParams(); //取控件textView当前的布局参数
+                int h = linearParams1.height;
+                linearParams1.height = h/2+15;// 控件的高强制设成20
                 radioGroup.setLayoutParams(linearParams1);
                 for(int i=0;i<5;i++){
                     RadioButton mRadioButton = myRadioButton.get(i);
@@ -96,8 +87,9 @@ public class MainPresenter extends BasePresenter<MainView> {
                 break;
             case ConstantValues.Privilege.AGENCY_MAN:
             case ConstantValues.Privilege.POLICEMAEN:
-                RelativeLayout.LayoutParams linearParams2 =(RelativeLayout.LayoutParams) radioGroup.getLayoutParams(); //取控件textView当前的布局参数
-                linearParams2.height = 85;// 控件的高强制设成20
+                LinearLayout.LayoutParams linearParams2 =(LinearLayout.LayoutParams) radioGroup.getLayoutParams(); //取控件textView当前的布局参数
+                int h1 = linearParams2.height;
+                linearParams2.height = h1/2+15;// 控件的高强制设成20
                 radioGroup.setLayoutParams(linearParams2);
                 for(int i=0;i<5;i++){
                     RadioButton mRadioButton = myRadioButton.get(i);

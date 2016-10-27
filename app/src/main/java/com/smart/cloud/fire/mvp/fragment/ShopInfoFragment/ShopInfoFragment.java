@@ -326,6 +326,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         list.clear();
         list.addAll(smokeList);
         shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext, list, mShopInfoFragmentPresenter);
+//        mShopInfoCameraAdapter.notifyDataSetChanged();
         refreshlistview.setAdapter(shopInfoFragmentAdapter);
         refreshlistview.hideHeaderView();
     }

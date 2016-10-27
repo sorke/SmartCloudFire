@@ -82,7 +82,7 @@ public class UserAlarmActivity extends MvpActivity<AlarmPresenter> implements Al
         userID = SharedPreferencesManager.getInstance().getData(mContext,
                 SharedPreferencesManager.SP_FILE_GWELL,
                 SharedPreferencesManager.KEY_RECENTNAME);
-        getUserAlarm = (GetUserAlarm) getIntent().getExtras().getSerializable("getUserAlarm");
+        getUserAlarm = (GetUserAlarm) getIntent().getExtras().getSerializable("mPushAlarmMsg");
         init();
         regFilter();
     }
@@ -146,6 +146,11 @@ public class UserAlarmActivity extends MvpActivity<AlarmPresenter> implements Al
                 break;
         }
 
+    }
+
+    @Override
+    public void finishRequest() {
+        cancelAlarm.setVisibility(View.GONE);
     }
 
     @Override

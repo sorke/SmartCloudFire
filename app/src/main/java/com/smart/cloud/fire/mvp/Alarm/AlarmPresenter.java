@@ -68,6 +68,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView>{
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
             @Override
             public void onSuccess(HttpError model) {
+                mvpView.finishRequest();
                 T.showShort(MyApp.app,"已处理");
             }
 
@@ -94,5 +95,7 @@ public class AlarmPresenter extends BasePresenter<AlarmView>{
     public void telPhone(Context mContext,String phoneNum){
        telPhoneAction(mContext,phoneNum);
     }
+
+
 
 }

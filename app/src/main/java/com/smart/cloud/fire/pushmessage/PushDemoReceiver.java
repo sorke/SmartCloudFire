@@ -25,6 +25,7 @@ import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import fire.cloud.smart.com.smartcloudfire.R;
@@ -74,7 +75,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
                                     message="烟感电量低，请更换电池";
                                 }
                                 Random random1 = new Random();
-                                showDownNotification(context,message,mPushAlarmMsg,random1.nextInt());
+                                showDownNotification(context,message,mPushAlarmMsg,random1.nextInt(),AlarmActivity.class);
                                 Intent intent1 = new Intent(context, AlarmActivity.class);
                                 intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent1.putExtra("mPushAlarmMsg",mPushAlarmMsg);
@@ -91,9 +92,12 @@ public class PushDemoReceiver extends BroadcastReceiver {
                                 getUserAlarm.setLatitude(dataJson.getString("latitude"));
                                 getUserAlarm.setLongitude(dataJson.getString("longitude"));
                                 getUserAlarm.setSmoke(dataJson.getString("smoke"));
+                                getUserAlarm.setCallerName(dataJson.getString("callerName"));
+                                Random random3 = new Random();
+                                showDownNotification(context,"您收到一条紧急报警消息",getUserAlarm,random3.nextInt(),UserAlarmActivity.class);
                                 Intent intent3 = new Intent(context, UserAlarmActivity.class);
                                 intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent3.putExtra("getUserAlarm",getUserAlarm);
+                                intent3.putExtra("mPushAlarmMsg",getUserAlarm);
                                 context.startActivity(intent3);
                                 break;
                             case 4://报警回复
@@ -101,8 +105,9 @@ public class PushDemoReceiver extends BroadcastReceiver {
                                 disposeAlarm.setAlarmType(alarmType);
                                 disposeAlarm.setPolice(dataJson.getString("police"));
                                 disposeAlarm.setTime(dataJson.getString("time"));
+                                disposeAlarm.setPoliceName(dataJson.getString("policeName"));
                                 Random random4 = new Random();
-                                showDownNotification(context,disposeAlarm.getPolice()+"已处理",null,random4.nextInt());
+                                showDownNotification(context,disposeAlarm.getPoliceName()+"警员已处理您的消息",null,random4.nextInt(),null);
                                 break;
                             default:
                                 break;
@@ -128,30 +133,31 @@ public class PushDemoReceiver extends BroadcastReceiver {
     }
 
     @SuppressWarnings("deprecation")
-    private void showDownNotification(Context context,String message,PushAlarmMsg mPushAlarmMsg,int id){
+    private void showDownNotification(Context context, String message, Serializable mPushAlarmMsg, int id, Class clazz){
         NotificationCompat.Builder m_builder = new NotificationCompat.Builder(context);
         m_builder.setContentTitle(message); // 主标题
 
         //从系统服务中获得通知管理器
         NotificationManager nm=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //通知消息与Intent关联
-        Intent it=new Intent(context,AlarmActivity.class);
-        it.putExtra("mPushAlarmMsg",mPushAlarmMsg);
-        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent contentIntent=PendingIntent.getActivity(context, id, it, PendingIntent.FLAG_CANCEL_CURRENT);
         //具体的通知内容
 
         Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher); // 将PNG图片转
         m_builder.setLargeIcon(icon);
-        m_builder.setContentText("点击查看详情"); //设置主要内容
+
         m_builder.setSmallIcon(R.mipmap.ic_launcher); //设置小图标
         m_builder.setWhen(System.currentTimeMillis());
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);//设置提示音
-        m_builder.setSound(uri);
-
         m_builder.setAutoCancel(true);
-        m_builder.setContentIntent(contentIntent);
+        if(clazz!=null){
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);//设置提示音
+            m_builder.setSound(uri);
+            m_builder.setContentText("点击查看详情"); //设置主要内容
+            //通知消息与Intent关联
+            Intent it=new Intent(context,clazz);
+            it.putExtra("mPushAlarmMsg",mPushAlarmMsg);
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent contentIntent=PendingIntent.getActivity(context, id, it, PendingIntent.FLAG_CANCEL_CURRENT);
+            m_builder.setContentIntent(contentIntent);
+        }
         //执行通知
         nm.notify(id, m_builder.build());
     }

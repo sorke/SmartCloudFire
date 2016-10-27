@@ -14,6 +14,7 @@ public class DisposeAlarm {
     private int alarmType;
     private String police;
     private String time;
+    private String policeName;
 
     public int getAlarmType() {
         return alarmType;
@@ -37,5 +38,13 @@ public class DisposeAlarm {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getPoliceName() {
+        return policeName;
+    }
+
+    public void setPoliceName(String policeName) {
+        this.policeName = policeName;
     }
 }
