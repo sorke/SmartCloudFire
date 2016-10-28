@@ -62,6 +62,9 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
 
     public void getOneSmoke(String userId,String privilege,String smokeMac){
         mvpView.showLoading();
+        if(smokeMac.startsWith("R")){
+            smokeMac = smokeMac.replace("R","");
+        }
         if(smokeMac!=null&&smokeMac.length()>0){
             Observable mObservable = apiStores1.getOneSmoke(userId,smokeMac,privilege);
             addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ConfireFireModel>() {
@@ -69,7 +72,7 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
                 public void onSuccess(ConfireFireModel model) {
                     int errorResult = model.getErrorCode();
                     if(errorResult==0){
-                            mvpView.getDataSuccess(model.getSmoke());
+                        mvpView.getDataSuccess(model.getSmoke());
                     }
                 }
 
@@ -139,13 +142,20 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
             return;
         }
         if(smokeMac.length()==0){
-            mvpView.addSmokeResult("请填写烟感MAC",1);
+            mvpView.addSmokeResult("请填写探测器MAC",1);
             return;
+        }
+        String deviceType;
+        if(smokeMac.startsWith("R")){
+            smokeMac = smokeMac.replace("R","");
+            deviceType="2";
+        }else{
+            deviceType="1";
         }
         mvpView.showLoading();
         Observable mObservable = apiStores1.addSmoke(userID,smokeName,privilege,smokeMac,address,
                 longitude,latitude,placeAddress,placeTypeId,principal1,principal1Phone,principal2,
-                principal2Phone,areaId,repeater,camera);
+                principal2Phone,areaId,repeater,camera,deviceType);
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ConfireFireModel>() {
             @Override
             public void onSuccess(ConfireFireModel model) {

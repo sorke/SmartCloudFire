@@ -314,7 +314,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
             mShopType = null;
             mArea = null;
             clearText();
-            areaId = "";
+//            areaId = "";
             shopTypeId = "";
             camera = "";
             addFireMac.setText("");
@@ -348,7 +348,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         addFireManPhone.setText("");
         addFireManTwo.setText("");
         addFireManPhoneTwo.setText("");
-        addFireZjq.setEditTextData("");
+//        addFireZjq.setEditTextData("");
         addFireType.setEditTextData("");
         addCameraName.setText("");
     }

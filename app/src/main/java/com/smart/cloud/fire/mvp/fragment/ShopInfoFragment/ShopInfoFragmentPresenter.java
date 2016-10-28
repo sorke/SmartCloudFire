@@ -22,8 +22,10 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
         attachView(view);
     }
 
-    public void getAllSmoke(String userId, String privilege, String page, final List<Smoke> list, final int type){
-        mvpView.showLoading();
+    public void getAllSmoke(String userId, String privilege, String page, final List<Smoke> list, final int type,boolean refresh){
+        if(!refresh){
+            mvpView.showLoading();
+        }
         Observable mObservable = apiStores1.getAllSmoke(userId,privilege,page);
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
             @Override
@@ -73,8 +75,10 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
         }));
     }
 
-    public void getAllCamera(String userId, String privilege, String page, final List<Camera> list){
-        mvpView.showLoading();
+    public void getAllCamera(String userId, String privilege, String page, final List<Camera> list,boolean refresh){
+        if(!refresh){
+            mvpView.showLoading();
+        }
         Observable mObservable = apiStores1.getAllCamera(userId,privilege,page);
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
             @Override
@@ -145,10 +149,48 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
             }
             @Override
             public void onFailure(int code, String msg) {
-                mvpView.getAreaTypeFail("网络错误");
+                if(type==1){
+                    mvpView.getShopTypeFail("网络错误");
+                }else{
+                    mvpView.getAreaTypeFail("网络错误");
+                }
             }
             @Override
             public void onCompleted() {
+            }
+        }));
+    }
+
+    public void getNeedLossSmoke(String userId, String privilege, String areaId, String placeTypeId, final String page,boolean refresh){
+        if(!refresh){
+            mvpView.showLoading();
+        }
+        Observable mObservable = apiStores1.getNeedLossSmoke(userId,privilege,areaId,page,placeTypeId);
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
+            @Override
+            public void onSuccess(HttpError model) {
+                int result=model.getErrorCode();
+                if(result==0){
+                    List<Smoke> smokeList = model.getSmoke();
+                    if(smokeList.size()>0){
+                        mvpView.getOffLineData(smokeList);
+                    }
+                }else{
+                    List<Smoke> mSmokeList = new ArrayList<>();
+                    mvpView.getOffLineData(mSmokeList);
+                    mvpView.getDataFail("无数据");
+                }
+
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                mvpView.getDataFail("网络错误");
+            }
+
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
             }
         }));
     }

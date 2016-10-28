@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="烟感"/>
+                    android:text="探测器"/>
                 <EditText
                     android:id="@+id/add_fire_mac"
                     android:layout_width="match_parent"

@@ -6,7 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +24,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.smart.cloud.fire.adapter.CollectFragmentAdapter;
 import com.smart.cloud.fire.adapter.DateNumericAdapter;
+import com.smart.cloud.fire.adapter.RefreshRecyclerAdapter;
 import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
-import com.smart.cloud.fire.refreshlistview.OnRefreshListener;
-import com.smart.cloud.fire.refreshlistview.RefreshListView;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
 import com.smart.cloud.fire.utils.Utils;
@@ -53,8 +56,6 @@ import fire.cloud.smart.com.smartcloudfire.R;
 public class CollectFragment extends MvpFragment<CollectFragmentPresenter> implements CollectFragmentView, View.OnFocusChangeListener {
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
-    @Bind(R.id.msg_refresh_list_view)
-    RefreshListView msgRefreshListView;
     @Bind(R.id.add_fire)
     ImageView addFire;
     @Bind(R.id.start_time)
@@ -93,11 +94,18 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     RelativeLayout deleteEndTimeRela;
     @Bind(R.id.type_lin)
     LinearLayout typeLin;
+    @Bind(R.id.demo_recycler)
+    RecyclerView demoRecycler;
+    @Bind(R.id.demo_swiperefreshlayout)
+    SwipeRefreshLayout demoSwiperefreshlayout;
+    @Bind(R.id.layout_cNumber)
+    RelativeLayout layoutCNumber;
+    @Bind(R.id.layout_cNumber2)
+    RelativeLayout layoutCNumber2;
     private String userID;
     private int privilege;
     private String page;
     private Context mContext;
-    private CollectFragmentAdapter mCollectFragmentAdapter;
     private CollectFragmentPresenter collectFragmentPresenter;
     private boolean research = false;
     private List<AlarmMessageModel> messageModelList;
@@ -108,6 +116,9 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     private static final int END_TIME = 1;
     private ShopType mShopType;
     private Area mArea;
+    private LinearLayoutManager linearLayoutManager;
+    private RefreshRecyclerAdapter adapter;
+    private int lastVisibleItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -153,6 +164,27 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     };
 
     private void init() {
+        //设置刷新时动画的颜色，可以设置4个
+        demoSwiperefreshlayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        demoSwiperefreshlayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
+                android.R.color.holo_green_light);
+        demoSwiperefreshlayout.setProgressViewOffset(false, 0, (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources()
+                        .getDisplayMetrics()));
+        linearLayoutManager=new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+        demoRecycler.setLayoutManager(linearLayoutManager);
+
+        demoSwiperefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                research = false;
+                page = "1";
+                mvpPresenter.getAllAlarm(userID, privilege + "", page, 1, "", "", "", "");
+                mProgressBar.setVisibility(View.GONE);
+            }
+        });
         if (privilege == 1) {
             typeLin.setVisibility(View.GONE);
         }
@@ -164,26 +196,28 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
         endTime.setInputType(InputType.TYPE_NULL);
         shangPuTypeChoice.setEditTextHint("类型");
         areaTypeChoice.setEditTextHint("区域");
-        msgRefreshListView.setOnRefreshListener(new OnRefreshListener() {
+        demoRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onDownPullRefresh() {
-                research = false;
-                page = "1";
-                mvpPresenter.getAllAlarm(userID, privilege + "", page, 1, "", "", "", "");
-                mProgressBar.setVisibility(View.GONE);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
+                    if (messageModelList != null && messageModelList.size() >= 20 && research == false) {
+                        page = Integer.parseInt(page) + 1 + "";
+                        mvpPresenter.getAllAlarm(userID, privilege + "", page, 1, "", "", "", "");
+                        mProgressBar.setVisibility(View.GONE);
+                    }else{
+                        adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_MORE_DATA);
+                    }
+                }
             }
 
             @Override
-            public void onLoadingMore() {
-                if (messageModelList != null && messageModelList.size() >= 20 && research == false) {
-                    page = Integer.parseInt(page) + 1 + "";
-                    mvpPresenter.getAllAlarm(userID, privilege + "", page, 1, "", "", "", "");
-                    mProgressBar.setVisibility(View.GONE);
-                } else {
-                    msgRefreshListView.hideFooterView();
-                }
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
             }
         });
+
     }
 
     @OnClick({R.id.add_fire, R.id.date_cancel, R.id.delete_start_time_rela, R.id.delete_end_time_rela, R.id.area_type_choice, R.id.shang_pu_type_choice, R.id.search_btn})
@@ -332,13 +366,13 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     private void initWheel() {
         Calendar calendar = Calendar.getInstance();
 
-        int curYear = calendar.get(Calendar.YEAR)-2010;
+        int curYear = calendar.get(Calendar.YEAR) - 2010;
         initWheelView(dateYear, new DateNumericAdapter(mContext, 2010, 2036), curYear);
 
         int curMonth = calendar.get(Calendar.MONTH);
         initWheelView(dateMonth, new DateNumericAdapter(mContext, 1, 12), curMonth);
 
-        int curDay = calendar.get(Calendar.DAY_OF_MONTH)-1;
+        int curDay = calendar.get(Calendar.DAY_OF_MONTH) - 1;
         initWheelView(dateDay, new DateNumericAdapter(mContext, 1, 31), curDay);
 
         int curHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -471,21 +505,24 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
         int pageInt = Integer.parseInt(page);
         if (messageModelList != null && messageModelList.size() >= 20 && pageInt > 1) {
             messageModelList.addAll(alarmMessageModels);
-            mCollectFragmentAdapter.notifyDataSetChanged();
+            adapter.changeMoreStatus(RefreshRecyclerAdapter.LOADING_MORE);
+            adapter.addMoreItem(messageModelList);
+            adapter.changeMoreStatus(RefreshRecyclerAdapter.PULLUP_LOAD_MORE);
         } else {
             messageModelList = new ArrayList<>();
             messageModelList.addAll(alarmMessageModels);
-            mCollectFragmentAdapter = new CollectFragmentAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
-            msgRefreshListView.setAdapter(mCollectFragmentAdapter);
+            adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
+            demoRecycler.setAdapter(adapter);
+            demoSwiperefreshlayout.setRefreshing(false);
         }
-        msgRefreshListView.hideFooterView();
-        msgRefreshListView.hideHeaderView();
     }
 
     @Override
     public void getDataFail(String msg) {
-        msgRefreshListView.hideFooterView();
-        msgRefreshListView.hideHeaderView();
+        demoSwiperefreshlayout.setRefreshing(false);
+        if(adapter!=null){
+            adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_MORE_DATA);
+        }
         T.showShort(mContext, msg);
     }
 
@@ -503,8 +540,8 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     public void dealAlarmMsgSuccess(List<AlarmMessageModel> alarmMessageModels) {
         messageModelList.clear();
         messageModelList.addAll(alarmMessageModels);
-        mCollectFragmentAdapter = new CollectFragmentAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
-        msgRefreshListView.setAdapter(mCollectFragmentAdapter);
+        adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
+        demoRecycler.setAdapter(adapter);
     }
 
     @Override
@@ -541,8 +578,9 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     public void getDataByCondition(List<AlarmMessageModel> alarmMessageModels) {
         research = true;
         messageModelList.clear();
-        mCollectFragmentAdapter = new CollectFragmentAdapter(getActivity(), alarmMessageModels, collectFragmentPresenter, userID, privilege + "");
-        msgRefreshListView.setAdapter(mCollectFragmentAdapter);
+        messageModelList.addAll(alarmMessageModels);
+        adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
+        demoRecycler.setAdapter(adapter);
     }
 
     @Override

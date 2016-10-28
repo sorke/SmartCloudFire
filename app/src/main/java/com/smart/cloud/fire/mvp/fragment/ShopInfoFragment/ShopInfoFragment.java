@@ -5,6 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.smart.cloud.fire.adapter.ShopInfoCameraAdapter;
-import com.smart.cloud.fire.adapter.ShopInfoFragmentAdapter;
+import com.smart.cloud.fire.adapter.ShopCameraAdapter;
+import com.smart.cloud.fire.adapter.ShopSmokeAdapter;
 import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Camera;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
-import com.smart.cloud.fire.refreshlistview.OnRefreshListener;
-import com.smart.cloud.fire.refreshlistview.RefreshListView;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
 import com.smart.cloud.fire.utils.Utils;
@@ -49,8 +52,6 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     XCDropDownListViewMapSearch shopTypeCondition;
     @Bind(R.id.lin1)
     LinearLayout lin1;
-    @Bind(R.id.refreshlistview)
-    RefreshListView refreshlistview;
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.add_fire)
@@ -59,22 +60,28 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     ImageView searchFire;
     @Bind(R.id.lost_count)
     TextView lostCount;
+    @Bind(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @Bind(R.id.swipere_fresh_layout)
+    SwipeRefreshLayout swipereFreshLayout;
     private Context mContext;
     private ShopInfoFragmentPresenter mShopInfoFragmentPresenter;
     private String userID;
     private int privilege;
     private String page;
-    private ShopInfoFragmentAdapter shopInfoFragmentAdapter;
+    private ShopSmokeAdapter shopSmokeAdapter;
     private boolean research = false;
     private int devType = 0;
     private List<Smoke> list;
     private List<Camera> mCameraList;
-    private ShopInfoCameraAdapter mShopInfoCameraAdapter;
+    private ShopCameraAdapter shopCameraAdapter;
     private boolean visibility = false;
     private ShopType mShopType;
     private Area mArea;
     private String areaId = "";
     private String shopTypeId = "";
+    private LinearLayoutManager linearLayoutManager;
+    private int lastVisibleItem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,7 +101,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         page = "1";
         list = new ArrayList<>();
         mCameraList = new ArrayList<>();
-        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
+        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,false);
         topIndicator.setOnTopIndicatorListener(this);
         refreshlistview();
         addFire.setVisibility(View.VISIBLE);
@@ -215,7 +222,18 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                     }
                     research = true;
                     page = "1";
-                    mvpPresenter.getNeedSmoke(userID, privilege + "", areaId, shopTypeId, devType);
+                    switch (devType){
+                        case 0:
+                            mvpPresenter.getNeedSmoke(userID, privilege + "", areaId, shopTypeId, devType);
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "",false);
+                            break;
+                        default:
+                            break;
+                    }
                     mShopType = null;
                     mArea = null;
                 } else {
@@ -229,22 +247,80 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     }
 
     private void refreshlistview() {
-        refreshlistview.setOnRefreshListener(new OnRefreshListener() {
+        //设置刷新时动画的颜色，可以设置4个
+        swipereFreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        swipereFreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
+                android.R.color.holo_green_light);
+        swipereFreshLayout.setProgressViewOffset(false, 0, (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources()
+                        .getDisplayMetrics()));
+        linearLayoutManager=new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        swipereFreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onDownPullRefresh() {
+            public void onRefresh() {
                 research = false;
                 page = "1";
                 switch (devType) {
                     case 0:
                         list.clear();
-                        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
+                        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
                         break;
                     case 1:
                         mCameraList.clear();
-                        mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList);
+                        mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList,true);
                         break;
                     case 2:
-                        mvpPresenter.getAllSmoke(userID, privilege + "", "", list, 2);
+                        mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", "",true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (research) {
+                    if(shopCameraAdapter!=null){
+                        shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
+                    }
+                    if(shopSmokeAdapter!=null){
+                        shopSmokeAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
+                    }
+                    return;
+                }
+                switch (devType) {
+                    case 0:
+                        int count = shopSmokeAdapter.getItemCount();
+                        int itemCount = lastVisibleItem+2;
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count) {
+                            page = Integer.parseInt(page) + 1 + "";
+                            mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
+                        } else{
+                            shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
+                        }
+                        mProgressBar.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 2 == shopCameraAdapter.getItemCount()) {
+                            if (mCameraList != null && mCameraList.size() >= 20 && research == false) {
+                                page = Integer.parseInt(page) + 1 + "";
+                                mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList,true);
+                            }
+                        } else{
+                            shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
+                        }
+                        mProgressBar.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_MORE_DATA);
+                        mProgressBar.setVisibility(View.GONE);
                         break;
                     default:
                         break;
@@ -252,29 +328,9 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
             }
 
             @Override
-            public void onLoadingMore() {
-                if (research) {
-                    refreshlistview.hideFooterView();
-                    return;
-                }
-                page = Integer.parseInt(page) + 1 + "";
-                switch (devType) {
-                    case 0:
-                        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
-                        break;
-                    case 1:
-                        if (mCameraList.size() < 20) {
-                            refreshlistview.hideFooterView();
-                            return;
-                        }
-                        mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList);
-                        break;
-                    case 2:
-                        refreshlistview.hideFooterView();
-                        break;
-                    default:
-                        break;
-                }
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
             }
         });
     }
@@ -299,7 +355,6 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 break;
             case 1:
                 mvpPresenter.unsubscribe("allCamera");
-
                 break;
             case 2:
                 mvpPresenter.unsubscribe("lostSmoke");
@@ -325,18 +380,23 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     public void getDataSuccess(List<Smoke> smokeList) {
         list.clear();
         list.addAll(smokeList);
-        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext, list, mShopInfoFragmentPresenter);
-//        mShopInfoCameraAdapter.notifyDataSetChanged();
-        refreshlistview.setAdapter(shopInfoFragmentAdapter);
-        refreshlistview.hideHeaderView();
+        shopSmokeAdapter = new ShopSmokeAdapter(mContext, list, mShopInfoFragmentPresenter);
+        recyclerView.setAdapter(shopSmokeAdapter);
+        swipereFreshLayout.setRefreshing(false);
+        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
     }
 
     @Override
     public void getDataFail(String msg) {
         T.showShort(mContext, msg);
         lostCount.setText("");
-        refreshlistview.hideHeaderView();
-        refreshlistview.hideFooterView();
+        if(shopCameraAdapter!=null){
+            shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
+        }
+       if(shopSmokeAdapter!=null){
+           shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
+       }
+
     }
 
     @Override
@@ -352,33 +412,37 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     @Override
     public void onLoadingMore(List<Smoke> smokeList) {
         list.addAll(smokeList);
-        shopInfoFragmentAdapter.notifyDataSetChanged();
-        refreshlistview.hideFooterView();
+        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.LOADING_MORE);
+        shopSmokeAdapter.addMoreItem(list);
+        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.PULLUP_LOAD_MORE);
     }
 
     @Override
     public void getOffLineData(List<Smoke> smokeList) {
         int count = smokeList.size();
-        lostCount.setText(count+"");
-        shopInfoFragmentAdapter = new ShopInfoFragmentAdapter(mContext, smokeList, mShopInfoFragmentPresenter);
-        refreshlistview.setAdapter(shopInfoFragmentAdapter);
-        refreshlistview.hideHeaderView();
+        lostCount.setText(count + "");
+        shopSmokeAdapter = new ShopSmokeAdapter(mContext, smokeList, mShopInfoFragmentPresenter);
+        recyclerView.setAdapter(shopSmokeAdapter);
+        swipereFreshLayout.setRefreshing(false);
+        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
     }
 
     @Override
     public void getAllCamera(List<Camera> cameraList) {
         mCameraList.clear();
         mCameraList.addAll(cameraList);
-        mShopInfoCameraAdapter = new ShopInfoCameraAdapter(mContext, mCameraList, mShopInfoFragmentPresenter);
-        refreshlistview.setAdapter(mShopInfoCameraAdapter);
-        refreshlistview.hideHeaderView();
+        shopCameraAdapter = new ShopCameraAdapter(mContext, mCameraList, mShopInfoFragmentPresenter);
+        recyclerView.setAdapter(shopCameraAdapter);
+        swipereFreshLayout.setRefreshing(false);
+        shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
     }
 
     @Override
     public void getCameraOnLoadingMore(List<Camera> cameraList) {
         mCameraList.addAll(cameraList);
-        mShopInfoCameraAdapter.notifyDataSetChanged();
-        refreshlistview.hideFooterView();
+        shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.LOADING_MORE);
+        shopCameraAdapter.addMoreItem(mCameraList);
+        shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.PULLUP_LOAD_MORE);
     }
 
     @Override
@@ -413,14 +477,14 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void unSubscribe(String type) {
-        switch (type){
+        switch (type) {
             case "allSmoke":
                 lostCount.setText("");
                 research = false;
                 page = "1";
                 devType = 0;
                 list.clear();
-                mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1);
+                mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,false);
                 break;
             case "allCamera":
                 lostCount.setText("");
@@ -428,13 +492,13 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 page = "1";
                 devType = 1;
                 mCameraList.clear();
-                mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList);
+                mvpPresenter.getAllCamera(userID, privilege + "", page, mCameraList,false);
                 break;
             case "lostSmoke":
                 research = false;
                 page = "1";
                 devType = 2;
-                mvpPresenter.getAllSmoke(userID, privilege + "", "", list, 2);
+                mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", "",false);
                 break;
             default:
                 break;

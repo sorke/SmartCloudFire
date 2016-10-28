@@ -90,7 +90,7 @@ public interface ApiStores {
                                           @Query("placeTypeId") String placeTypeId, @Query("principal1") String principal1,
                                           @Query("principal1Phone") String principal1Phone, @Query("principal2") String principal2,
                                           @Query("principal2Phone") String principal2Phone, @Query("areaId") String areaId,
-                                          @Query("repeater") String repeater,@Query("camera") String camera);
+                                          @Query("repeater") String repeater,@Query("camera") String camera,@Query("deviceType") String deviceType);
     //获取用户报警消息
     @GET("getAllAlarm")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
@@ -133,4 +133,12 @@ public interface ApiStores {
     @GET("textAlarmAck")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     Observable<HttpError> textAlarmAck(@Query("userId") String userId, @Query("alarmSerialNumber") String alarmSerialNumber);
+
+
+    @GET("getNeedLossSmoke")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<HttpError> getNeedLossSmoke(@Query("userId") String userId, @Query("privilege") String privilege,
+                                           @Query("areaId") String areaId,@Query("page") String page,
+                                           @Query("placeTypeId") String placeTypeId);
+
 }

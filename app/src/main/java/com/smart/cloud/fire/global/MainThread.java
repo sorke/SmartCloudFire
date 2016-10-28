@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Xml;
 
+import com.smart.cloud.fire.utils.CompareVersion;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.Utils;
 
@@ -88,15 +89,17 @@ public class MainThread {
                         eventType = parser.next();
                     }
                     // 更新
-                    int serverCode = Integer.parseInt(mUpdateInfo.versionCode);
+                    String serverCode = mUpdateInfo.versionName;
+                    String clientCode = getlocalVersion();
+                    int result = CompareVersion.compareVersion(serverCode,clientCode);
 
-                    if (serverCode > getlocalVersion()) {
+                    if (result==1) {
                         Intent i = new Intent("Constants.Action.ACTION_UPDATE");
                         i.putExtra("url", mUpdateInfo.url);
                         i.putExtra("message", mUpdateInfo.message);
                         MyApp.app.sendBroadcast(i);
                     }
-                    if(last_check_update_time==-1&&serverCode<=getlocalVersion()){
+                    if(last_check_update_time==-1&&result<1){
                         Intent i = new Intent("Constants.Action.ACTION_UPDATE_NO");
                         i.putExtra("message", mUpdateInfo.message);
                         MyApp.app.sendBroadcast(i);
@@ -111,11 +114,11 @@ public class MainThread {
         }
     }
 
-    public int getlocalVersion(){
-        int localversion = 0;
+    public String getlocalVersion(){
+        String localversion = null;
         try {
             PackageInfo info = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-            localversion = info.versionCode;
+            localversion = info.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
