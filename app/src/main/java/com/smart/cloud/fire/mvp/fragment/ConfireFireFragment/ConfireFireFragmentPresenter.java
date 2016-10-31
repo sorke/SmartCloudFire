@@ -3,7 +3,9 @@ package com.smart.cloud.fire.mvp.fragment.ConfireFireFragment;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.smart.cloud.fire.base.presenter.BasePresenter;
+import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
+import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpAreaResult;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
 import com.smart.cloud.fire.rxjava.ApiCallback;
@@ -177,5 +179,14 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
                 mvpView.hideLoading();
             }
         }));
+    }
+    @Override
+    public void getArea(Area area) {
+        mvpView.getChoiceArea(area);
+    }
+
+    @Override
+    public void getShop(ShopType shopType) {
+        mvpView.getChoiceShop(shopType);
     }
 }

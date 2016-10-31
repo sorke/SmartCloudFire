@@ -1,7 +1,7 @@
 package com.smart.cloud.fire.mvp.fragment.ShopInfoFragment;
 
-import com.smart.cloud.fire.mvp.fragment.MapFragment.Camera;
-import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
+import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.ShopType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Administrator on 2016/9/21.
  */
 public interface ShopInfoFragmentView {
-    void getDataSuccess(List<Smoke> smokeList);
+    void getDataSuccess(List<?> smokeList);
 
     void getDataFail(String msg);
 
@@ -18,21 +18,17 @@ public interface ShopInfoFragmentView {
 
     void hideLoading();
 
-    void onLoadingMore(List<Smoke> smokeList);
+    void onLoadingMore(List<?> smokeList);
 
-    void getOffLineData(List<Smoke> smokeList);
+    void getAreaType(ArrayList<?> shopTypes,int type);
 
-    void getAllCamera(List<Camera> cameraList);
-
-    void getCameraOnLoadingMore(List<Camera> cameraList);
-
-    void getShopType(ArrayList<Object> shopTypes);
-
-    void getShopTypeFail(String msg);
-
-    void getAreaType(ArrayList<Object> shopTypes);
-
-    void getAreaTypeFail(String msg);
+    void getAreaTypeFail(String msg,int type);
 
     void unSubscribe(String type);
+
+    void getLostCount(String count);
+
+    void getChoiceArea(Area area);
+
+    void getChoiceShop(ShopType shopType);
 }

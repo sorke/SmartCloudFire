@@ -1,9 +1,6 @@
 package com.smart.cloud.fire.mvp.fragment.CollectFragment;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -139,29 +136,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
         page = "1";
         mvpPresenter.getAllAlarm(userID, privilege + "", page, 1, "", "", "", "");
         init();
-        regFilter();
     }
-
-    private void regFilter() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("GET_AREA_ACTION");
-        filter.addAction("GET_SHOP_TYPE_ACTION");
-        mContext.registerReceiver(mReceiver, filter);
-    }
-
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //获取商店类型
-            if (intent.getAction().equals("GET_SHOP_TYPE_ACTION")) {
-                mShopType = (ShopType) intent.getExtras().getSerializable("mShopType");
-            }
-            //获取区域
-            if (intent.getAction().equals("GET_AREA_ACTION")) {
-                mArea = (Area) intent.getExtras().getSerializable("mArea");
-            }
-        }
-    };
 
     private void init() {
         //设置刷新时动画的颜色，可以设置4个
@@ -546,7 +521,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
 
     @Override
     public void getShopType(ArrayList<Object> shopTypes) {
-        shangPuTypeChoice.setItemsData(shopTypes);
+        shangPuTypeChoice.setItemsData(shopTypes,mvpPresenter);
         shangPuTypeChoice.showPopWindow();
         shangPuTypeChoice.setClickable(true);
         shangPuTypeChoice.closeLoading();
@@ -561,7 +536,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
 
     @Override
     public void getAreaType(ArrayList<Object> shopTypes) {
-        areaTypeChoice.setItemsData(shopTypes);
+        areaTypeChoice.setItemsData(shopTypes,mvpPresenter);
         areaTypeChoice.showPopWindow();
         areaTypeChoice.setClickable(true);
         areaTypeChoice.closeLoading();
@@ -581,6 +556,16 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
         messageModelList.addAll(alarmMessageModels);
         adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
         demoRecycler.setAdapter(adapter);
+    }
+
+    @Override
+    public void getChoiceArea(Area area) {
+            mArea = area;
+    }
+
+    @Override
+    public void getChoiceShop(ShopType shopType) {
+        mShopType = shopType;
     }
 
     @Override

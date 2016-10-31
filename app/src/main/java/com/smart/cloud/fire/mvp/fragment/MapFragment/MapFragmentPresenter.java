@@ -1,9 +1,14 @@
 package com.smart.cloud.fire.mvp.fragment.MapFragment;
 
+import android.os.Bundle;
+
 import com.smart.cloud.fire.base.presenter.BasePresenter;
+import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.rxjava.ApiCallback;
 import com.smart.cloud.fire.rxjava.SubscriberCallBack;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,5 +156,32 @@ public class MapFragmentPresenter extends BasePresenter<MapFragmentView> {
                 mvpView.hideLoading();
             }
         }));
+    }
+
+    public void getClickDev(Bundle bundle){
+        Serializable object = bundle.getSerializable("mNormalSmoke");
+        boolean result = object instanceof Smoke;
+        if (result) {
+            Smoke normalSmoke = (Smoke) object;
+            int states = normalSmoke.getIfDealAlarm();
+            if (states == 1) {//无未处理报警信息，地图图标不闪
+                mvpView.showSmokeDialog(normalSmoke);
+            } else {//有未处理报警信息，地图图标闪动
+                mvpView.showAlarmDialog(normalSmoke);
+            }
+        } else {
+            Camera camera = (Camera) object;
+            mvpView.openCamera(camera);
+        }
+    }
+
+    @Override
+    public void getArea(Area area) {
+        mvpView.getChoiceArea(area);
+    }
+
+    @Override
+    public void getShop(ShopType shopType) {
+        mvpView.getChoiceShop(shopType);
     }
 }

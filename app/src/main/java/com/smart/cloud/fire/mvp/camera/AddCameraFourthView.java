@@ -1,6 +1,8 @@
 package com.smart.cloud.fire.mvp.camera;
 
 import com.baidu.location.BDLocation;
+import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.ShopType;
 
 import java.util.ArrayList;
 
@@ -17,4 +19,6 @@ public interface AddCameraFourthView {
     void getShopTypeFail(String msg);
     void getAreaType(ArrayList<Object> shopTypes);
     void getAreaTypeFail(String msg);
+    void getChoiceArea(Area area);
+    void getChoiceShop(ShopType shopType);
 }

@@ -1,10 +1,14 @@
 package com.smart.cloud.fire.mvp.fragment.ShopInfoFragment;
 
 import com.smart.cloud.fire.base.presenter.BasePresenter;
+import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Camera;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpAreaResult;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
+import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.AllDevFragment.AllDevFragment;
+import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.OffLineDevFragment.OffLineDevFragment;
 import com.smart.cloud.fire.rxjava.ApiCallback;
 import com.smart.cloud.fire.rxjava.SubscriberCallBack;
 
@@ -18,7 +22,9 @@ import rx.functions.Func1;
  * Created by Administrator on 2016/9/21.
  */
 public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentView> {
-    public ShopInfoFragmentPresenter(ShopInfoFragmentView view){
+    private ShopInfoFragment shopInfoFragment;
+    public ShopInfoFragmentPresenter(ShopInfoFragmentView view,ShopInfoFragment shopInfoFragment){
+        this.shopInfoFragment = shopInfoFragment;
         attachView(view);
     }
 
@@ -39,20 +45,6 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                         }else if(list!=null&&list.size()>=20){
                             mvpView.onLoadingMore(smokeList);
                         }
-                    }else{
-                        List<Smoke> mSmokeList = new ArrayList<Smoke>();
-                        for(Smoke smoke : smokeList){
-                            int netState = smoke.getNetState();
-                            if(netState==0){
-                                mSmokeList.add(smoke);
-                            }
-                        }
-                        if(mSmokeList.size()>0){
-                            mvpView.getOffLineData(mSmokeList);
-                        }else{
-                            mvpView.getOffLineData(mSmokeList);
-                            mvpView.getDataFail("无数据");
-                        }
                     }
                 }else{
                     mvpView.getDataFail("无数据");
@@ -63,7 +55,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
             public void onFailure(int code, String msg) {
                 if(type!=1){
                     List<Smoke> mSmokeList = new ArrayList<>();
-                    mvpView.getOffLineData(mSmokeList);
+                    mvpView.getDataSuccess(mSmokeList);
                 }
                 mvpView.getDataFail("网络错误");
             }
@@ -87,13 +79,13 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 if(resule==0){
                     List<Camera> cameraList = model.getCamera();
                     if(list==null||list.size()==0){
-                        mvpView.getAllCamera(cameraList);
+                        mvpView.getDataSuccess(cameraList);
                     }else if(list!=null&&list.size()>=20){
-                        mvpView.getCameraOnLoadingMore(cameraList);
+                        mvpView.onLoadingMore(cameraList);
                     }
                 }else{
                     List<Camera> cameraList = new ArrayList<>();
-                    mvpView.getAllCamera(cameraList);
+                    mvpView.getDataSuccess(cameraList);
                     mvpView.getDataFail("无数据");
                 }
             }
@@ -101,7 +93,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
             @Override
             public void onFailure(int code, String msg) {
                 List<Camera> cameraList = new ArrayList<>();
-                mvpView.getAllCamera(cameraList);
+                mvpView.getDataSuccess(cameraList);
                 mvpView.getDataFail("网络错误");
             }
 
@@ -133,27 +125,15 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ArrayList<Object>>() {
             @Override
             public void onSuccess(ArrayList<Object> model) {
-                if(type==1){
                     if(model!=null&&model.size()>0){
-                        mvpView.getShopType(model);
+                        mvpView.getAreaType(model,type);
                     }else{
-                        mvpView.getShopTypeFail("无数据");
+                        mvpView.getAreaTypeFail("无数据",type);
                     }
-                }else{
-                    if(model!=null&&model.size()>0){
-                        mvpView.getAreaType(model);
-                    }else{
-                        mvpView.getAreaTypeFail("无数据");
-                    }
-                }
             }
             @Override
             public void onFailure(int code, String msg) {
-                if(type==1){
-                    mvpView.getShopTypeFail("网络错误");
-                }else{
-                    mvpView.getAreaTypeFail("网络错误");
-                }
+                    mvpView.getAreaTypeFail("网络错误",type);
             }
             @Override
             public void onCompleted() {
@@ -161,7 +141,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
         }));
     }
 
-    public void getNeedLossSmoke(String userId, String privilege, String areaId, String placeTypeId, final String page,boolean refresh){
+    public void getNeedLossSmoke(String userId, String privilege, String areaId, String placeTypeId, final String page, boolean refresh, final OffLineDevFragment offLineDevFragment){
         if(!refresh){
             mvpView.showLoading();
         }
@@ -173,19 +153,21 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 if(result==0){
                     List<Smoke> smokeList = model.getSmoke();
                     if(smokeList.size()>0){
-                        mvpView.getOffLineData(smokeList);
+                        shopInfoFragment.getLostCount(smokeList.size()+"");
+                        offLineDevFragment.getDataSuccess(smokeList);
                     }
                 }else{
                     List<Smoke> mSmokeList = new ArrayList<>();
-                    mvpView.getOffLineData(mSmokeList);
-                    mvpView.getDataFail("无数据");
+                    shopInfoFragment.getLostCount("");
+                    offLineDevFragment.getDataSuccess(mSmokeList);
+                    offLineDevFragment.getDataFail("无数据");
                 }
 
             }
 
             @Override
             public void onFailure(int code, String msg) {
-                mvpView.getDataFail("网络错误");
+                offLineDevFragment.getDataFail("网络错误");
             }
 
             @Override
@@ -195,7 +177,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
         }));
     }
 
-    public void getNeedSmoke(String userId, String privilege, String areaId, String placeTypeId, final int type){
+    public void getNeedSmoke(String userId, String privilege, String areaId, String placeTypeId, final AllDevFragment allDevFragment){
         mvpView.showLoading();
         Observable mObservable = apiStores1.getNeedSmoke(userId,privilege,areaId,"",placeTypeId);
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<HttpError>() {
@@ -205,27 +187,12 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                     int errorCode = model.getErrorCode();
                     if(errorCode==0){
                         List<Smoke> smokes = model.getSmoke();
-                        if(type==0){
-                            mvpView.getDataSuccess(smokes);
-                        }else if(type==2){
-                            List<Smoke> mSmokeList = new ArrayList<>();
-                            for(Smoke smoke : smokes){
-                                int netState = smoke.getNetState();
-                                if(netState==0){
-                                    mSmokeList.add(smoke);
-                                }
-                            }
-                            if(mSmokeList.size()>0){
-                                mvpView.getOffLineData(mSmokeList);
-                            }else{
-                                mvpView.getDataFail("无数据");
-                            }
-                        }
+                        allDevFragment.getDataSuccess(smokes);
                     }else {
-                        mvpView.getAreaTypeFail("无数据");
+                        mvpView.getDataFail("无数据");
                     }
                 }else{
-                    mvpView.getAreaTypeFail("无数据");
+                    mvpView.getDataFail("无数据");
                 }
             }
             @Override
@@ -239,9 +206,21 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
         }));
     }
 
-    public void unsubscribe(String type){
+    public void unSubscribe(String type){
         mvpView.hideLoading();
         onUnsubscribe();
         mvpView.unSubscribe(type);
+    }
+
+    @Override
+    public void getShop(ShopType shopType) {
+        super.getShop(shopType);
+        mvpView.getChoiceShop(shopType);
+    }
+
+    @Override
+    public void getArea(Area area) {
+        super.getArea(area);
+        mvpView.getChoiceArea(area);
     }
 }

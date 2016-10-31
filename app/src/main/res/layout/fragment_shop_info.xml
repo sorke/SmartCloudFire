@@ -29,18 +29,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipere_fresh_layout"
+        <FrameLayout
+            android:id="@+id/fragment_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            >
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                ></android.support.v7.widget.RecyclerView>
-        </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_above="@+id/main_image"/>
         <include layout="@layout/progress_bar"/>
     </RelativeLayout>
 

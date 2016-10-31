@@ -68,6 +68,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
                                 mPushAlarmMsg.setPrincipal2(dataJson.getString("principal2"));
                                 mPushAlarmMsg.setPrincipal2Phone(dataJson.getString("principal2Phone"));
                                 mPushAlarmMsg.setAlarmTime(dataJson.getString("alarmTime"));
+                                mPushAlarmMsg.setDeviceType(dataJson.getInt("deviceType"));
                                 String message;
                                 if(alarmType==202) {
                                     message="发生火灾";

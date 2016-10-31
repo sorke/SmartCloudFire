@@ -1,6 +1,8 @@
 package com.smart.cloud.fire.mvp.fragment.CollectFragment;
 
 import com.smart.cloud.fire.base.presenter.BasePresenter;
+import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpAreaResult;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
 import com.smart.cloud.fire.rxjava.ApiCallback;
@@ -146,5 +148,17 @@ public class CollectFragmentPresenter extends BasePresenter<CollectFragmentView>
             public void onCompleted() {
             }
         }));
+    }
+
+    @Override
+    public void getShop(ShopType shopType) {
+        super.getShop(shopType);
+        mvpView.getChoiceShop(shopType);
+    }
+
+    @Override
+    public void getArea(Area area) {
+        super.getArea(area);
+        mvpView.getChoiceArea(area);
     }
 }

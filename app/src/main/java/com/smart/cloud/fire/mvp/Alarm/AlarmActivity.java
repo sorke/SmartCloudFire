@@ -104,15 +104,23 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
         alarmInfo.setText(mPushAlarmMsg.getPlaceAddress()+mPushAlarmMsg.getAddress());
         alarmTime.setText(mPushAlarmMsg.getAlarmTime());
         int alarmType = mPushAlarmMsg.getAlarmType();
-        if(alarmType==202) {
+        int devType = mPushAlarmMsg.getDeviceType();
+        if(devType==1){
+            if(alarmType==202) {
+                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
+                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
+                mAlarmType.setText("发生火灾");
+            }else{
+                alarmFkImg.setBackgroundResource(R.drawable.allarm_ddy_bg_selector);
+                mAlarmType.setTextColor(getResources().getColor(R.color.ddy_color_text));
+                mAlarmType.setText("烟感电量低，请更换电池");
+            }
+        }else{
             alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
             mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
-            mAlarmType.setText("发生火灾");
-        }else{
-            alarmFkImg.setBackgroundResource(R.drawable.allarm_ddy_bg_selector);
-            mAlarmType.setTextColor(getResources().getColor(R.color.ddy_color_text));
-            mAlarmType.setText("烟感电量低，请更换电池");
+            mAlarmType.setText("燃气报警");
         }
+
         alarmInit();
         RxView.clicks(alarmLeadToBtn).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
             @Override

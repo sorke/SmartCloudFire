@@ -1,9 +1,6 @@
 package com.smart.cloud.fire.mvp.camera;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -36,10 +33,6 @@ import rx.functions.Action1;
  * Created by Administrator on 2016/9/27.
  */
 public class AddCameraFourthActivity extends MvpActivity<AddCameraFourthPresenter> implements AddCameraFourthView {
-    @Bind(R.id.add_fire_back_btn)
-    RelativeLayout addFireBackBtn;
-    @Bind(R.id.add_fire_title)
-    RelativeLayout addFireTitle;
     @Bind(R.id.camera_id)
     TextView cameraId;
     @Bind(R.id.add_repeater_mac)
@@ -58,8 +51,6 @@ public class AddCameraFourthActivity extends MvpActivity<AddCameraFourthPresente
     EditText addFireName;
     @Bind(R.id.add_fire_lat)
     EditText addFireLat;
-    @Bind(R.id.location_image)
-    ImageView locationImage;
     @Bind(R.id.add_fire_lon)
     EditText addFireLon;
     @Bind(R.id.add_fire_address)
@@ -139,28 +130,7 @@ public class AddCameraFourthActivity extends MvpActivity<AddCameraFourthPresente
                         longitude,latitude,principal1,principal1Phone,principal2,principal2Phone,areaId,placeTypeId);
             }
         });
-        regFilter();
     }
-
-    private void regFilter() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("GET_AREA_ACTION");
-        filter.addAction("GET_SHOP_TYPE_ACTION");
-        mContext.registerReceiver(mReceiver, filter);
-    }
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //获取商店类型
-            if(intent.getAction().equals("GET_SHOP_TYPE_ACTION")){
-                mShopType = (ShopType) intent.getExtras().getSerializable("mShopType");
-            }
-            //获取区域
-            if(intent.getAction().equals("GET_AREA_ACTION")){
-                mArea = (Area) intent.getExtras().getSerializable("mArea");
-            }
-        }
-    };
 
     @OnClick({R.id.location_image,R.id.add_fire_zjq,R.id.add_fire_type})
     public void onClick(View view){
@@ -217,7 +187,6 @@ public class AddCameraFourthActivity extends MvpActivity<AddCameraFourthPresente
         }
         mvpPresenter.stopLocation();
         super.onDestroy();
-        unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -250,7 +219,7 @@ public class AddCameraFourthActivity extends MvpActivity<AddCameraFourthPresente
 
     @Override
     public void getShopType(ArrayList<Object> shopTypes) {
-        addFireType.setItemsData(shopTypes);
+        addFireType.setItemsData(shopTypes,mAddCameraFourthPresenter);
         addFireType.showPopWindow();
         addFireType.setClickable(true);
         addFireType.closeLoading();
@@ -265,7 +234,7 @@ public class AddCameraFourthActivity extends MvpActivity<AddCameraFourthPresente
 
     @Override
     public void getAreaType(ArrayList<Object> shopTypes) {
-        addFireZjq.setItemsData(shopTypes);
+        addFireZjq.setItemsData(shopTypes,mAddCameraFourthPresenter);
         addFireZjq.showPopWindow();
         addFireZjq.setClickable(true);
         addFireZjq.closeLoading();
@@ -276,6 +245,16 @@ public class AddCameraFourthActivity extends MvpActivity<AddCameraFourthPresente
         T.showShort(mContext, msg);
         addFireZjq.setClickable(true);
         addFireZjq.closeLoading();
+    }
+
+    @Override
+    public void getChoiceArea(Area area) {
+        mArea = area;
+    }
+
+    @Override
+    public void getChoiceShop(ShopType shopType) {
+        mShopType = shopType;
     }
 
 }

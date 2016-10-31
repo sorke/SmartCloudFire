@@ -38,6 +38,7 @@ public class AlarmMessageModel {
     private String principal1Phone;
     private String principal2;
     private String principal2Phone;
+    private int deviceType;
 
     public String getAddress() {
         return address;
@@ -157,5 +158,13 @@ public class AlarmMessageModel {
 
     public void setPrincipal2Phone(String principal2Phone) {
         this.principal2Phone = principal2Phone;
+    }
+
+    public int getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(int deviceType) {
+        this.deviceType = deviceType;
     }
 }

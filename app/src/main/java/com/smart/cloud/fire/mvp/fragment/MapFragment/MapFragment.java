@@ -1,10 +1,7 @@
 package com.smart.cloud.fire.mvp.fragment.MapFragment;
 
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.overlayutil.MyOverlayManager;
 import com.smart.cloud.fire.base.ui.MvpFragment;
@@ -29,7 +28,6 @@ import com.smart.cloud.fire.view.ShowAlarmDialog;
 import com.smart.cloud.fire.view.ShowSmokeDialog;
 import com.smart.cloud.fire.view.XCDropDownListViewMapSearch;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +63,6 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
     private Area mArea;
     private String areaId = "";
     private String shopTypeId = "";
-    private Smoke normalSmoke;
-    private AlertDialog dialog,doAlarmdDialog;
     private MapFragmentPresenter mMapFragmentPresenter;
 
     @Override
@@ -93,91 +89,6 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
             add_fire.setImageResource(R.drawable.search);
         }
         mvpPresenter.getAllSmoke(userID, privilege + "");
-        regFilter();
-    }
-
-    private void regFilter() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("MAP_FRAGMENT_CLICK_MAP_POINT");
-        filter.addAction("GET_AREA_ACTION");
-        filter.addAction("GET_SHOP_TYPE_ACTION");
-        mContext.registerReceiver(mReceiver, filter);
-    }
-
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context,
-                              Intent intent) {
-            if (intent.getAction().equals("MAP_FRAGMENT_CLICK_MAP_POINT")) {
-                Serializable object = intent.getExtras().getBundle("mNormalSmoke").getSerializable("mNormalSmoke");
-                boolean result = object instanceof Smoke;
-                if (result) {
-                    normalSmoke = (Smoke) object;
-                    int stutes = normalSmoke.getIfDealAlarm();
-                    if (stutes == 1) {//无未处理报警信息，地图图标不闪
-                        showSmokeDialog(normalSmoke);
-                    } else {//有未处理报警信息，地图图标闪动
-                        showAlarmDialog(normalSmoke);
-                    }
-                } else {
-                    Camera camera = (Camera) object;
-                    Contact mContact = new Contact();
-                    mContact.contactType = 0;
-                    mContact.contactId = camera.getCameraId();
-                    mContact.contactPassword = camera.getCameraPwd();
-                    mContact.contactName = camera.getCameraName();
-                    mContact.apModeState = 1;
-                    Intent monitor = new Intent();
-                    monitor.setClass(mContext, ApMonitorActivity.class);
-                    monitor.putExtra("contact", mContact);
-                    monitor.putExtra("connectType", ConstantValues.ConnectType.P2PCONNECT);
-                    monitor.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(monitor);
-                }
-            }
-            //获取商店类型
-            if (intent.getAction().equals("GET_SHOP_TYPE_ACTION")) {
-                mShopType = (ShopType) intent.getExtras().getSerializable("mShopType");
-                if (mShopType != null && mShopType.getPlaceTypeId() != null) {
-                    add_fire.setVisibility(View.GONE);
-                    search_fire.setVisibility(View.VISIBLE);
-                }
-                if (mShopType.getPlaceTypeId() == null && mArea == null) {
-                    add_fire.setVisibility(View.VISIBLE);
-                    search_fire.setVisibility(View.GONE);
-                } else if (mShopType.getPlaceTypeId() == null && mArea != null && mArea.getAreaId() == null) {
-                    add_fire.setVisibility(View.VISIBLE);
-                    search_fire.setVisibility(View.GONE);
-                }
-            }
-            //获取区域
-            if (intent.getAction().equals("GET_AREA_ACTION")) {
-                mArea = (Area) intent.getExtras().getSerializable("mArea");
-                if (mArea != null && mArea.getAreaId() != null) {
-                    add_fire.setVisibility(View.GONE);
-                    search_fire.setVisibility(View.VISIBLE);
-                }
-                if (mArea.getAreaId() == null && mShopType == null) {
-                    add_fire.setVisibility(View.VISIBLE);
-                    search_fire.setVisibility(View.GONE);
-                } else if (mArea.getAreaId() == null && mShopType != null && mShopType.getPlaceTypeId() == null) {
-                    add_fire.setVisibility(View.VISIBLE);
-                    search_fire.setVisibility(View.GONE);
-                }
-            }
-        }
-    };
-
-    private void showSmokeDialog(Smoke mNormalSmoke) {
-        View view = LayoutInflater.from(mContext).inflate(
-                R.layout.user_smoke_address_mark, null);
-        new ShowSmokeDialog(getActivity(),view,mNormalSmoke);
-    }
-
-    private void showAlarmDialog(Smoke mNormalSmoke){
-        View view = LayoutInflater.from(mContext).inflate(
-                R.layout.user_do_alarm_msg_dialog, null);
-       new ShowAlarmDialog(getActivity(),view,mNormalSmoke,mMapFragmentPresenter,userID);
     }
 
     @Override
@@ -195,7 +106,6 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
     public void onDestroyView() {
         mMapView.onDestroy();
         super.onDestroyView();
-        mContext.unregisterReceiver(mReceiver);
         if(shopTypeCondition!=null){
             if(shopTypeCondition.ifShow()){
                 shopTypeCondition.closePopWindow();
@@ -223,10 +133,15 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
         super.onPause();
     }
 
+    private MyOverlayManager mMyOverlayManager;
     @Override
     public void getDataSuccess(List<Smoke> smokeList) {
         mBaiduMap.clear();
-        final MyOverlayManager mMyOverlayManager = new MyOverlayManager(mBaiduMap, smokeList, MyApp.app);
+        List<BitmapDescriptor> viewList =  initMark();
+        if(mMyOverlayManager==null){
+            mMyOverlayManager = new MyOverlayManager();
+        }
+        mMyOverlayManager.init(mBaiduMap,smokeList, mMapFragmentPresenter,viewList);
         mMyOverlayManager.removeFromMap();
         mBaiduMap.setOnMarkerClickListener(mMyOverlayManager);
         mMyOverlayManager.addToMap();
@@ -237,6 +152,36 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
                 mMyOverlayManager.zoomToSpan();
             }
         });
+    }
+
+    private List<BitmapDescriptor> initMark(){
+        View viewA = LayoutInflater.from(mContext).inflate(
+                R.layout.image_mark, null);
+        View viewB = LayoutInflater.from(mContext).inflate(
+                R.layout.image_mark_alarm, null);
+        View viewRQ = LayoutInflater.from(mContext).inflate(
+                R.layout.image_rq_mark, null);
+        View view = LayoutInflater.from(mContext).inflate(
+                R.layout.image_test, null);
+        View view2 = LayoutInflater.from(mContext).inflate(
+                R.layout.image_test2, null);
+        BitmapDescriptor bdA = BitmapDescriptorFactory
+                .fromView(viewA);
+        BitmapDescriptor bdC = BitmapDescriptorFactory
+                .fromView(viewB);
+        BitmapDescriptor bdRQ = BitmapDescriptorFactory
+                .fromView(viewRQ);
+        BitmapDescriptor cameraImage = BitmapDescriptorFactory
+                .fromView(view);
+        BitmapDescriptor cameraImage2 = BitmapDescriptorFactory
+                .fromView(view2);
+        List<BitmapDescriptor> listView = new ArrayList<>();
+        listView.add(bdA);
+        listView.add(bdC);
+        listView.add(bdRQ);
+        listView.add(cameraImage);
+        listView.add(cameraImage2);
+        return listView;
     }
 
     @Override
@@ -256,7 +201,7 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
 
     @Override
     public void getShopType(ArrayList<Object> shopTypes) {
-        shopTypeCondition.setItemsData(shopTypes);
+        shopTypeCondition.setItemsData(shopTypes,mMapFragmentPresenter);
         shopTypeCondition.showPopWindow();
         shopTypeCondition.setClickable(true);
         shopTypeCondition.closeLoading();
@@ -271,7 +216,7 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
 
     @Override
     public void getAreaType(ArrayList<Object> shopTypes) {
-        areaCondition.setItemsData(shopTypes);
+        areaCondition.setItemsData(shopTypes,mMapFragmentPresenter);
         areaCondition.showPopWindow();
         areaCondition.setClickable(true);
         areaCondition.closeLoading();
@@ -282,6 +227,68 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
         T.showShort(mContext, msg);
         areaCondition.setClickable(true);
         areaCondition.closeLoading();
+    }
+
+    @Override
+    public void openCamera(Camera camera) {
+        Contact mContact = new Contact();
+        mContact.contactType = 0;
+        mContact.contactId = camera.getCameraId();
+        mContact.contactPassword = camera.getCameraPwd();
+        mContact.contactName = camera.getCameraName();
+        mContact.apModeState = 1;
+        Intent monitor = new Intent();
+        monitor.setClass(mContext, ApMonitorActivity.class);
+        monitor.putExtra("contact", mContact);
+        monitor.putExtra("connectType", ConstantValues.ConnectType.P2PCONNECT);
+        monitor.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(monitor);
+    }
+
+    @Override
+    public void getChoiceArea(Area area) {
+        mArea = area;
+        if (mArea != null && mArea.getAreaId() != null) {
+            add_fire.setVisibility(View.GONE);
+            search_fire.setVisibility(View.VISIBLE);
+        }
+        if (mArea.getAreaId() == null && mShopType == null) {
+            add_fire.setVisibility(View.VISIBLE);
+            search_fire.setVisibility(View.GONE);
+        } else if (mArea.getAreaId() == null && mShopType != null && mShopType.getPlaceTypeId() == null) {
+            add_fire.setVisibility(View.VISIBLE);
+            search_fire.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void getChoiceShop(ShopType shopType) {
+        mShopType = shopType;
+        if (mShopType != null && mShopType.getPlaceTypeId() != null) {
+            add_fire.setVisibility(View.GONE);
+            search_fire.setVisibility(View.VISIBLE);
+        }
+        if (mShopType.getPlaceTypeId() == null && mArea == null) {
+            add_fire.setVisibility(View.VISIBLE);
+            search_fire.setVisibility(View.GONE);
+        } else if (mShopType.getPlaceTypeId() == null && mArea != null && mArea.getAreaId() == null) {
+            add_fire.setVisibility(View.VISIBLE);
+            search_fire.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showSmokeDialog(Smoke smoke) {
+        View view = LayoutInflater.from(mContext).inflate(
+                    R.layout.user_smoke_address_mark, null,false);
+        new ShowSmokeDialog(getActivity(),view,smoke);
+    }
+
+    @Override
+    public void showAlarmDialog(Smoke smoke) {
+        View view = LayoutInflater.from(mContext).inflate(
+                    R.layout.user_do_alarm_msg_dialog, null);
+        new ShowAlarmDialog(getActivity(),view,smoke,mMapFragmentPresenter,userID);
     }
 
     private boolean visibility = false;

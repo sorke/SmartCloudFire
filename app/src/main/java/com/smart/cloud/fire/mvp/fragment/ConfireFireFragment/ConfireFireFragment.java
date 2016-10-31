@@ -1,9 +1,7 @@
 package com.smart.cloud.fire.mvp.fragment.ConfireFireFragment;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,7 +100,6 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
                 SharedPreferencesManager.SP_FILE_GWELL,
                 SharedPreferencesManager.KEY_RECENTNAME);
         privilege = MyApp.app.getPrivilege();
-        regFilter();
         init();
     }
 
@@ -142,27 +139,6 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
                 principal2Phone, areaId, repeater, camera);
     }
 
-    private void regFilter() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("GET_AREA_ACTION");
-        filter.addAction("GET_SHOP_TYPE_ACTION");
-        mContext.registerReceiver(mReceiver, filter);
-    }
-
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //获取商店类型
-            if (intent.getAction().equals("GET_SHOP_TYPE_ACTION")) {
-                mShopType = (ShopType) intent.getExtras().getSerializable("mShopType");
-            }
-            //获取区域
-            if (intent.getAction().equals("GET_AREA_ACTION")) {
-                mArea = (Area) intent.getExtras().getSerializable("mArea");
-            }
-        }
-    };
-
     @Override
     protected ConfireFireFragmentPresenter createPresenter() {
         ConfireFireFragmentPresenter mConfireFireFragmentPresenter = new ConfireFireFragmentPresenter(ConfireFireFragment.this);
@@ -190,7 +166,6 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
     public void onDestroy() {
         mvpPresenter.stopLocation();
         super.onDestroy();
-        mContext.unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -270,6 +245,8 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
         addFireManPhone.setText(smoke.getPrincipal1Phone());
         addFireManTwo.setText(smoke.getPrincipal2());
         addFireManPhoneTwo.setText(smoke.getPrincipal2Phone());
+        addFireZjq.setEditTextData(smoke.getAreaName());
+        areaId=smoke.getAreaId()+"";
         Camera mCamera = smoke.getCamera();
         if (mCamera != null) {
             addCameraName.setText(mCamera.getCameraId());
@@ -279,7 +256,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
 
     @Override
     public void getShopType(ArrayList<Object> shopTypes) {
-        addFireType.setItemsData(shopTypes);
+        addFireType.setItemsData(shopTypes,mvpPresenter);
         addFireType.showPopWindow();
         addFireType.setClickable(true);
         addFireType.closeLoading();
@@ -294,7 +271,7 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
 
     @Override
     public void getAreaType(ArrayList<Object> shopTypes) {
-        addFireZjq.setItemsData(shopTypes);
+        addFireZjq.setItemsData(shopTypes,mvpPresenter);
         addFireZjq.showPopWindow();
         addFireZjq.setClickable(true);
         addFireZjq.closeLoading();
@@ -321,6 +298,16 @@ public class ConfireFireFragment extends MvpFragment<ConfireFireFragmentPresente
             addFireZjq.addFinish();
             addFireType.addFinish();
         }
+    }
+
+    @Override
+    public void getChoiceArea(Area area) {
+        mArea = area;
+    }
+
+    @Override
+    public void getChoiceShop(ShopType shopType) {
+        mShopType = shopType;
     }
 
     @Override

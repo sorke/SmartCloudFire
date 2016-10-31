@@ -1,7 +1,6 @@
 package com.smart.cloud.fire.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.smart.cloud.fire.base.presenter.BasePresenter;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.ShopType;
 
@@ -28,6 +28,7 @@ import fire.cloud.smart.com.smartcloudfire.R;
  */
 public class XCDropDownListViewMapSearch extends LinearLayout {
 
+    private BasePresenter basePresenter;
     private EditText editText;
     private ImageView imageView;
     private PopupWindow popupWindow = null;
@@ -79,16 +80,10 @@ public class XCDropDownListViewMapSearch extends LinearLayout {
                 if (dataList.size() > 0) {
                     Object object = dataList.get(0);
                     if (object instanceof Area) {
-                        Intent intent = new Intent();
-                        intent.setAction("GET_AREA_ACTION");
-                        intent.putExtra("mArea", new Area());
-                        mContext.sendBroadcast(intent);
+                        basePresenter.getArea(new Area());
                     }
                     if (object instanceof ShopType) {
-                        Intent intent = new Intent();
-                        intent.setAction("GET_SHOP_TYPE_ACTION");
-                        intent.putExtra("mShopType", new ShopType());
-                        mContext.sendBroadcast(intent);
+                        basePresenter.getShop(new ShopType());
                     }
                     imageView.setVisibility(View.VISIBLE);
                     clear_choice.setVisibility(View.GONE);
@@ -150,8 +145,9 @@ public class XCDropDownListViewMapSearch extends LinearLayout {
      * 设置数据
      * @param list
      */
-    public void setItemsData(ArrayList<Object> list){
+    public void setItemsData(ArrayList<Object> list,BasePresenter basePresenter){
         dataList = list;
+        this.basePresenter = basePresenter;
     }
     /**
      * 数据适配器
@@ -221,10 +217,7 @@ public class XCDropDownListViewMapSearch extends LinearLayout {
                         editText.setText(text);
                         imageView.setVisibility(View.GONE);
                         clear_choice.setVisibility(View.VISIBLE);
-                        Intent intent = new Intent();
-                        intent.setAction("GET_AREA_ACTION");
-                        intent.putExtra("mArea",mArea);
-                        mContext.sendBroadcast(intent);
+                        basePresenter.getArea(mArea);
                         closePopWindow();
                     }
                 });
@@ -241,10 +234,7 @@ public class XCDropDownListViewMapSearch extends LinearLayout {
                         imageView.setVisibility(View.GONE);
                         clear_choice.setVisibility(View.VISIBLE);
                         editText.setText(text);
-                        Intent intent = new Intent();
-                        intent.setAction("GET_SHOP_TYPE_ACTION");
-                        intent.putExtra("mShopType",mShopType);
-                        mContext.sendBroadcast(intent);
+                        basePresenter.getShop(mShopType);
                         closePopWindow();
                     }
                 });

@@ -6,7 +6,9 @@ package com.smart.cloud.fire.base.presenter;
 
 import android.content.Context;
 
+import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.ConstantValues;
+import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.retrofit.ApiStores;
 import com.smart.cloud.fire.retrofit.AppClient;
 import com.smart.cloud.fire.utils.T;
@@ -38,7 +40,17 @@ public class BasePresenter<V> implements Presenter<V> {
             onUnsubscribe();
         }
 
-        //RXjava取消注册，以避免内存泄露
+    @Override
+    public void getArea(Area area) {
+
+    }
+
+    @Override
+    public void getShop(ShopType shopType) {
+
+    }
+
+    //RXjava取消注册，以避免内存泄露
         public void onUnsubscribe() {
             if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
                 mCompositeSubscription.unsubscribe();
@@ -55,7 +67,6 @@ public class BasePresenter<V> implements Presenter<V> {
                 T.showShort(mContext, "电话号码不合法");
             }
         }
-
 
         public void addSubscription(Observable observable, Subscriber subscriber) {
             if (mCompositeSubscription == null) {

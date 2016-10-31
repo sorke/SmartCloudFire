@@ -1,6 +1,8 @@
 package com.smart.cloud.fire.mvp.fragment.ConfireFireFragment;
 
 import com.baidu.location.BDLocation;
+import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
 
 import java.util.ArrayList;
@@ -19,4 +21,6 @@ public interface ConfireFireFragmentView {
     void getAreaType(ArrayList<Object> shopTypes);
     void getAreaTypeFail(String msg);
     void addSmokeResult(String msg,int errorCode);
+    void getChoiceArea(Area area);
+    void getChoiceShop(ShopType shopType);
 }

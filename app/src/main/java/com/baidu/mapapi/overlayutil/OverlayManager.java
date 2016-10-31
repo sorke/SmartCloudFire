@@ -2,6 +2,7 @@ package com.baidu.mapapi.overlayutil;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnPolylineClickListener;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.Overlay;
@@ -27,17 +28,17 @@ import static com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
  * </p>
  */
 public abstract class OverlayManager implements OnMarkerClickListener, OnPolylineClickListener {
-    BaiduMap mBaiduMap = null;
+    private BaiduMap mBaiduMap;
     private List<OverlayOptions> mOverlayOptionList = null;
     List<Overlay> mOverlayList = null;
 
     /**
      * 通过一个BaiduMap 对象构造
      *
-     * @param baiduMap
+     * @param
      */
-    public OverlayManager(BaiduMap baiduMap) {
-        mBaiduMap = baiduMap;
+    public OverlayManager() {
+//        this.mBaiduMap = baiduMap;
         // mBaiduMap.setOnMarkerClickListener(this);
         if (mOverlayOptionList == null) {
             mOverlayOptionList = new ArrayList<>();
@@ -45,6 +46,10 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
         if (mOverlayList == null) {
             mOverlayList = new ArrayList<>();
         }
+    }
+
+    public void initBaiduMap(BaiduMap baiduMap){
+        this.mBaiduMap = baiduMap;
     }
 
     /**
@@ -104,8 +109,8 @@ public abstract class OverlayManager implements OnMarkerClickListener, OnPolylin
                     builder.include(((Marker) overlay).getPosition());
                 }
             }
-            mBaiduMap.setMapStatus(MapStatusUpdateFactory
-                    .newLatLngBounds(builder.build()));
+            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngBounds(builder.build());
+            mBaiduMap.setMapStatus(mapStatusUpdate);
         }
         if(mOverlayList.size()==1){
             //改变地图状态

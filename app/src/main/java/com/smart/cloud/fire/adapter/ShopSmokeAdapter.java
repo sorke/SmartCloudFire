@@ -42,6 +42,7 @@ public class ShopSmokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.mShopInfoFragmentPresenter = mShopInfoFragmentPresenter;
     }
 
+
     /**
      * item显示类型
      *
@@ -78,13 +79,25 @@ public class ShopSmokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((ItemViewHolder) holder).repeaterRela.setVisibility(View.VISIBLE);
             final Smoke normalSmoke = listNormalSmoke.get(position);
             int netStates = normalSmoke.getNetState();
-            if (netStates == 0) {
-                ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_zj_lx);
-            } else {
-                ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_zj_zx);
+            int devType = normalSmoke.getDeviceType();
+            if(devType==1){
+                if (netStates == 0) {
+                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
+                } else {
+                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
+                }
+            }else{
+                if (netStates == 0) {
+                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj_lx);
+                } else {
+                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj);
+                }
             }
+
             ((ItemViewHolder) holder).groupTvAddress.setText(normalSmoke.getAddress());
             ((ItemViewHolder) holder).groupTv.setText(normalSmoke.getName());
             ((ItemViewHolder) holder).repeaterNameTv.setText(normalSmoke.getPlaceType());

@@ -102,6 +102,12 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 ((ItemViewHolder) holder).dealAlarmActionTv.setVisibility(View.GONE);
             }
+            int devType= mNormalAlarmMessage.getDeviceType();
+            if(devType==1){
+                ((ItemViewHolder) holder).smokeMac.setText("烟感:");
+            }else{
+                ((ItemViewHolder) holder).smokeMac.setText("燃气探测器:");
+            }
             if (alarmType == 202) {
                 ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_huojing);
                 ((ItemViewHolder) holder).smokeMac.setTextColor(mContext.getResources().getColor(R.color.hj_color_text));

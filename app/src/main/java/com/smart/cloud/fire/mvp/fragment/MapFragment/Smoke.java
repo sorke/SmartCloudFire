@@ -44,6 +44,8 @@ public class Smoke implements Serializable {
     private List<String> repeaters;
     private String repeater;
     private Camera camera;
+    private int areaId;
+    private int deviceType;
 
     public String getAddress() {
         return address;
@@ -187,5 +189,21 @@ public class Smoke implements Serializable {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public int getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(int areaId) {
+        this.areaId = areaId;
+    }
+
+    public int getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(int deviceType) {
+        this.deviceType = deviceType;
     }
 }

@@ -52,6 +52,7 @@ public class ShowSmokeDialog {
         ButterKnife.bind(this, mView);
         showSmokeDialog(mView);
     }
+
     public void showSmokeDialog(final View view) {
         RxView.clicks(normalLeadBtn).throttleFirst(2, TimeUnit.SECONDS)
                 .subscribe(new Action1<Void>() {
@@ -79,6 +80,7 @@ public class ShowSmokeDialog {
         }
         dialog.setContentView(view);
     }
+
 
     @OnClick({R.id.user_phone_lin_one, R.id.user_phone_lin_two})
     public void onClick(View view){

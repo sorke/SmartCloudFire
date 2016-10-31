@@ -79,7 +79,8 @@ public interface ApiStores {
     //获取单个烟感信息
     @GET("getOneSmoke")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<ConfireFireModel> getOneSmoke(@Query("userId") String userId, @Query("smokeMac") String smokeMac, @Query("privilege") String privilege);
+    Observable<ConfireFireModel> getOneSmoke(@Query("userId") String userId, @Query("smokeMac") String smokeMac,
+                                             @Query("privilege") String privilege);
 
     //添加烟感
     @GET("addSmoke")
