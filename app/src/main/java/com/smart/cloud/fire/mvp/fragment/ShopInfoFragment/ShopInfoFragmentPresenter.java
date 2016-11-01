@@ -47,6 +47,8 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                         }
                     }
                 }else{
+                    List<Smoke> mSmokeList = new ArrayList<>();
+                    mvpView.getDataSuccess(mSmokeList);
                     mvpView.getDataFail("无数据");
                 }
             }

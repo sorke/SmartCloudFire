@@ -175,6 +175,9 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if(adapter==null){
+                    return;
+                }
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
                     if (messageModelList != null && messageModelList.size() >= 20 && research == false) {
                         page = Integer.parseInt(page) + 1 + "";
