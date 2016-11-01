@@ -20,6 +20,7 @@ import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.AllDevFragment.AllDevFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.CameraFragment.CameraFragment;
+import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.Electric.ElectricFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.OffLineDevFragment.OffLineDevFragment;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
@@ -63,9 +64,11 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     private CameraFragment cameraFragment;
     private OffLineDevFragment offLineDevFragment;
     private FragmentManager fragmentManager;
+    private ElectricFragment electricFragment;
     public static final int FRAGMENT_ONE=0;
     public static final int FRAGMENT_TWO=1;
     public static final int FRAGMENT_THREE=2;
+    public static final int FRAGMENT_FOUR=3;
     private int position;
     private boolean visibility = false;
     private ShopType mShopType;
@@ -170,6 +173,8 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                         case FRAGMENT_TWO:
                             break;
                         case FRAGMENT_THREE:
+                            break;
+                        case FRAGMENT_FOUR:
                             mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "",false,offLineDevFragment);
                             break;
                         default:
@@ -202,6 +207,14 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 }
                 break;
             case FRAGMENT_TWO:
+                if (electricFragment==null){
+                    electricFragment=new ElectricFragment();
+                    ft.add(R.id.fragment_content,electricFragment);
+                } else {
+                    ft.show(electricFragment);
+                }
+                break;
+            case FRAGMENT_THREE:
                 if (cameraFragment==null){
                     cameraFragment=new CameraFragment();
                     ft.add(R.id.fragment_content,cameraFragment);
@@ -209,7 +222,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                     ft.show(cameraFragment);
                 }
                 break;
-            case FRAGMENT_THREE:
+            case FRAGMENT_FOUR:
                 if (offLineDevFragment==null){
                     offLineDevFragment=new OffLineDevFragment();
                     ft.add(R.id.fragment_content,offLineDevFragment);
@@ -232,6 +245,9 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         if(offLineDevFragment!=null) {
             ft.hide(offLineDevFragment);
         }
+        if(electricFragment!=null){
+            ft.hide(electricFragment);
+        }
     }
 
     @Override
@@ -253,9 +269,12 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 mvpPresenter.unSubscribe("allSmoke");
                 break;
             case 1:
-                mvpPresenter.unSubscribe("allCamera");
+                mvpPresenter.unSubscribe("electric");
                 break;
             case 2:
+                mvpPresenter.unSubscribe("allCamera");
+                break;
+            case 3:
                 mvpPresenter.unSubscribe("lostSmoke");
                 break;
             default:
@@ -280,6 +299,9 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         }
         if(offLineDevFragment!=null){
             offLineDevFragment=null;
+        }
+        if(electricFragment!=null){
+            electricFragment=null;
         }
     }
 
@@ -346,13 +368,19 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 lin1.setVisibility(View.GONE);
                 searchFire.setVisibility(View.GONE);
                 addFire.setVisibility(View.VISIBLE);
-                showFragment(FRAGMENT_TWO);
+                showFragment(FRAGMENT_THREE);
                 break;
             case "lostSmoke":
                 lin1.setVisibility(View.GONE);
                 searchFire.setVisibility(View.GONE);
                 addFire.setVisibility(View.VISIBLE);
-                showFragment(FRAGMENT_THREE);
+                showFragment(FRAGMENT_FOUR);
+                break;
+            case "electric":
+                lin1.setVisibility(View.GONE);
+                searchFire.setVisibility(View.GONE);
+                addFire.setVisibility(View.VISIBLE);
+                showFragment(FRAGMENT_TWO);
                 break;
             default:
                 break;
@@ -361,6 +389,10 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getLostCount(String count) {
+        int len = count.length();
+        if(len>3){
+            lostCount.setTextSize(10);
+        }
         lostCount.setText(count);
     }
 

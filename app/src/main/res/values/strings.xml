@@ -36,6 +36,7 @@
     <string name="title_activity_register_email">RegisterEmailActivity</string>
     <string name="title_activity_alarm">AlarmActivity</string>
     <string name="title_activity_bndemo_guide">BNDemoGuideActivity</string>
+    <string name="line_chart_activity">LineChartActivity</string>
 
     <!--账号栏-->
     <string name="app_update_tv">检查更新</string>
