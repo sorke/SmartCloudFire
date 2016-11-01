@@ -110,6 +110,9 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
                     }
                     return;
                 }
+                if(shopSmokeAdapter==null){
+                    return;
+                }
                 int count = shopSmokeAdapter.getItemCount();
                 int itemCount = lastVisibleItem+2;
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count) {
