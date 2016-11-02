@@ -55,6 +55,14 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     ImageView searchFire;
     @Bind(R.id.lost_count)
     TextView lostCount;
+    @Bind(R.id.total_num)
+    TextView totalNum;
+    @Bind(R.id.online_num)
+    TextView onlineNum;
+    @Bind(R.id.offline_num)
+    TextView offlineNum;
+    @Bind(R.id.smoke_total)
+    LinearLayout smokeTotal;
     private Context mContext;
     private ShopInfoFragmentPresenter mShopInfoFragmentPresenter;
     private String userID;
@@ -63,9 +71,9 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     private CameraFragment cameraFragment;
     private OffLineDevFragment offLineDevFragment;
     private FragmentManager fragmentManager;
-    public static final int FRAGMENT_ONE=0;
-    public static final int FRAGMENT_TWO=1;
-    public static final int FRAGMENT_THREE=2;
+    public static final int FRAGMENT_ONE = 0;
+    public static final int FRAGMENT_TWO = 1;
+    public static final int FRAGMENT_THREE = 2;
     private int position;
     private boolean visibility = false;
     private ShopType mShopType;
@@ -84,7 +92,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fragmentManager=getChildFragmentManager();
+        fragmentManager = getChildFragmentManager();
         mContext = getActivity();
         userID = SharedPreferencesManager.getInstance().getData(mContext,
                 SharedPreferencesManager.SP_FILE_GWELL,
@@ -94,6 +102,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         showFragment(FRAGMENT_ONE);
         addFire.setVisibility(View.VISIBLE);
         addFire.setImageResource(R.drawable.search);
+        smokeTotal.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.add_fire, R.id.area_condition, R.id.shop_type_condition, R.id.search_fire})
@@ -163,14 +172,14 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                     } else {
                         shopTypeId = "";
                     }
-                    switch (position){
+                    switch (position) {
                         case FRAGMENT_ONE:
-                            mvpPresenter.getNeedSmoke(userID, privilege + "", areaId, shopTypeId,allDevFragment);
+                            mvpPresenter.getNeedSmoke(userID, privilege + "", areaId, shopTypeId, allDevFragment);
                             break;
                         case FRAGMENT_TWO:
                             break;
                         case FRAGMENT_THREE:
-                            mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "",false,offLineDevFragment);
+                            mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "", false, offLineDevFragment);
                             break;
                         default:
                             break;
@@ -187,32 +196,32 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         }
     }
 
-    public void showFragment(int index){
-        FragmentTransaction ft=fragmentManager.beginTransaction();
+    public void showFragment(int index) {
+        FragmentTransaction ft = fragmentManager.beginTransaction();
         hideFragment(ft);
         //注意这里设置位置
         position = index;
-        switch (index){
+        switch (index) {
             case FRAGMENT_ONE:
-                if (allDevFragment==null){
-                    allDevFragment=new AllDevFragment();
-                    ft.add(R.id.fragment_content,allDevFragment);
-                } else{
+                if (allDevFragment == null) {
+                    allDevFragment = new AllDevFragment();
+                    ft.add(R.id.fragment_content, allDevFragment);
+                } else {
                     ft.show(allDevFragment);
                 }
                 break;
             case FRAGMENT_TWO:
-                if (cameraFragment==null){
-                    cameraFragment=new CameraFragment();
-                    ft.add(R.id.fragment_content,cameraFragment);
+                if (cameraFragment == null) {
+                    cameraFragment = new CameraFragment();
+                    ft.add(R.id.fragment_content, cameraFragment);
                 } else {
                     ft.show(cameraFragment);
                 }
                 break;
             case FRAGMENT_THREE:
-                if (offLineDevFragment==null){
-                    offLineDevFragment=new OffLineDevFragment();
-                    ft.add(R.id.fragment_content,offLineDevFragment);
+                if (offLineDevFragment == null) {
+                    offLineDevFragment = new OffLineDevFragment();
+                    ft.add(R.id.fragment_content, offLineDevFragment);
                 } else {
                     ft.show(offLineDevFragment);
                 }
@@ -221,22 +230,22 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         ft.commit();
     }
 
-    public void hideFragment(FragmentTransaction ft){
+    public void hideFragment(FragmentTransaction ft) {
         //如果不为空，就先隐藏起来
-        if (allDevFragment!=null){
+        if (allDevFragment != null) {
             ft.hide(allDevFragment);
         }
-        if(cameraFragment!=null) {
+        if (cameraFragment != null) {
             ft.hide(cameraFragment);
         }
-        if(offLineDevFragment!=null) {
+        if (offLineDevFragment != null) {
             ft.hide(offLineDevFragment);
         }
     }
 
     @Override
     protected ShopInfoFragmentPresenter createPresenter() {
-        mShopInfoFragmentPresenter = new ShopInfoFragmentPresenter(this,ShopInfoFragment.this);
+        mShopInfoFragmentPresenter = new ShopInfoFragmentPresenter(this, ShopInfoFragment.this);
         return mShopInfoFragmentPresenter;
     }
 
@@ -250,12 +259,15 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         topIndicator.setTabsDisplay(mContext, index);
         switch (index) {
             case 0:
+                smokeTotal.setVisibility(View.VISIBLE);
                 mvpPresenter.unSubscribe("allSmoke");
                 break;
             case 1:
+                smokeTotal.setVisibility(View.GONE);
                 mvpPresenter.unSubscribe("allCamera");
                 break;
             case 2:
+                smokeTotal.setVisibility(View.VISIBLE);
                 mvpPresenter.unSubscribe("lostSmoke");
                 break;
             default:
@@ -272,14 +284,14 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(allDevFragment!=null){
-            allDevFragment=null;
+        if (allDevFragment != null) {
+            allDevFragment = null;
         }
-        if(cameraFragment!=null){
-            cameraFragment=null;
+        if (cameraFragment != null) {
+            cameraFragment = null;
         }
-        if(offLineDevFragment!=null){
-            offLineDevFragment=null;
+        if (offLineDevFragment != null) {
+            offLineDevFragment = null;
         }
     }
 
@@ -306,14 +318,14 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     }
 
     @Override
-    public void getAreaType(ArrayList<?> shopTypes,int type) {
-        if(type==1){
-            shopTypeCondition.setItemsData((ArrayList<Object>)shopTypes,mShopInfoFragmentPresenter);
+    public void getAreaType(ArrayList<?> shopTypes, int type) {
+        if (type == 1) {
+            shopTypeCondition.setItemsData((ArrayList<Object>) shopTypes, mShopInfoFragmentPresenter);
             shopTypeCondition.showPopWindow();
             shopTypeCondition.setClickable(true);
             shopTypeCondition.closeLoading();
-        }else{
-            areaCondition.setItemsData((ArrayList<Object>)shopTypes,mShopInfoFragmentPresenter);
+        } else {
+            areaCondition.setItemsData((ArrayList<Object>) shopTypes, mShopInfoFragmentPresenter);
             areaCondition.showPopWindow();
             areaCondition.setClickable(true);
             areaCondition.closeLoading();
@@ -322,12 +334,12 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     }
 
     @Override
-    public void getAreaTypeFail(String msg,int type) {
+    public void getAreaTypeFail(String msg, int type) {
         T.showShort(mContext, msg);
-        if(type==1){
+        if (type == 1) {
             shopTypeCondition.setClickable(true);
             shopTypeCondition.closeLoading();
-        }else{
+        } else {
             areaCondition.setClickable(true);
             areaCondition.closeLoading();
         }
@@ -361,7 +373,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getLostCount(String count) {
-        lostCount.setText(count);
+
     }
 
     @Override
