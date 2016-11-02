@@ -224,10 +224,8 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
         voice_state=(ImageView)findViewById(R.id.voice_state);
         l_device_list=(LinearLayout)findViewById(R.id.l_device_list);
         setControlButtomHeight(0);
-//	    initIpcDeviceList();
         frushLayout(mContact.contactType);
         if(number>1){
-//			tv_choosee_device.setVisibility(View.VISIBLE);
             sensorManager=(SensorManager) mContext.getSystemService(mContext.SENSOR_SERVICE);
             if(sensorManager!=null){
                 sensor=sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -271,13 +269,10 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
                             }
                         }
                     }
-
                     @Override
                     public void onAccuracyChanged(Sensor sensor, int accuracy) {
                         // TODO Auto-generated method stub
-
                     }
-
                 };
             }
             sensorManager.registerListener(sensorListener , sensor,SensorManager.SENSOR_DELAY_GAME);
@@ -346,7 +341,6 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
                             hideVideoFormat();
                             layout_voice_state.setVisibility(RelativeLayout.VISIBLE);
                             iv_speak.setBackgroundResource(R.drawable.portrait_speak_press);
-//						    T.showShort(mContext, R.string.hold_talk);
                             setMute(false);
                             return true;
                         case MotionEvent.ACTION_UP:
@@ -392,16 +386,11 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
             iv_speak.setOnClickListener(this);
             send_voice.setOnClickListener(this);
         } else if (isSurpportOpenDoor) {
-            Log.e("leleTest", "isSurpportOpenDoor="+isSurpportOpenDoor);
             iv_speak.setOnClickListener(this);
             // 开始监控时没有声音，暂时这样
             send_voice.setOnClickListener(this);
             iv_speak.performClick();
             iv_speak.performClick();
-//			speak();
-//			speak();
-//			send_voice.performClick();
-            // speak();
         }
         initIpcDeviceList();
         try {

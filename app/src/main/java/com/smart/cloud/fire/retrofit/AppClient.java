@@ -12,7 +12,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  * on 2016/8/24.
  */
 public class AppClient {
-    private static final int DEFAULT_TIMEOUT = 5;
+    private static final int DEFAULT_TIMEOUT = 20;
     public static Retrofit mRetrofit;
 
 

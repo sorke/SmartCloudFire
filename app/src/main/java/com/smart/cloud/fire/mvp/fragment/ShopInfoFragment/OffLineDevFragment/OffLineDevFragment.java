@@ -112,7 +112,6 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
                 if(shopSmokeAdapter==null){
                     shopSmokeAdapter = new ShopSmokeAdapter(mContext,null,mShopInfoFragmentPresenter);
                 }
-                shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_MORE_DATA);
             }
 
             @Override
