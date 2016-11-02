@@ -155,12 +155,10 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 if(result==0){
                     List<Smoke> smokeList = model.getSmoke();
                     if(smokeList.size()>0){
-                        shopInfoFragment.getLostCount(smokeList.size()+"");
                         offLineDevFragment.getDataSuccess(smokeList);
                     }
                 }else{
                     List<Smoke> mSmokeList = new ArrayList<>();
-                    shopInfoFragment.getLostCount("");
                     offLineDevFragment.getDataSuccess(mSmokeList);
                     offLineDevFragment.getDataFail("无数据");
                 }
