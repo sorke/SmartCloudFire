@@ -5,6 +5,7 @@ package com.smart.cloud.fire.base.ui;
  */
 
 import android.os.Bundle;
+
 import com.smart.cloud.fire.base.presenter.BasePresenter;
 
 public abstract class MvpActivity<P extends BasePresenter> extends BaseActivity {

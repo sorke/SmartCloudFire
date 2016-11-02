@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Vibrator;
 import android.widget.RemoteViews;
@@ -30,6 +31,11 @@ public class MyApp extends Application {
     private int privilege=-1;
     public LocationService locationService;
     public Vibrator mVibrator;
+    private AppComponent appComponent;
+
+    public static MyApp get(Context context){
+        return (MyApp)context.getApplicationContext();
+    }
 
     @Override
     public void onCreate() {
@@ -43,6 +49,12 @@ public class MyApp extends Application {
 //        crashHandler.init(this);
         //检查内存是否泄漏初始化，正式版应该关闭
         LeakCanary.install(this);
+        appComponent=DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
+                .build();
+    }
+    public AppComponent getAppComponent() {
+        return appComponent;
     }
 
     public NotificationManager getNotificationManager() {
@@ -119,6 +131,5 @@ public class MyApp extends Application {
     public void hideDownNotification(){
         mNotificationManager = getNotificationManager();
         mNotificationManager.cancel(NOTIFICATION_DOWN_ID);
-
     }
 }
