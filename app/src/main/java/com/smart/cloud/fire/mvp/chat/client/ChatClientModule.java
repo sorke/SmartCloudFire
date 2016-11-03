@@ -1,6 +1,9 @@
 package com.smart.cloud.fire.mvp.chat.client;
 
 import com.smart.cloud.fire.global.ActivityScope;
+import com.smart.cloud.fire.mvp.chat.common.db.ChatDBManager;
+import com.smart.cloud.fire.mvp.chat.common.db.RecentItemDBManager;
+import com.smart.cloud.fire.service.LocationService;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,7 +20,7 @@ public class ChatClientModule {
 
     @Provides
     @ActivityScope
-    ChatClientPresenter provideChatClientPresenter(){
-        return new ChatClientPresenter(chatClientActivity);
+    ChatClientPresenter provideChatClientPresenter(LocationService locationService, ChatDBManager chatDBManager, RecentItemDBManager recentItemDBManager){
+        return new ChatClientPresenter(chatClientActivity,locationService,chatDBManager,recentItemDBManager);
     }
 }

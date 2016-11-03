@@ -6,9 +6,16 @@ import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
 import com.smart.cloud.fire.mvp.login.model.LoginModel;
 import com.smart.cloud.fire.mvp.register.model.RegisterModel;
 
+import java.util.Map;
+
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -142,4 +149,10 @@ public interface ApiStores {
                                            @Query("areaId") String areaId,@Query("page") String page,
                                            @Query("placeTypeId") String placeTypeId);
 
+    @Multipart
+    @POST("UploadServlet")
+    Observable<ResponseBody> upload(@PartMap Map<String, RequestBody> params,@Part("areaId") String areaId);
+    //    http://192.168.4.120:8080/UploadServlet/downloadfile?filename=
+    @GET("downloadfile")
+    Observable<ResponseBody> downloadFileWithDynamicUrlSync(@Query("filename") String fileUrl);
 }

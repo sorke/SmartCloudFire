@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.p2p.core.update.UpdateManager;
+import com.smart.cloud.fire.mvp.chat.common.db.base.BaseManager;
 import com.smart.cloud.fire.service.LocationService;
 import com.smart.cloud.fire.ui.ForwardDownActivity;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
@@ -49,6 +50,7 @@ public class MyApp extends Application {
 //        crashHandler.init(this);
         //检查内存是否泄漏初始化，正式版应该关闭
         LeakCanary.install(this);
+        BaseManager.initOpenHelper(this);
         appComponent=DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
                 .build();

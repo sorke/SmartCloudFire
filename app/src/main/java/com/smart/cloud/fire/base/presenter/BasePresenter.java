@@ -27,6 +27,8 @@ public class BasePresenter<V> implements Presenter<V> {
         public ApiStores apiStores = AppClient.retrofit(ConstantValues.SERVER_YOOSEE_IP).create(ApiStores.class);
         public ApiStores apiStores1 = AppClient.retrofit(ConstantValues.SERVER_IP_NEW).create(ApiStores.class);
         public ApiStores apiStores2 = AppClient.retrofit(ConstantValues.SERVER_PUSH).create(ApiStores.class);
+//        public static final String SERVER_URL = "http://192.168.4.111:51091/UploadServlet/";
+        public ApiStores apiStores3 = AppClient.retrofit("http://192.168.4.120:8080/UploadServlet/").create(ApiStores.class);
         private CompositeSubscription mCompositeSubscription;
 
         @Override
