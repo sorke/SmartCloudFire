@@ -20,6 +20,7 @@ import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
+import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragmentPresenter;
@@ -97,6 +98,7 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
                 page = "1";
                 list.clear();
                 mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
+                mvpPresenter.getSmokeSummary(userID,privilege+"","");
             }
         });
 
@@ -203,6 +205,11 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
 
     @Override
     public void getChoiceShop(ShopType shopType) {
+
+    }
+
+    @Override
+    public void getSmokeSummary(SmokeSummary smokeSummary) {
 
     }
 

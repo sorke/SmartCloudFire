@@ -3,6 +3,7 @@ package com.smart.cloud.fire.mvp.fragment.ShopInfoFragment;
 import com.smart.cloud.fire.base.presenter.BasePresenter;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.ShopType;
+import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Camera;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpAreaResult;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
@@ -222,5 +223,26 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
     public void getArea(Area area) {
         super.getArea(area);
         mvpView.getChoiceArea(area);
+    }
+
+    public void getSmokeSummary(String userId,String privilege,String areaId){
+        Observable mObservable = apiStores1.getSmokeSummary(userId,privilege,areaId);
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<SmokeSummary>() {
+            @Override
+            public void onSuccess(SmokeSummary model) {
+                int resultCode = model.getErrorCode();
+                if(resultCode==0){
+                    shopInfoFragment.getSmokeSummary(model);
+                }
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+        }));
     }
 }

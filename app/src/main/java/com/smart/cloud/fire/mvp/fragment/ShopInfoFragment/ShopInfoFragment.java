@@ -18,6 +18,7 @@ import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
+import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.AllDevFragment.AllDevFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.CameraFragment.CameraFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.Electric.ElectricFragment;
@@ -106,6 +107,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         addFire.setVisibility(View.VISIBLE);
         addFire.setImageResource(R.drawable.search);
         smokeTotal.setVisibility(View.VISIBLE);
+        mShopInfoFragmentPresenter.getSmokeSummary(userID,privilege+"","");
     }
 
     @OnClick({R.id.add_fire, R.id.area_condition, R.id.shop_type_condition, R.id.search_fire})
@@ -178,6 +180,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                     switch (position) {
                         case FRAGMENT_ONE:
                             mvpPresenter.getNeedSmoke(userID, privilege + "", areaId, shopTypeId, allDevFragment);
+                            mvpPresenter.getSmokeSummary(userID,privilege+"",areaId);
                             break;
                         case FRAGMENT_TWO:
                             break;
@@ -185,6 +188,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                             break;
                         case FRAGMENT_FOUR:
                             mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "", false, offLineDevFragment);
+                            mvpPresenter.getSmokeSummary(userID,privilege+"",areaId);
                             break;
                         default:
                             break;
@@ -372,6 +376,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     public void unSubscribe(String type) {
         switch (type) {
             case "allSmoke":
+                mShopInfoFragmentPresenter.getSmokeSummary(userID,privilege+"","");
                 lin1.setVisibility(View.GONE);
                 searchFire.setVisibility(View.GONE);
                 addFire.setVisibility(View.VISIBLE);
@@ -384,6 +389,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 showFragment(FRAGMENT_THREE);
                 break;
             case "lostSmoke":
+                mShopInfoFragmentPresenter.getSmokeSummary(userID,privilege+"","");
                 lin1.setVisibility(View.GONE);
                 searchFire.setVisibility(View.GONE);
                 addFire.setVisibility(View.VISIBLE);
@@ -439,5 +445,12 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
             addFire.setVisibility(View.VISIBLE);
             searchFire.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void getSmokeSummary(SmokeSummary smokeSummary) {
+        totalNum.setText(smokeSummary.getAllSmokeNumber()+"");
+        onlineNum.setText(smokeSummary.getOnlineSmokeNumber()+"");
+        offlineNum.setText(smokeSummary.getLossSmokeNumber()+"");
     }
 }

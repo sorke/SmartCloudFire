@@ -2,6 +2,7 @@ package com.smart.cloud.fire.mvp.fragment.ShopInfoFragment;
 
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.ShopType;
+import com.smart.cloud.fire.global.SmokeSummary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,4 +32,6 @@ public interface ShopInfoFragmentView {
     void getChoiceArea(Area area);
 
     void getChoiceShop(ShopType shopType);
+
+    void getSmokeSummary(SmokeSummary smokeSummary);
 }

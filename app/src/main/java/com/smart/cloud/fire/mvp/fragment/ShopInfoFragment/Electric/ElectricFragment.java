@@ -23,7 +23,8 @@ import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
-import com.smart.cloud.fire.mvp.LineChart.LineChartActivity;
+import com.smart.cloud.fire.global.SmokeSummary;
+import com.smart.cloud.fire.mvp.electric.ElectricActivity;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragmentPresenter;
@@ -155,7 +156,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         electricFragmentAdapter.setOnItemClickListener(new ElectricFragmentAdapter.OnRecyclerViewItemClickListener(){
             @Override
             public void onItemClick(View view, Smoke data){
-                Intent intent = new Intent(mContext, LineChartActivity.class);
+                Intent intent = new Intent(mContext, ElectricActivity.class);
                 startActivity(intent);
             }
         });
@@ -209,6 +210,11 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getChoiceShop(ShopType shopType) {
+    }
+
+    @Override
+    public void getSmokeSummary(SmokeSummary smokeSummary) {
+
     }
 
     @Override

@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.smart.cloud.fire.adapter.ShopCameraAdapter;
 import com.smart.cloud.fire.adapter.ShopSmokeAdapter;
 import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
+import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragmentPresenter;
@@ -96,30 +96,31 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
                 page = "1";
                 list.clear();
                 mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", "",true,OffLineDevFragment.this);
+                mvpPresenter.getSmokeSummary(userID,privilege+"","");
             }
         });
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (research) {
-                    if(shopSmokeAdapter!=null){
-                        shopSmokeAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
-                    }
-                    return;
-                }
-                if(shopSmokeAdapter==null){
-                    shopSmokeAdapter = new ShopSmokeAdapter(mContext,null,mShopInfoFragmentPresenter);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (research) {
+//                    if(shopSmokeAdapter!=null){
+//                        shopSmokeAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
+//                    }
+//                    return;
+//                }
+//                if(shopSmokeAdapter==null){
+//                    shopSmokeAdapter = new ShopSmokeAdapter(mContext,null,mShopInfoFragmentPresenter);
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+//            }
+//        });
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -184,6 +185,11 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
 
     @Override
     public void getChoiceShop(ShopType shopType) {
+
+    }
+
+    @Override
+    public void getSmokeSummary(SmokeSummary smokeSummary) {
 
     }
 

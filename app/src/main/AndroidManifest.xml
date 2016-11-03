@@ -168,6 +168,11 @@
             android:name="com.smart.cloud.fire.mvp.LineChart.LineChartActivity"
             android:label="@string/line_chart_activity"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name="com.smart.cloud.fire.mvp.electric.ElectricActivity"
+            android:label="@string/line_chart_activity"
+            android:theme="@style/AppTheme" />
         <service
             android:name="com.smart.cloud.fire.service.DaemonService"
             android:process="com.example.maat.daemon"/>
