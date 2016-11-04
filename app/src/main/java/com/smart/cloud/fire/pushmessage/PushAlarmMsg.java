@@ -44,6 +44,7 @@ public class PushAlarmMsg implements Serializable{
     private String principal1Phone;
     private String principal2;
     private String principal2Phone;
+    private int alarmFamily;
 
     public String getAddress() {
         return address;
@@ -179,5 +180,13 @@ public class PushAlarmMsg implements Serializable{
 
     public void setPrincipal2Phone(String principal2Phone) {
         this.principal2Phone = principal2Phone;
+    }
+
+    public int getAlarmFamily() {
+        return alarmFamily;
+    }
+
+    public void setAlarmFamily(int alarmFamily) {
+        this.alarmFamily = alarmFamily;
     }
 }

@@ -61,6 +61,7 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
     private Context mContext;
     private PushAlarmMsg mPushAlarmMsg;
     private int TIME_OUT = 20;
+    private String alarmMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
         ButterKnife.bind(this);
         mContext = this;
         mPushAlarmMsg = (PushAlarmMsg) getIntent().getExtras().getSerializable("mPushAlarmMsg");
+        alarmMsg = getIntent().getExtras().getString("alarmMsg");
         init();
         regFilter();
     }
@@ -103,24 +105,26 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
         smokeMarkPhoneTv.setText(mPushAlarmMsg.getPrincipal2Phone());
         alarmInfo.setText(mPushAlarmMsg.getPlaceAddress()+mPushAlarmMsg.getAddress());
         alarmTime.setText(mPushAlarmMsg.getAlarmTime());
-        int alarmType = mPushAlarmMsg.getAlarmType();
         int devType = mPushAlarmMsg.getDeviceType();
-        if(devType==1){
-            if(alarmType==202) {
+        switch (devType){
+            case 1:
                 alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
                 mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
-                mAlarmType.setText("发生火灾");
-            }else{
-                alarmFkImg.setBackgroundResource(R.drawable.allarm_ddy_bg_selector);
-                mAlarmType.setTextColor(getResources().getColor(R.color.ddy_color_text));
-                mAlarmType.setText("烟感电量低，请更换电池");
-            }
-        }else{
-            alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
-            mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
-            mAlarmType.setText("燃气报警");
+                mAlarmType.setText(alarmMsg);
+                break;
+            case 2:
+                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
+                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
+                mAlarmType.setText(alarmMsg);
+                break;
+            case 5:
+                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
+                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
+                mAlarmType.setText(alarmMsg);
+                break;
+            default:
+                break;
         }
-
         alarmInit();
         RxView.clicks(alarmLeadToBtn).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
             @Override

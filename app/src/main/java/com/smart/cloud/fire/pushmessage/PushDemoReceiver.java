@@ -49,68 +49,97 @@ public class PushDemoReceiver extends BroadcastReceiver {
                     String msg = new String(payload);
                     try {
                         JSONObject dataJson = new JSONObject(msg);
-                        int alarmType = dataJson.getInt("alarmType");
-                        switch (alarmType){
-                            case 202://火警
-                            case 206://欠压
-                                PushAlarmMsg mPushAlarmMsg = new PushAlarmMsg();
-                                mPushAlarmMsg.setAddress(dataJson.getString("address"));
-                                mPushAlarmMsg.setAlarmType(dataJson.getInt("alarmType"));
-                                mPushAlarmMsg.setAreaId(dataJson.getString("areaId"));
-                                mPushAlarmMsg.setLatitude(Double.parseDouble(dataJson.getString("latitude")));
-                                mPushAlarmMsg.setLongitude(Double.parseDouble(dataJson.getString("longitude")));
-                                mPushAlarmMsg.setName(dataJson.getString("name"));
-                                mPushAlarmMsg.setPlaceAddress(dataJson.getString("placeAddress"));
-                                mPushAlarmMsg.setIfDealAlarm(dataJson.getInt("ifDealAlarm"));
-                                mPushAlarmMsg.setPrincipal1(dataJson.getString("principal1"));
-                                mPushAlarmMsg.setPlaceType(dataJson.getString("placeType"));
-                                mPushAlarmMsg.setPrincipal1Phone(dataJson.getString("principal1Phone"));
-                                mPushAlarmMsg.setPrincipal2(dataJson.getString("principal2"));
-                                mPushAlarmMsg.setPrincipal2Phone(dataJson.getString("principal2Phone"));
-                                mPushAlarmMsg.setAlarmTime(dataJson.getString("alarmTime"));
-                                mPushAlarmMsg.setDeviceType(dataJson.getInt("deviceType"));
+                        int deviceType = dataJson.getInt("deviceType");
+                        switch (deviceType){
+                            case 1://烟感
+                            case 2://燃气
                                 String message;
-                                if(alarmType==202) {
-                                    message="发生火灾";
+                                int alarmType = dataJson.getInt("alarmType");
+                                if(deviceType==1){
+                                    if(alarmType==202) {
+                                        message="发生火灾";
+                                    }else{
+                                        message="烟感电量低，请更换电池";
+                                    }
                                 }else{
-                                    message="烟感电量低，请更换电池";
+                                    message="燃气发生泄漏";
                                 }
+                                PushAlarmMsg mPushAlarmMsg = jsJson(dataJson);
                                 Random random1 = new Random();
                                 showDownNotification(context,message,mPushAlarmMsg,random1.nextInt(),AlarmActivity.class);
                                 Intent intent1 = new Intent(context, AlarmActivity.class);
                                 intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent1.putExtra("mPushAlarmMsg",mPushAlarmMsg);
+                                intent1.putExtra("alarmMsg",message);
                                 context.startActivity(intent1);
                                 break;
-                            case 3://一键报警
-                                GetUserAlarm getUserAlarm = new GetUserAlarm();
-                                getUserAlarm.setAddress(dataJson.getString("address"));
-                                getUserAlarm.setAlarmSerialNumber(dataJson.getString("alarmSerialNumber"));
-                                getUserAlarm.setAlarmTime(dataJson.getString("alarmTime"));
-                                getUserAlarm.setAreaName(dataJson.getString("areaName"));
-                                getUserAlarm.setCallerId(dataJson.getString("callerId"));
-                                getUserAlarm.setInfo(dataJson.getString("info"));
-                                getUserAlarm.setLatitude(dataJson.getString("latitude"));
-                                getUserAlarm.setLongitude(dataJson.getString("longitude"));
-                                getUserAlarm.setSmoke(dataJson.getString("smoke"));
-                                getUserAlarm.setCallerName(dataJson.getString("callerName"));
-                                Random random3 = new Random();
-                                showDownNotification(context,"您收到一条紧急报警消息",getUserAlarm,random3.nextInt(),UserAlarmActivity.class);
-                                Intent intent3 = new Intent(context, UserAlarmActivity.class);
-                                intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent3.putExtra("mPushAlarmMsg",getUserAlarm);
-                                context.startActivity(intent3);
+                            case 5://电气
+                                PushAlarmMsg pushAlarmMsg1 = jsJson(dataJson);
+                                int alarmFamily = pushAlarmMsg1.getAlarmFamily();
+                                String alarmMsg = null;
+                                switch (alarmFamily){
+                                    case 35://电气报警
+                                        int alarmType1 = pushAlarmMsg1.getAlarmType();
+                                        switch (alarmType1){
+                                            case 1://1漏电流报警
+                                                alarmMsg = "电气发生：漏电流报警";
+                                                break;
+                                            case 2://2温度报警
+                                                alarmMsg = "电气发生：温度报警";
+                                                break;
+                                            case 3://3欠压报警
+                                                alarmMsg = "电气发生：欠压报警";
+                                                break;
+                                            case 4://4高电压报警
+                                                alarmMsg = "电气发生：高电压报警";
+                                                break;
+                                            case 5://5高电流报警
+                                                alarmMsg = "电气发生：高电流报警";
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                Random random = new Random();
+                                showDownNotification(context,alarmMsg,pushAlarmMsg1,random.nextInt(),AlarmActivity.class);
+                                Intent intent2 = new Intent(context, AlarmActivity.class);
+                                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent2.putExtra("mPushAlarmMsg",pushAlarmMsg1);
+                                intent2.putExtra("alarmMsg",alarmMsg);
+                                context.startActivity(intent2);
                                 break;
-                            case 4://报警回复
-                                DisposeAlarm disposeAlarm = new DisposeAlarm();
-                                disposeAlarm.setAlarmType(alarmType);
-                                disposeAlarm.setPolice(dataJson.getString("police"));
-                                disposeAlarm.setTime(dataJson.getString("time"));
-                                disposeAlarm.setPoliceName(dataJson.getString("policeName"));
-                                Random random4 = new Random();
-                                showDownNotification(context,disposeAlarm.getPoliceName()+"警员已处理您的消息",null,random4.nextInt(),null);
-                                break;
-                            default:
+                            case 6://一键报警和报警回复
+                                int alarmType1 = dataJson.getInt("alarmType");
+                                if(alarmType1==3){
+                                    GetUserAlarm getUserAlarm = new GetUserAlarm();
+                                    getUserAlarm.setAddress(dataJson.getString("address"));
+                                    getUserAlarm.setAlarmSerialNumber(dataJson.getString("alarmSerialNumber"));
+                                    getUserAlarm.setAlarmTime(dataJson.getString("alarmTime"));
+                                    getUserAlarm.setAreaName(dataJson.getString("areaName"));
+                                    getUserAlarm.setCallerId(dataJson.getString("callerId"));
+                                    getUserAlarm.setInfo(dataJson.getString("info"));
+                                    getUserAlarm.setLatitude(dataJson.getString("latitude"));
+                                    getUserAlarm.setLongitude(dataJson.getString("longitude"));
+                                    getUserAlarm.setSmoke(dataJson.getString("smoke"));
+                                    getUserAlarm.setCallerName(dataJson.getString("callerName"));
+                                    Random random3 = new Random();
+                                    showDownNotification(context,"您收到一条紧急报警消息",getUserAlarm,random3.nextInt(),UserAlarmActivity.class);
+                                    Intent intent3 = new Intent(context, UserAlarmActivity.class);
+                                    intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent3.putExtra("mPushAlarmMsg",getUserAlarm);
+                                    context.startActivity(intent3);
+                                }else{
+                                    DisposeAlarm disposeAlarm = new DisposeAlarm();
+                                    disposeAlarm.setAlarmType(alarmType1);
+                                    disposeAlarm.setPolice(dataJson.getString("police"));
+                                    disposeAlarm.setTime(dataJson.getString("time"));
+                                    disposeAlarm.setPoliceName(dataJson.getString("policeName"));
+                                    Random random4 = new Random();
+                                    showDownNotification(context,disposeAlarm.getPoliceName()+"警员已处理您的消息",null,random4.nextInt(),null);
+                                }
                                 break;
                         }
 
@@ -132,6 +161,34 @@ public class PushDemoReceiver extends BroadcastReceiver {
                 break;
         }
     }
+
+    private PushAlarmMsg jsJson(JSONObject dataJson) throws JSONException {
+        PushAlarmMsg mPushAlarmMsg = new PushAlarmMsg();
+        mPushAlarmMsg.setAddress(dataJson.getString("address"));
+        mPushAlarmMsg.setAlarmType(dataJson.getInt("alarmType"));
+        mPushAlarmMsg.setAreaId(dataJson.getString("areaId"));
+        mPushAlarmMsg.setLatitude(Double.parseDouble(dataJson.getString("latitude")));
+        mPushAlarmMsg.setLongitude(Double.parseDouble(dataJson.getString("longitude")));
+        mPushAlarmMsg.setName(dataJson.getString("name"));
+        mPushAlarmMsg.setPlaceAddress(dataJson.getString("placeAddress"));
+        mPushAlarmMsg.setIfDealAlarm(dataJson.getInt("ifDealAlarm"));
+        mPushAlarmMsg.setPrincipal1(dataJson.getString("principal1"));
+        mPushAlarmMsg.setPlaceType(dataJson.getString("placeType"));
+        mPushAlarmMsg.setPrincipal1Phone(dataJson.getString("principal1Phone"));
+        mPushAlarmMsg.setPrincipal2(dataJson.getString("principal2"));
+        mPushAlarmMsg.setPrincipal2Phone(dataJson.getString("principal2Phone"));
+        mPushAlarmMsg.setAlarmTime(dataJson.getString("alarmTime"));
+        mPushAlarmMsg.setDeviceType(dataJson.getInt("deviceType"));
+        mPushAlarmMsg.setAlarmFamily(dataJson.getInt("alarmFamily"));
+        try{
+            mPushAlarmMsg.setCamera(dataJson.getJSONObject("camera"));
+        }catch (Exception e){
+        }
+        mPushAlarmMsg.setMac(dataJson.getString("mac"));
+        return mPushAlarmMsg;
+    }
+
+
 
     @SuppressWarnings("deprecation")
     private void showDownNotification(Context context, String message, Serializable mPushAlarmMsg, int id, Class clazz){

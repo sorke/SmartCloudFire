@@ -31,6 +31,7 @@ public class GetUserAlarm implements Serializable {
     private String longitude;
     private String smoke;
     private String callerName;
+    private int deviceType;
 
     public String getAddress() {
         return address;
@@ -118,5 +119,13 @@ public class GetUserAlarm implements Serializable {
 
     public void setCallerName(String callerName) {
         this.callerName = callerName;
+    }
+
+    public int getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(int deviceType) {
+        this.deviceType = deviceType;
     }
 }
