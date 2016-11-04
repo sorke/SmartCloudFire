@@ -87,7 +87,7 @@ public class ElectricActivity extends MvpActivity<ElectricPresenter> implements 
     private List<Electric> testData(){
         List<Electric> electricList = new ArrayList<>();
         for(int i=0;i<10;i++){
-            Electric electric = new Electric("电压"+i, "220V", "230"+i+"V", "");
+            Electric electric = new Electric("电压"+i, "220V", "23"+i+"V", "");
             electricList.add(electric);
         }
         return electricList;

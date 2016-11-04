@@ -5,15 +5,18 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.smart.cloud.fire.base.ui.MvpActivity;
+import com.smart.cloud.fire.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fire.cloud.smart.com.smartcloudfire.R;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -43,13 +46,13 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private boolean isHasPoints = true;                 //是否显示线上的节点
     private boolean isFilled = true;                   //是否填充线下方区域
     private boolean isHasPointsLabels = false;          //是否显示节点上的标签信息
-    private boolean isCubic = true;                    //是否是立体的
+    private boolean isCubic = false;                    //是否是立体的
     private boolean isPointsHasSelected = false;        //设置节点点击后效果(消失/显示标签)
     private boolean isPointsHaveDifferentColor;         //节点是否有不同的颜色
 
     /*=========== 其他相关 ==========*/
     private ValueShape pointsShape = ValueShape.CIRCLE; //点的形状(圆/方/菱形)
-    float[][] randomNumbersTab = new float[maxNumberOfLines][numberOfPoints]; //将线上的点放在一个数组中
+    int[][] randomNumbersTab = new int[maxNumberOfLines][numberOfPoints]; //将线上的点放在一个数组中
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +81,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
          * 类似于ListView中数据变化时，只需notifyDataSetChanged()，而不用重新setAdapter()
          */
         mLineChartView.setViewportCalculationEnabled(false);
+        mLineChartView.setZoomEnabled(false);
     }
 
     /**
@@ -86,7 +90,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private void setPointsValues() {
         for (int i = 0; i < maxNumberOfLines; ++i) {
             for (int j = 0; j < numberOfPoints; ++j) {
-                randomNumbersTab[i][j] = (float) Math.random() * 100f;
+                randomNumbersTab[i][j] = (new Random().nextInt(20) + 220);
             }
         }
     }
@@ -96,15 +100,17 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
      */
     private void setLinesDatas() {
         List<Line> lines = new ArrayList<>();
+        ArrayList<AxisValue> axisValuesX = new ArrayList<>();
         //循环将每条线都设置成对应的属性
         for (int i = 0; i < numberOfLines; ++i) {
             //节点的值
             List<PointValue> values = new ArrayList<>();
+            long current = System.currentTimeMillis();
             for (int j = 0; j < numberOfPoints; ++j) {
                 values.add(new PointValue(j, randomNumbersTab[i][j]));
+                axisValuesX.add(new AxisValue(j).setLabel(formatMinutes(j,current)));
             }
 
-            /*========== 设置线的一些属性 ==========*/
             Line line = new Line(values);               //根据值来创建一条线
             line.setColor(ChartUtils.COLORS[i]);        //设置线的颜色
             line.setShape(pointsShape);                 //设置点的形状
@@ -122,8 +128,21 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             lines.add(line);
         }
 
+        Axis axisX = new Axis().setHasLines(true);                    //X轴
+        Axis axisY = new Axis().setHasLines(true);  //Y轴
+        axisX.setName("时间(min)");                //设置名称
+        axisY.setName("电压值(V)");
+        axisX.setTextColor(Color.GRAY);//X轴灰色
+        axisX.setMaxLabelChars(3);
+        axisX.setValues(axisValuesX);
+        axisY.setTextColor(Color.GRAY);
+
         mLineData = new LineChartData(lines);                      //将所有的线加入线数据类中
-        mLineData.setBaseValue(Float.NEGATIVE_INFINITY);           //设置基准数(大概是数据范围)
+        mLineData.setBaseValue(Float.NaN);
+        mLineData.setAxisXBottom(axisX);            //设置X轴位置 下方
+        mLineData.setAxisYLeft(axisY);
+        mLineData.setValueLabelBackgroundColor(Color.BLUE);     //设置数据背景颜色
+        //设置基准数(大概是数据范围)
         /* 其他的一些属性方法 可自行查看效果
          * mLineData.setValueLabelBackgroundAuto(true);            //设置数据背景是否跟随节点颜色
          * mLineData.setValueLabelBackgroundColor(Color.BLUE);     //设置数据背景颜色
@@ -133,37 +152,24 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
          * mLineData.setValueLabelTypeface(Typeface.MONOSPACE);    //设置数据文字样式
         */
 
-        //如果显示坐标轴
-        if (isHasAxes) {
-            Axis axisX = new Axis();                    //X轴
-            Axis axisY = new Axis().setHasLines(true);  //Y轴
-            axisX.setTextColor(Color.GRAY);//X轴灰色
-            axisX.setMaxLabelChars(3);
-            axisY.setTextColor(Color.GRAY);             //Y轴灰色
-            //setLineColor()：此方法是设置图表的网格线颜色 并不是轴本身颜色
-            //如果显示名称
-            if (isHasAxesNames) {
-                axisX.setName("Axis X");                //设置名称
-                axisY.setName("Axis Y");
-            }
-            mLineData.setAxisXBottom(axisX);            //设置X轴位置 下方
-            mLineData.setAxisYLeft(axisY);              //设置Y轴位置 左边
-        } else {
-            mLineData.setAxisXBottom(null);
-            mLineData.setAxisYLeft(null);
-        }
         mLineChartView.setLineChartData(mLineData);    //设置图表控件
+    }
+
+    private String formatMinutes(int i,long current) {
+        long hisTime = 15*60*1000;
+        String timeStr = Utils.ConvertTimeByLong(current-hisTime*(11-i));
+        return timeStr;
     }
 
     /**
      * 重点方法，计算绘制图表
      */
     private void resetViewport() {
-        //创建一个图标视图 大小为控件的最大大小
+        //创建一个图标视图,大小为控件的最大大小
         final Viewport v = new Viewport(mLineChartView.getMaximumViewport());
         v.left = 0;                             //坐标原点在左下
         v.bottom = 0;
-        v.top = 100;                            //最高点为100
+        v.top = 400;                            //最高点为100
         v.right = numberOfPoints - 1;           //右边为点 坐标从0开始 点号从1 需要 -1
         mLineChartView.setMaximumViewport(v);   //给最大的视图设置 相当于原图
         mLineChartView.setCurrentViewport(v);   //给当前的视图设置 相当于当前展示的图
@@ -175,7 +181,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private class ValueTouchListener implements LineChartOnValueSelectListener {
         @Override
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
-            Toast.makeText(LineChartActivity.this, "选中第 " + ((int) value.getX() + 1) + " 个节点", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LineChartActivity.this, "电压值为: " + (int)value.getY(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

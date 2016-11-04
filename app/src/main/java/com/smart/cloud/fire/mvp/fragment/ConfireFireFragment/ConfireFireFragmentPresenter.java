@@ -66,6 +66,8 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
         mvpView.showLoading();
         if(smokeMac.startsWith("R")){
             smokeMac = smokeMac.replace("R","");
+        }else if(smokeMac.startsWith("Q")){
+            smokeMac = smokeMac.replace("Q","");
         }
         if(smokeMac!=null&&smokeMac.length()>0){
             Observable mObservable = apiStores1.getOneSmoke(userId,smokeMac,privilege);
@@ -151,6 +153,9 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
         if(smokeMac.startsWith("R")){
             smokeMac = smokeMac.replace("R","");
             deviceType="2";
+        }else if(smokeMac.startsWith("Q")){
+            smokeMac = smokeMac.replace("Q","");
+            deviceType="5";
         }else{
             deviceType="1";
         }

@@ -89,7 +89,7 @@ public class Utils {
     }
 
     public static String ConvertTimeByLong(long time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date(time);
         return sdf.format(date);
     }

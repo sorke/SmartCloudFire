@@ -15,6 +15,7 @@ public class SharedPreferencesManager {
     public static final String SP_FILE_GWELL = "gwell";
     public static final String KEY_RECENTNAME = "recentName";
     public static final String KEY_RECENTPASS = "recentPass";
+    public static final String USER_NAME = "userName";
     public static final String CID= "user_cid";
 
     public static final String KEY_RECENTNAME_ORDER = "recentName_email";

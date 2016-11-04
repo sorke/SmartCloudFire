@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.view.RxView;
 import com.smart.cloud.fire.base.ui.MvpActivity;
 import com.smart.cloud.fire.global.ConstantValues;
+import com.smart.cloud.fire.mvp.login.model.LoginModel;
 import com.smart.cloud.fire.mvp.login.presenter.LoginPresenter;
 import com.smart.cloud.fire.mvp.login.view.LoginView;
 import com.smart.cloud.fire.mvp.main.MainActivity;
@@ -87,11 +88,15 @@ public class LoginActivity extends MvpActivity<LoginPresenter> implements LoginV
     }
 
     @Override
-    public void getDataSuccess() {
+    public void getDataSuccess(LoginModel model) {
         new IfSetTag().ifSetTag(LoginActivity.this,userId);
         String cid = SharedPreferencesManager.getInstance().getData(mContext,
                 SharedPreferencesManager.SP_FILE_GWELL,
                 SharedPreferencesManager.CID);
+        SharedPreferencesManager.getInstance().putData(mContext,
+                SharedPreferencesManager.SP_FILE_GWELL,
+                SharedPreferencesManager.USER_NAME,
+                model.getName());
         String projectName = "scfire";
         mvpPresenter.bindAlias(userId,cid,projectName);
     }

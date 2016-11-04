@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.smart.cloud.fire.base.ui.MvpActivity;
+import com.smart.cloud.fire.mvp.login.model.LoginModel;
 import com.smart.cloud.fire.mvp.login.presenter.LoginPresenter;
 import com.smart.cloud.fire.mvp.login.view.LoginView;
 import com.smart.cloud.fire.mvp.main.MainActivity;
+import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
 
 import fire.cloud.smart.com.smartcloudfire.R;
@@ -27,7 +29,11 @@ public class SplashActivity extends MvpActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void getDataSuccess() {
+    public void getDataSuccess(LoginModel model) {
+        SharedPreferencesManager.getInstance().putData(mContext,
+                SharedPreferencesManager.SP_FILE_GWELL,
+                SharedPreferencesManager.USER_NAME,
+                model.getName());
         Intent intent = new Intent(mContext, MainActivity.class);
         startActivity(intent);
         finish();

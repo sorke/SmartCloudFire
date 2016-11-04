@@ -60,7 +60,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                             switch (errorCode){
                                 case 0:
                                     MyApp.app.setPrivilege(model.getPrivilege());
-                                    mvpView.getDataSuccess();
+                                    mvpView.getDataSuccess(model);
                                     break;
                                 default:
                                     if(type==0){

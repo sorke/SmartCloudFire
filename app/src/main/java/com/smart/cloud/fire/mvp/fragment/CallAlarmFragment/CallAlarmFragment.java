@@ -52,6 +52,7 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
     private Smoke smoke;
     private String userID;
     private int privilege;
+    private String userName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +67,10 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
     public boolean OnLongClick(View view) {
         switch (view.getId()) {
             case R.id.call_alarm_image:
-                mvpPresenter.countdown(5,smoke,userID,privilege+"","张三向您发出求救信息，请快速处理");
+                if(userName==null||userName.length()<=0){
+                    userName = userID;
+                }
+                mvpPresenter.countdown(5,smoke,userID,privilege+"",userName+"向您发出求救信息，请快速处理");
                 callAlarmImage.setLongClickable(false);
                 cancelAlarm.setBackgroundResource(R.drawable.cancel_alarm_btn);
                 cancelAlarm.setClickable(true);
@@ -97,6 +101,9 @@ public class CallAlarmFragment extends MvpFragment<CallAlarmFragmentPresenter> i
                 SharedPreferencesManager.SP_FILE_GWELL,
                 SharedPreferencesManager.KEY_RECENTNAME);
         privilege = MyApp.app.getPrivilege();
+        userName = SharedPreferencesManager.getInstance().getData(mContext,
+                SharedPreferencesManager.SP_FILE_GWELL,
+                SharedPreferencesManager.USER_NAME);
         mvpPresenter.getAllSmoke(userID,privilege+"");
     }
 
