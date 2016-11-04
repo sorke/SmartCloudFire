@@ -14,7 +14,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -150,9 +149,12 @@ public interface ApiStores {
                                            @Query("placeTypeId") String placeTypeId);
 
     @Multipart
-    @POST("UploadServlet")
-    Observable<ResponseBody> upload(@PartMap Map<String, RequestBody> params,@Part("areaId") String areaId);
+    @POST("uploadServlet")
+    Observable<ResponseBody> upload(@PartMap Map<String, RequestBody> params,@Query("data") String areaId,@Query("title") String title);
     //    http://192.168.4.120:8080/UploadServlet/downloadfile?filename=
-    @GET("downloadfile")
+    @GET("downloadFile")
     Observable<ResponseBody> downloadFileWithDynamicUrlSync(@Query("filename") String fileUrl);
+
+    @POST("pushToSingleServlet")
+    Observable<ResponseBody> pushToSingleServlet(@Query("alias") String alias,@Query("content") String content);
 }

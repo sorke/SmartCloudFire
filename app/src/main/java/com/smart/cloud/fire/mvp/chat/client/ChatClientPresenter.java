@@ -146,7 +146,23 @@ public class ChatClientPresenter extends BasePresenter<ChatClientView>{
                 null, null, null,0, 0);
         boolean result = chatDBManager.insert(mChatBean);
         //发送消息到服务器
-        //... RecentItem(long id, String userId, int headImg, String name,String message, int newNum, long time, int msgType, int voiceTime)
+        Observable mObservable = apiStores3.pushToSingleServlet("13622215085",content);
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<Observable<ResponseBody>>() {
+            @Override
+            public void onSuccess(Observable<ResponseBody> model) {
+
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        }));
         //保存最近一条消息
         RecentItem recentItem = new RecentItem();
         recentItem.setUserId("13622215085");
@@ -238,7 +254,7 @@ public class ChatClientPresenter extends BasePresenter<ChatClientView>{
 //        RequestBody fileBody2 = RequestBody.create(MediaType.parse(mimeType2), file1);
         params.put("file\"; filename=\"" + file1.getName() + "", fileBody);
 //        params.put("file\"; filename=\"" + file1.getName() + "", fileBody2);
-        Observable mObservable = apiStores3.upload(params,"江苏旷达分开");
+        Observable mObservable = apiStores3.upload(params,"江苏旷达分开","图片1");
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<Response<ResponseBody>>() {
             @Override
             public void onSuccess(Response<ResponseBody> response) {
