@@ -49,13 +49,14 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="25dp">
         <TextView
             android:id="@+id/local_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:layout_marginLeft="10dp"
+            android:textSize="12sp"
             android:layout_gravity="center_vertical"
             android:text="驾驶京东方看见爱打飞机卡的"/>
         <TextView
@@ -68,7 +69,7 @@
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:background="@drawable/icon_bmap_bg" />
     <RelativeLayout
         android:layout_width="match_parent"

@@ -48,6 +48,7 @@ import com.smart.cloud.fire.mvp.chat.common.widget.PullToRefreshLayout;
 import com.smart.cloud.fire.mvp.chat.common.widget.PullToRefreshListView;
 import com.smart.cloud.fire.mvp.chat.common.widget.PullToRefreshView;
 import com.smart.cloud.fire.mvp.chat.common.widget.WrapContentLinearLayoutManager;
+import com.smart.cloud.fire.utils.SharedPreferencesManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -129,6 +130,8 @@ public class ChatClientActivity extends MvpActivity<ChatClientPresenter> impleme
     private int page = 0;
     private int number = 10;
     private int position;
+    private String userID;
+    private int privilege;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +139,10 @@ public class ChatClientActivity extends MvpActivity<ChatClientPresenter> impleme
         setContentView(R.layout.activity_client);
         ButterKnife.bind(this);
         mContext = this;
+        userID = SharedPreferencesManager.getInstance().getData(mContext,
+                SharedPreferencesManager.SP_FILE_GWELL,
+                SharedPreferencesManager.KEY_RECENTNAME);
+        privilege = MyApp.app.getPrivilege();
         setupActivityComponent(MyApp.get(this).getAppComponent());
         chatClientPresenter.startLocation();
         init();

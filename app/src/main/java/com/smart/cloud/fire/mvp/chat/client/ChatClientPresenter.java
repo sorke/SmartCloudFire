@@ -137,6 +137,32 @@ public class ChatClientPresenter extends BasePresenter<ChatClientView>{
         mvpView.sendMsgResult(mChatBean);
         uploadTest(filePath);
     }
+
+    /**
+     * 接收语音
+     */
+    float seconds = 0.0f;
+    String voiceFilePath = "";
+
+    private void receriveVoiceText(final float seconds, final String filePath) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                ChatMessageBean tbub = new ChatMessageBean();
+//                tbub.setUserName(userName);
+//                String time = returnTime();
+//                tbub.setTime(time);
+//                tbub.setUserVoiceTime(seconds);
+//                tbub.setUserVoicePath(filePath);
+//                tbAdapter.unReadPosition.add(tblist.size() + "");
+//                tbub.setType(ChatListViewAdapter.FROM_USER_VOICE);
+//                tblist.add(tbub);
+//                sendMessageHandler.sendEmptyMessage(RECERIVE_OK);
+//                mChatDbManager.insert(tbub);
+            }
+        }).start();
+    }
+
     /**
      * 发送文字
      */
@@ -150,17 +176,13 @@ public class ChatClientPresenter extends BasePresenter<ChatClientView>{
         addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<Observable<ResponseBody>>() {
             @Override
             public void onSuccess(Observable<ResponseBody> model) {
-
             }
 
             @Override
             public void onFailure(int code, String msg) {
-
             }
-
             @Override
             public void onCompleted() {
-
             }
         }));
         //保存最近一条消息
@@ -175,6 +197,29 @@ public class ChatClientPresenter extends BasePresenter<ChatClientView>{
     }
 
     /**
+     * 接收文字
+     */
+    String content = "";
+
+    private void receriveMsgText(final String content) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                String message = "回复：" + content;
+//                ChatMessageBean tbub = new ChatMessageBean();
+//                tbub.setUserName(userName);
+//                String time = returnTime();
+//                tbub.setUserContent(message);
+//                tbub.setTime(time);
+//                tbub.setType(ChatListViewAdapter.FROM_USER_MSG);
+//                tblist.add(tbub);
+//                sendMessageHandler.sendEmptyMessage(RECERIVE_OK);
+//                mChatDbManager.insert(tbub);
+            }
+        }).start();
+    }
+
+    /**
      * 发送图片
      */
     int i = 0;
@@ -185,6 +230,30 @@ public class ChatClientPresenter extends BasePresenter<ChatClientView>{
         chatDBManager.insert(mChatBean);
         mvpView.sendMsgResult(mChatBean);
         uploadTest(filePath);
+    }
+
+    /**
+     * 接收图片
+     */
+    String filePath = "";
+
+    private void receriveImageText(final String filePath) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                ChatMessageBean tbub = new ChatMessageBean();
+//                tbub.setUserName(userName);
+//                String time = returnTime();
+//                tbub.setTime(time);
+//                tbub.setImageLocal(filePath);
+//                tbub.setType(ChatListViewAdapter.FROM_USER_IMG);
+//                tblist.add(tbub);
+//                imageList.add(tblist.get(tblist.size() - 1).getImageLocal());
+//                imagePosition.put(tblist.size() - 1, imageList.size() - 1);
+//                sendMessageHandler.sendEmptyMessage(RECERIVE_OK);
+//                mChatDbManager.insert(tbub);
+            }
+        }).start();
     }
 
     public int loadRecords(int number){

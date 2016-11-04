@@ -111,6 +111,7 @@ public class ChatListViewAdapter extends BaseAdapter {
         @Override
         public void handleMessage(Message msg) {
             ChatListViewAdapter tbAdapter = mTbAdapter.get();
+
             if (tbAdapter != null) {
             }
         }
