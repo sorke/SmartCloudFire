@@ -1,5 +1,6 @@
 package com.smart.cloud.fire.retrofit;
 
+import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.mvp.fragment.ConfireFireFragment.ConfireFireModel;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpAreaResult;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
@@ -141,5 +142,10 @@ public interface ApiStores {
     Observable<HttpError> getNeedLossSmoke(@Query("userId") String userId, @Query("privilege") String privilege,
                                            @Query("areaId") String areaId,@Query("page") String page,
                                            @Query("placeTypeId") String placeTypeId);
+
+    @GET("getSmokeSummary")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<SmokeSummary> getSmokeSummary(@Query("userId") String userId, @Query("privilege") String privilege,
+                                             @Query("areaId") String areaId);
 
 }

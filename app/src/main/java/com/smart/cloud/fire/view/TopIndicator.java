@@ -31,14 +31,14 @@ import fire.cloud.smart.com.smartcloudfire.R;
 public class TopIndicator extends RelativeLayout {
 
     private static final String TAG = "TopIndicator";
-    private int[] mDrawableIds = new int[] { R.drawable.yg_dh_tb_all,
+    private int[] mDrawableIds = new int[] { R.drawable.yg_dh_tb_all,R.drawable.yg_dh_tb_dq,
             R.drawable.yg_dh_tb_zx, R.drawable.yg_dh_tb_lx};
     private List<CheckedTextView> mCheckedList = new ArrayList<>();
     private List<LinearLayout> mLinearLayout = new ArrayList<>();
     private List<TextView> mTextView = new ArrayList<>();
     private List<View> mViewList = new ArrayList<>();
     // 顶部菜单的文字数组
-    private CharSequence[] mLabels = new CharSequence[] { "探测器", "视频", "故障"};
+    private CharSequence[] mLabels = new CharSequence[] { "探测器", "电气火灾","视频", "故障"};
     private int mScreenWidth;
     private int mUnderLineWidth;
     private View mUnderLine;
@@ -77,9 +77,7 @@ public class TopIndicator extends RelativeLayout {
         LinearLayout.LayoutParams topLayoutParams = new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         topLayout.setOrientation(LinearLayout.HORIZONTAL);
-
         LayoutInflater inflater = LayoutInflater.from(context);
-
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.width = mUnderLineWidth;
@@ -88,10 +86,8 @@ public class TopIndicator extends RelativeLayout {
         int size = mLabels.length;
         for (int i = 0; i < size; i++) {
             final int index = i;
-
             final View view = inflater.inflate(R.layout.top_indicator_item,
                     null);
-
             final MyCheckedTextView itemName = (MyCheckedTextView) view
                     .findViewById(R.id.item_name);
             final LinearLayout itemLin = (LinearLayout) view
@@ -101,7 +97,7 @@ public class TopIndicator extends RelativeLayout {
             itemName.setCompoundDrawablesWithIntrinsicBounds(context
                             .getResources().getDrawable(mDrawableIds[i]), null, null,
                     null);
-            itemName.setCompoundDrawablePadding(20);
+            itemName.setCompoundDrawablePadding(5);
             itemName.setText(mLabels[i]);
             topLayout.addView(view, params);
             //topLayout.addView(mUnderLine, underLineParams);
