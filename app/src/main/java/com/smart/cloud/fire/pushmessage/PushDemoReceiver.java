@@ -78,26 +78,16 @@ public class PushDemoReceiver extends BroadcastReceiver {
                                 int alarmFamily = pushAlarmMsg1.getAlarmFamily();
                                 String alarmMsg = null;
                                 switch (alarmFamily){
-                                    case 35://电气报警
+                                    case 43://电气报警
                                         int alarmType1 = pushAlarmMsg1.getAlarmType();
-                                        switch (alarmType1){
-                                            case 1://1漏电流报警
-                                                alarmMsg = "电气发生：漏电流报警";
-                                                break;
-                                            case 2://2温度报警
-                                                alarmMsg = "电气发生：温度报警";
-                                                break;
-                                            case 3://3欠压报警
-                                                alarmMsg = "电气发生：欠压报警";
-                                                break;
-                                            case 4://4高电压报警
-                                                alarmMsg = "电气发生：高电压报警";
-                                                break;
-                                            case 5://5高电流报警
-                                                alarmMsg = "电气发生：高电流报警";
-                                                break;
-                                            default:
-                                                break;
+                                        if(alarmType1!=0){
+                                            alarmMsg = "电气探测器发出：过压报警";
+                                        }
+                                        break;
+                                    case 45://电气报警
+                                        int alarmType2 = pushAlarmMsg1.getAlarmType();
+                                        if(alarmType2!=0){
+                                            alarmMsg = "电气探测器发出：过流报警";
                                         }
                                         break;
                                     default:
@@ -212,6 +202,7 @@ public class PushDemoReceiver extends BroadcastReceiver {
             //通知消息与Intent关联
             Intent it=new Intent(context,clazz);
             it.putExtra("mPushAlarmMsg",mPushAlarmMsg);
+            it.putExtra("alarmMsg",message);
             it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent contentIntent=PendingIntent.getActivity(context, id, it, PendingIntent.FLAG_CANCEL_CURRENT);
             m_builder.setContentIntent(contentIntent);
