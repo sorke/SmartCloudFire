@@ -10,6 +10,9 @@ import com.smart.cloud.fire.mvp.register.view.RegisterView;
 import com.smart.cloud.fire.rxjava.ApiCallback;
 import com.smart.cloud.fire.rxjava.SubscriberCallBack;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
+
+import java.util.Random;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -24,7 +27,9 @@ public class RegisterPresenter  extends BasePresenter<RegisterView> {
     public void getMesageCode(String phoneNo){
         String AppVersion = MyUtils.getBitProcessingVersion();
         mvpView.showLoading();
-        addSubscription(apiStores.getMesageCode("86", phoneNo,AppVersion),
+        Random random = new Random();
+        int value = random.nextInt(4);
+        addSubscription(apiStores[value].getMesageCode("86", phoneNo,AppVersion),
                 new SubscriberCallBack<>(new ApiCallback<RegisterModel>() {
                     @Override
                     public void onSuccess(RegisterModel model) {
@@ -62,10 +67,12 @@ public class RegisterPresenter  extends BasePresenter<RegisterView> {
         final String password = md.getMD5ofStr(pwd);
         final String rePassword = md.getMD5ofStr(rePwd);
         mvpView.showLoading();
-        twoSubscription(apiStores.verifyPhoneCode("86", phoneNo,code),new Func1<RegisterModel, Observable<RegisterModel>>(){
+        Random random = new Random();
+        final int value = random.nextInt(4);
+        twoSubscription(apiStores[value].verifyPhoneCode("86", phoneNo,code),new Func1<RegisterModel, Observable<RegisterModel>>(){
                     @Override
                     public Observable<RegisterModel> call(RegisterModel registerModel) {
-                        return apiStores.register("1","","86",phoneNo,password,rePassword,code,"1");
+                        return apiStores[value].register("1","","86",phoneNo,password,rePassword,code,"1");
                     }
                 },
                 new SubscriberCallBack<>(new ApiCallback<RegisterModel>() {

@@ -19,6 +19,8 @@ import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
 import com.smart.cloud.fire.utils.Utils;
 
+import java.util.Random;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -39,7 +41,9 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         if(type==1){
             mvpView.showLoading();
         }
-        twoSubscription(apiStores.loginYooSee(userid, password, "1", "3", AppVersion), new Func1<LoginModel,Observable<LoginModel>>() {
+        Random random = new Random();
+        int value = random.nextInt(4);
+        twoSubscription(apiStores[value].loginYooSee(userid, password, "1", "3", AppVersion), new Func1<LoginModel,Observable<LoginModel>>() {
             @Override
             public Observable<LoginModel> call(LoginModel loginModel) {
                 if(loginModel.getError_code().equals("0")){
