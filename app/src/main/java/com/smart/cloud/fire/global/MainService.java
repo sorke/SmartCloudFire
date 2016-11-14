@@ -62,6 +62,5 @@ public class MainService extends Service {
         this.startService(ii);
         mMainThread.kill();
         super.onDestroy();
-
     }
 }

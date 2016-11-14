@@ -206,7 +206,9 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                                 UpdateManager.HANDLE_MSG_DOWNING, 0);
                         new Thread() {
                             public void run() {
-                                UpdateManager.getInstance().downloadApk(handler, ConstantValues.Update.SAVE_PATH, ConstantValues.Update.FILE_NAME, downloadPath);
+                                UpdateManager.getInstance().downloadApk(handler,
+                                        ConstantValues.Update.SAVE_PATH,
+                                        ConstantValues.Update.FILE_NAME, downloadPath);
                             }
                         }.start();
                     }
@@ -243,7 +245,6 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         public void handleMessage(Message msg) {
             // TODO Auto-generated method stub
             int value = msg.arg1;
-
             switch (msg.what) {
                 case UpdateManager.HANDLE_MSG_DOWNING:
                     if ((System.currentTimeMillis() - last_time) > 1000) {

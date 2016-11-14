@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import fire.cloud.smart.com.smartcloudfire.R;
 
@@ -25,8 +24,6 @@ public class DaemonService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("hehe", "DaemoService is onStartCommend");
-//        if (isFirst) {
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.mipmap.ic_launcher);
         startForeground(111, builder.build());
@@ -35,23 +32,16 @@ public class DaemonService extends Service {
             public void run() {
                 SystemClock.sleep(1000);
                 stopForeground(true);
-                NotificationManager manager =
-                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 manager.cancel(111);
-
             }
         }).start();
-//            isFirst = false;
-//        }
-//        sendBroadcast(new Intent(this,RemoteBroadcastRecieve.class));
-//        startService(new Intent(this,RemoteService.class));
 
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        Log.i("hehe", "DaemonService is Destroy");
         super.onDestroy();
     }
 }
