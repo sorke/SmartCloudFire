@@ -62,8 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
-                            android:layout_marginLeft="5dp"
-                            android:text="10245845"/>
+                            android:layout_marginLeft="5dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -79,8 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12sp"
-                            android:layout_marginLeft="5dp"
-                            android:text="2016.11.11"/>
+                            android:layout_marginLeft="5dp" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
@@ -107,7 +105,6 @@
                 android:layout_toRightOf="@id/state_tv"
                 android:layout_marginLeft="5dp"
                 android:textColor="#ff0000"
-                android:text="欠压报警"
                 android:textSize="14sp"
                 />
         </RelativeLayout>
@@ -131,7 +128,6 @@
                 android:layout_toRightOf="@id/repeater_tv1"
                 android:layout_marginLeft="5dp"
                 android:textColor="#404040"
-                android:text="454545564"
                 android:textSize="14sp"
                 />
         </RelativeLayout>
@@ -154,7 +150,6 @@
                 android:layout_toRightOf="@id/address_tv"
                 android:layout_marginLeft="5dp"
                 android:textColor="#404040"
-                android:text="454545564"
                 android:textSize="14sp"
                 />
         </RelativeLayout>
@@ -181,8 +176,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#404040"
                     android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    android:text="HJKDSA545FD"/>
+                    android:textSize="14sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -204,8 +198,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#404040"
                     android:layout_marginLeft="5dp"
-                    android:textSize="14sp"
-                    android:text="HJKDSA545FD"/>
+                    android:textSize="14sp" />
             </RelativeLayout>
         </LinearLayout>
         <RelativeLayout
@@ -234,8 +227,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#404040"
-                        android:textSize="14sp"
-                        android:text="王老五"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -254,8 +246,7 @@
                         android:textColor="#404040"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:text="12548454848"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -278,8 +269,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#404040"
-                        android:textSize="14sp"
-                        android:text="王老五"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -298,8 +288,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#404040"
-                        android:textSize="14sp"
-                        android:text="12548454848"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>

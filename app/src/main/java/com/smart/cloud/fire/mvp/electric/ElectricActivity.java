@@ -11,12 +11,14 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.smart.cloud.fire.adapter.ElectricActivityAdapter;
+import com.smart.cloud.fire.adapter.ElectricActivityAdapterTest;
 import com.smart.cloud.fire.base.ui.MvpActivity;
-import com.smart.cloud.fire.global.Electric;
+import com.smart.cloud.fire.global.ElectricValue;
+import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.mvp.LineChart.LineChartActivity;
+import com.smart.cloud.fire.utils.SharedPreferencesManager;
+import com.smart.cloud.fire.utils.T;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,17 +36,26 @@ public class ElectricActivity extends MvpActivity<ElectricPresenter> implements 
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
     private ElectricPresenter electricPresenter;
-    private ElectricActivityAdapter electricActivityAdapter;
+    private ElectricActivityAdapterTest electricActivityAdapter;
     private Context mContext;
     private LinearLayoutManager linearLayoutManager;
+    private String electricMac;
+    private String userID;
+    private int privilege;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electric);
+        mContext=this;
+        electricMac = getIntent().getExtras().getString("ElectricMac");
+        userID = SharedPreferencesManager.getInstance().getData(mContext,
+                SharedPreferencesManager.SP_FILE_GWELL,
+                SharedPreferencesManager.KEY_RECENTNAME);
+        privilege = MyApp.app.getPrivilege();
         ButterKnife.bind(this);
-        mContext = this;
         refreshListView();
+        electricPresenter.getOneElectricInfo(userID,privilege+"",electricMac,false);
     }
 
     private void refreshListView() {
@@ -59,21 +70,11 @@ public class ElectricActivity extends MvpActivity<ElectricPresenter> implements 
         linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        List<Electric> electricList = testData();
-        electricActivityAdapter = new ElectricActivityAdapter(mContext, electricList, electricPresenter);
-        recyclerView.setAdapter(electricActivityAdapter);
-        swipeFreshLayout.setRefreshing(false);
+
         swipeFreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeFreshLayout.setRefreshing(false);
-            }
-        });
-        electricActivityAdapter.setOnItemClickListener(new ElectricActivityAdapter.OnRecyclerViewItemClickListener(){
-            @Override
-            public void onItemClick(View view, Electric data){
-                Intent intent = new Intent(mContext, LineChartActivity.class);
-                startActivity(intent);
+                electricPresenter.getOneElectricInfo(userID,privilege+"",electricMac,true);
             }
         });
     }
@@ -84,12 +85,35 @@ public class ElectricActivity extends MvpActivity<ElectricPresenter> implements 
         return electricPresenter;
     }
 
-    private List<Electric> testData(){
-        List<Electric> electricList = new ArrayList<>();
-        for(int i=0;i<10;i++){
-            Electric electric = new Electric("电压"+i, "220V", "23"+i+"V", "");
-            electricList.add(electric);
-        }
-        return electricList;
+    @Override
+    public void getDataSuccess(List<ElectricValue.ElectricValueBean> smokeList) {
+        electricActivityAdapter = new ElectricActivityAdapterTest(mContext, smokeList, electricPresenter);
+        recyclerView.setAdapter(electricActivityAdapter);
+        swipeFreshLayout.setRefreshing(false);
+        electricActivityAdapter.setOnItemClickListener(new ElectricActivityAdapterTest.OnRecyclerViewItemClickListener(){
+            @Override
+            public void onItemClick(View view, ElectricValue.ElectricValueBean data){
+                Intent intent = new Intent(mContext, LineChartActivity.class);
+                intent.putExtra("electricMac",electricMac);
+                intent.putExtra("electricType",data.getElectricType());
+                intent.putExtra("electricNum",data.getId());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void getDataFail(String msg) {
+        T.showShort(mContext,msg);
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
     }
 }

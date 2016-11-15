@@ -2,6 +2,8 @@ package com.smart.cloud.fire.mvp.fragment.ShopInfoFragment;
 
 import com.smart.cloud.fire.base.presenter.BasePresenter;
 import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.Electric;
+import com.smart.cloud.fire.global.ElectricInfo;
 import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Camera;
@@ -242,6 +244,37 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
 
             @Override
             public void onCompleted() {
+            }
+        }));
+    }
+
+    public void getAllElectricInfo(String userId,String privilege,String page,final int type,boolean refresh){
+        if(!refresh){
+            mvpView.showLoading();
+        }
+        Observable mObservable = apiStores1.getAllElectricInfo(userId,privilege,page);
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ElectricInfo>() {
+            @Override
+            public void onSuccess(ElectricInfo model) {
+                int resultCode = model.getErrorCode();
+                if(resultCode==0){
+                    List<Electric> electricList = model.getSmoke();
+                    if(type==1){
+                        mvpView.getDataSuccess(electricList);
+                    }else{
+                        mvpView.onLoadingMore(electricList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                mvpView.getDataFail("网络错误，请检查网络");
+            }
+
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
             }
         }));
     }

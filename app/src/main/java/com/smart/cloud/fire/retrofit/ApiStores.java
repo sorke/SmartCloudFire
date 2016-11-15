@@ -1,6 +1,8 @@
 package com.smart.cloud.fire.retrofit;
 
+import com.smart.cloud.fire.global.ElectricInfo;
 import com.smart.cloud.fire.global.SmokeSummary;
+import com.smart.cloud.fire.global.TemperatureTime;
 import com.smart.cloud.fire.mvp.fragment.ConfireFireFragment.ConfireFireModel;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpAreaResult;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
@@ -148,4 +150,20 @@ public interface ApiStores {
     Observable<SmokeSummary> getSmokeSummary(@Query("userId") String userId, @Query("privilege") String privilege,
                                              @Query("areaId") String areaId);
 
+    @GET("getAllElectricInfo")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<ElectricInfo> getAllElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
+                                                @Query("page") String page);
+//    getOneElectricInfo?userId=13428282520&privilege=2&smokeMac=32110533
+    @GET("getOneElectricInfo")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<ElectricInfo> getOneElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
+                                                 @Query("smokeMac") String smokeMac);
+
+//    getElectricTypeInfo?userId=13428282520&privilege=2&smokeMac=32110533&electricType=6&electricNum=1&page=
+    @GET("getElectricTypeInfo")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<TemperatureTime> getElectricTypeInfo(@Query("userId") String userId, @Query("privilege") String privilege,
+                                                    @Query("smokeMac") String smokeMac, @Query("electricType") String electricType,
+                                                    @Query("electricNum") String electricNum, @Query("page") String page);
 }

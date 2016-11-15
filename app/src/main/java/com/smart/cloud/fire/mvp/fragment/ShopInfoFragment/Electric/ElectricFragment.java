@@ -21,11 +21,11 @@ import com.smart.cloud.fire.adapter.ShopCameraAdapter;
 import com.smart.cloud.fire.adapter.ShopSmokeAdapter;
 import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.Electric;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.mvp.electric.ElectricActivity;
-import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragmentPresenter;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragmentView;
@@ -56,7 +56,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     private int privilege;
     private LinearLayoutManager linearLayoutManager;
     private int lastVisibleItem;
-    private List<Smoke> list;
+    private List<Electric> list;
     private boolean research = false;
     private String page;
 
@@ -78,7 +78,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         refreshListView();
         list = new ArrayList<>();
         page = "1";
-        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,false);
+        mvpPresenter.getAllElectricInfo(userID, privilege + "", page,1,false);
     }
 
     private void refreshListView() {
@@ -99,7 +99,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
             public void onRefresh() {
                 page = "1";
                 list.clear();
-                mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
+                mvpPresenter.getAllElectricInfo(userID, privilege + "", page,1,true);
             }
         });
 
@@ -117,7 +117,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 int itemCount = lastVisibleItem+2;
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count) {
                     page = Integer.parseInt(page) + 1 + "";
-                    mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
+                    mvpPresenter.getAllElectricInfo(userID, privilege + "", page,2,true);
                 } else{
                     electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
                 }
@@ -148,15 +148,16 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     @Override
     public void getDataSuccess(List<?> smokeList) {
         list.clear();
-        list.addAll((List<Smoke>)smokeList);
+        list.addAll((List<Electric>)smokeList);
         electricFragmentAdapter = new ElectricFragmentAdapter(mContext, list, shopInfoFragmentPresenter);
         recyclerView.setAdapter(electricFragmentAdapter);
         swipereFreshLayout.setRefreshing(false);
         electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
         electricFragmentAdapter.setOnItemClickListener(new ElectricFragmentAdapter.OnRecyclerViewItemClickListener(){
             @Override
-            public void onItemClick(View view, Smoke data){
+            public void onItemClick(View view, Electric data){
                 Intent intent = new Intent(mContext, ElectricActivity.class);
+                intent.putExtra("ElectricMac",data.getMac());
                 startActivity(intent);
             }
         });
@@ -182,7 +183,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void onLoadingMore(List<?> smokeList) {
-        list.addAll((List<Smoke>)smokeList);
+        list.addAll((List<Electric>)smokeList);
         electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.LOADING_MORE);
         electricFragmentAdapter.addMoreItem(list);
         electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.PULLUP_LOAD_MORE);

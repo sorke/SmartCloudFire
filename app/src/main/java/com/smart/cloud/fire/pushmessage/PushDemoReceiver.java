@@ -90,6 +90,24 @@ public class PushDemoReceiver extends BroadcastReceiver {
                                             alarmMsg = "电气探测器发出：过流报警";
                                         }
                                         break;
+                                    case 44://欠压报警
+                                        int alarmType3 = pushAlarmMsg1.getAlarmType();
+                                        if(alarmType3!=0){
+                                            alarmMsg = "电气探测器发出：欠压报警";
+                                        }
+                                        break;
+                                    case 46://电气报警
+                                        int alarmType4 = pushAlarmMsg1.getAlarmType();
+                                        if(alarmType4!=0){
+                                            alarmMsg = "电气探测器发出：漏电报警";
+                                        }
+                                        break;
+                                    case 47://电气报警
+                                        int alarmType5 = pushAlarmMsg1.getAlarmType();
+                                        if(alarmType5!=0){
+                                            alarmMsg = "电气探测器发出：温度报警";
+                                        }
+                                        break;
                                     default:
                                         break;
                                 }

@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
+import com.smart.cloud.fire.global.Electric;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.ShopInfoFragmentPresenter;
 import com.smart.cloud.fire.utils.T;
 
@@ -31,7 +31,7 @@ public class ElectricFragmentAdapter extends RecyclerView.Adapter<RecyclerView.V
     private int load_more_status = 0;
     private LayoutInflater mInflater;
     private Context mContext;
-    private List<Smoke> listNormalSmoke;
+    private List<Electric> listNormalSmoke;
     private ShopInfoFragmentPresenter mShopInfoFragmentPresenter;
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
 
@@ -39,15 +39,15 @@ public class ElectricFragmentAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
             //注意这里使用getTag方法获取数据
-            mOnItemClickListener.onItemClick(v,(Smoke)v.getTag());
+            mOnItemClickListener.onItemClick(v,(Electric)v.getTag());
         }
     }
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , Smoke data);
+        void onItemClick(View view , Electric data);
     }
 
-    public ElectricFragmentAdapter(Context mContext, List<Smoke> listNormalSmoke, ShopInfoFragmentPresenter mShopInfoFragmentPresenter) {
+    public ElectricFragmentAdapter(Context mContext, List<Electric> listNormalSmoke, ShopInfoFragmentPresenter mShopInfoFragmentPresenter) {
         this.mInflater = LayoutInflater.from(mContext);
         this.mContext = mContext;
         this.listNormalSmoke = listNormalSmoke;
@@ -93,11 +93,23 @@ public class ElectricFragmentAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
             ((ItemViewHolder) holder).repeaterRela.setVisibility(View.VISIBLE);
-            final Smoke normalSmoke = listNormalSmoke.get(position);
+            final Electric normalSmoke = listNormalSmoke.get(position);
             ((ItemViewHolder) holder).address.setText(normalSmoke.getAddress());
             ((ItemViewHolder) holder).groupTv.setText(normalSmoke.getName());
             ((ItemViewHolder) holder).repeaterNameTv.setText(normalSmoke.getPlaceType());
             ((ItemViewHolder) holder).repeaterMacTv.setText(normalSmoke.getAreaName());
+            int state = normalSmoke.getNetState();
+            switch (state){
+                case 0:
+                    ((ItemViewHolder) holder).state.setText("欠压报警");
+                    break;
+                case 1:
+                    ((ItemViewHolder) holder).state.setText("高压报警");
+                    break;
+                default:
+                    break;
+            }
+            ((ItemViewHolder) holder).installTime.setText(normalSmoke.getAddSmokeTime());
             String phoneOne = normalSmoke.getPrincipal1Phone();
             String phoneTwo = normalSmoke.getPrincipal2Phone();
             if(phoneOne!=null&&phoneOne.length()>0){
@@ -253,7 +265,7 @@ public class ElectricFragmentAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     //添加数据
-    public void addItem(List<Smoke> smokeList) {
+    public void addItem(List<Electric> smokeList) {
         //mTitles.add(position, data);
         //notifyItemInserted(position);
         smokeList.addAll(listNormalSmoke);
@@ -262,7 +274,7 @@ public class ElectricFragmentAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    public void addMoreItem(List<Smoke> smokeList) {
+    public void addMoreItem(List<Electric> smokeList) {
         listNormalSmoke.addAll(smokeList);
         notifyDataSetChanged();
     }

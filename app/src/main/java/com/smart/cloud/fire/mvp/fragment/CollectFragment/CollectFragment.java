@@ -184,7 +184,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
                         mvpPresenter.getAllAlarm(userID, privilege + "", page, 1, "", "", "", "");
                         mProgressBar.setVisibility(View.GONE);
                     }else{
-                        adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_MORE_DATA);
+                        adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
                     }
                 }
             }
@@ -485,13 +485,14 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
             messageModelList.addAll(alarmMessageModels);
             adapter.changeMoreStatus(RefreshRecyclerAdapter.LOADING_MORE);
             adapter.addMoreItem(messageModelList);
-            adapter.changeMoreStatus(RefreshRecyclerAdapter.PULLUP_LOAD_MORE);
+            adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
         } else {
             messageModelList = new ArrayList<>();
             messageModelList.addAll(alarmMessageModels);
             adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
             demoRecycler.setAdapter(adapter);
             demoSwiperefreshlayout.setRefreshing(false);
+            adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
         }
     }
 
@@ -499,7 +500,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     public void getDataFail(String msg) {
         demoSwiperefreshlayout.setRefreshing(false);
         if(adapter!=null){
-            adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_MORE_DATA);
+            adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
         }
         T.showShort(mContext, msg);
     }
@@ -520,6 +521,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
         messageModelList.addAll(alarmMessageModels);
         adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
         demoRecycler.setAdapter(adapter);
+        adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
     }
 
     @Override
@@ -559,6 +561,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
         messageModelList.addAll(alarmMessageModels);
         adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
         demoRecycler.setAdapter(adapter);
+        adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
     }
 
     @Override

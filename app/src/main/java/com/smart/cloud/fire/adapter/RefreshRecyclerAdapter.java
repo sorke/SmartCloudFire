@@ -31,6 +31,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static final int PULLUP_LOAD_MORE = 0;//上拉加载更多
     public static final int LOADING_MORE = 1;//正在加载中
     public static final int NO_MORE_DATA = 2;//正在加载中
+    public static final int NO_DATA = 3;//无数据
     private static final int TYPE_ITEM = 0;  //普通Item View
     private static final int TYPE_FOOTER = 1;  //顶部FootView
     private int load_more_status = 0;
@@ -103,19 +104,28 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((ItemViewHolder) holder).dealAlarmActionTv.setVisibility(View.GONE);
             }
             int devType= mNormalAlarmMessage.getDeviceType();
-            if(devType==1){
-                ((ItemViewHolder) holder).smokeMac.setText("烟感:");
-            }else{
-                ((ItemViewHolder) holder).smokeMac.setText("燃气探测器:");
-            }
-            if (alarmType == 202) {
-                ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_huojing);
-                ((ItemViewHolder) holder).smokeMac.setTextColor(mContext.getResources().getColor(R.color.hj_color_text));
-                ((ItemViewHolder) holder).smokeMacTv.setTextColor(mContext.getResources().getColor(R.color.hj_color_text));
-            } else {
-                ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_ddy);
-                ((ItemViewHolder) holder).smokeMac.setTextColor(mContext.getResources().getColor(R.color.ddy_color_text));
-                ((ItemViewHolder) holder).smokeMacTv.setTextColor(mContext.getResources().getColor(R.color.ddy_color_text));
+            switch (devType){
+                case 1:
+                    ((ItemViewHolder) holder).smokeMac.setText("烟感:");
+                    if (alarmType == 202) {
+                        ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_huojing);
+                        ((ItemViewHolder) holder).smokeMac.setTextColor(mContext.getResources().getColor(R.color.hj_color_text));
+                        ((ItemViewHolder) holder).smokeMacTv.setTextColor(mContext.getResources().getColor(R.color.hj_color_text));
+                    } else {
+                        ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_ddy);
+                        ((ItemViewHolder) holder).smokeMac.setTextColor(mContext.getResources().getColor(R.color.ddy_color_text));
+                        ((ItemViewHolder) holder).smokeMacTv.setTextColor(mContext.getResources().getColor(R.color.ddy_color_text));
+                    }
+                    break;
+                case 2:
+                    ((ItemViewHolder) holder).smokeMac.setText("燃气探测器:");
+                    ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_huojing);
+                    ((ItemViewHolder) holder).smokeMac.setTextColor(mContext.getResources().getColor(R.color.hj_color_text));
+                    ((ItemViewHolder) holder).smokeMacTv.setTextColor(mContext.getResources().getColor(R.color.hj_color_text));
+                    break;
+                case 5:
+                    ((ItemViewHolder) holder).smokeMac.setText("电气火灾探测器:");
+                    break;
             }
             RxView.clicks(((ItemViewHolder) holder).actionNowTv).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
                 @Override
@@ -158,6 +168,9 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
                 case NO_MORE_DATA:
                     T.showShort(mContext, "没有更多数据");
+                    footViewHolder.footer.setVisibility(View.GONE);
+                    break;
+                case NO_DATA:
                     footViewHolder.footer.setVisibility(View.GONE);
                     break;
             }

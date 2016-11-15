@@ -149,6 +149,10 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
             mvpView.addSmokeResult("请填写探测器MAC",1);
             return;
         }
+        if(areaId==null||areaId.length()==0){
+            mvpView.addSmokeResult("请填选择区域",1);
+            return;
+        }
         String deviceType;
         if(smokeMac.startsWith("R")){
             smokeMac = smokeMac.replace("R","");

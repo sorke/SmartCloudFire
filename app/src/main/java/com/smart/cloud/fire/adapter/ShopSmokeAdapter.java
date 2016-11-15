@@ -78,50 +78,52 @@ public class ShopSmokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (holder instanceof ItemViewHolder) {
             ((ItemViewHolder) holder).repeaterRela.setVisibility(View.VISIBLE);
             final Smoke normalSmoke = listNormalSmoke.get(position);
-            int netStates = normalSmoke.getNetState();
             int devType = normalSmoke.getDeviceType();
-            if(devType==1){
-                if (netStates == 0) {
-                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
-                } else {
-                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
+            if(devType!=5){
+                int netStates = normalSmoke.getNetState();
+                if(devType==1){
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
+                    }
+                }else{
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj_lx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj);
+                    }
                 }
-            }else{
-                if (netStates == 0) {
-                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj_lx);
-                } else {
-                    ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                    ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj);
-                }
-            }
 
-            ((ItemViewHolder) holder).groupTvAddress.setText(normalSmoke.getAddress());
-            ((ItemViewHolder) holder).groupTv.setText(normalSmoke.getName());
-            ((ItemViewHolder) holder).repeaterNameTv.setText(normalSmoke.getPlaceType());
-            ((ItemViewHolder) holder).repeaterMacTv.setText(normalSmoke.getAreaName());
-            ((ItemViewHolder) holder).groupPrincipal1.setText(normalSmoke.getPrincipal1());
-            ((ItemViewHolder) holder).groupPhone1.setText(normalSmoke.getPrincipal1Phone());
-            ((ItemViewHolder) holder).groupPrincipal2.setText(normalSmoke.getPrincipal2());
-            ((ItemViewHolder) holder).groupPhone2.setText(normalSmoke.getPrincipal2Phone());
-            ((ItemViewHolder) holder).repeaterTv2.setText(normalSmoke.getRepeater());
-            ((ItemViewHolder) holder).groupPhone1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String phoneOne = normalSmoke.getPrincipal1Phone();
-                    mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneOne);
-                }
-            });
-            ((ItemViewHolder) holder).groupPhone2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String phoneTwo = normalSmoke.getPrincipal2Phone();
-                    mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneTwo);
-                }
-            });
-            holder.itemView.setTag(position);
+                ((ItemViewHolder) holder).groupTvAddress.setText(normalSmoke.getAddress());
+                ((ItemViewHolder) holder).groupTv.setText(normalSmoke.getName());
+                ((ItemViewHolder) holder).repeaterNameTv.setText(normalSmoke.getPlaceType());
+                ((ItemViewHolder) holder).repeaterMacTv.setText(normalSmoke.getAreaName());
+                ((ItemViewHolder) holder).groupPrincipal1.setText(normalSmoke.getPrincipal1());
+                ((ItemViewHolder) holder).groupPhone1.setText(normalSmoke.getPrincipal1Phone());
+                ((ItemViewHolder) holder).groupPrincipal2.setText(normalSmoke.getPrincipal2());
+                ((ItemViewHolder) holder).groupPhone2.setText(normalSmoke.getPrincipal2Phone());
+                ((ItemViewHolder) holder).repeaterTv2.setText(normalSmoke.getRepeater());
+                ((ItemViewHolder) holder).groupPhone1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String phoneOne = normalSmoke.getPrincipal1Phone();
+                        mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneOne);
+                    }
+                });
+                ((ItemViewHolder) holder).groupPhone2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String phoneTwo = normalSmoke.getPrincipal2Phone();
+                        mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneTwo);
+                    }
+                });
+                holder.itemView.setTag(position);
+            }
         } else if (holder instanceof FootViewHolder) {
             FootViewHolder footViewHolder = (FootViewHolder) holder;
             switch (load_more_status) {

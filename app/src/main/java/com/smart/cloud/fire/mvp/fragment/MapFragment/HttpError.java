@@ -1,5 +1,6 @@
 package com.smart.cloud.fire.mvp.fragment.MapFragment;
 
+import com.smart.cloud.fire.global.ElectricInfo;
 import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.mvp.fragment.CollectFragment.AlarmMessageModel;
 
@@ -22,6 +23,7 @@ public class HttpError<T> {
     private List<Camera> camera;
     private ArrayList<ShopType> placeType;
     private List<AlarmMessageModel> Alarm;
+    private List<ElectricInfo> Electric;
 
     public String getError() {
         return error;
@@ -69,5 +71,13 @@ public class HttpError<T> {
 
     public void setAlarm(List<AlarmMessageModel> alarm) {
         Alarm = alarm;
+    }
+
+    public List<ElectricInfo> getElectric() {
+        return Electric;
+    }
+
+    public void setElectric(List<ElectricInfo> electric) {
+        Electric = electric;
     }
 }

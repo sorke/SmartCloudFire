@@ -1,15 +1,20 @@
 package com.smart.cloud.fire.mvp.LineChart;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.smart.cloud.fire.base.ui.MvpActivity;
-import com.smart.cloud.fire.utils.Utils;
+import com.smart.cloud.fire.global.MyApp;
+import com.smart.cloud.fire.global.TemperatureTime;
+import com.smart.cloud.fire.utils.SharedPreferencesManager;
+import com.smart.cloud.fire.utils.T;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,13 +36,15 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     /*=========== 控件相关 ==========*/
     @Bind(R.id.lvc_main)
     lecho.lib.hellocharts.view.LineChartView mLineChartView;//线性图表控件
+    @Bind(R.id.mProgressBar)
+    ProgressBar mProgressBar;
     private LineChartPresenter lineChartPresenter;
 
     /*=========== 数据相关 ==========*/
     private LineChartData mLineData;                    //图表数据
     private int numberOfLines = 1;                      //图上折线/曲线的显示条数
     private int maxNumberOfLines = 4;                   //图上折线/曲线的最多条数
-    private int numberOfPoints = 12;                    //图上的节点数
+    private int numberOfPoints = 6;                    //图上的节点数
 
     /*=========== 状态相关 ==========*/
     private boolean isHasAxes = true;                   //是否显示坐标轴
@@ -52,27 +59,36 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
 
     /*=========== 其他相关 ==========*/
     private ValueShape pointsShape = ValueShape.CIRCLE; //点的形状(圆/方/菱形)
-    int[][] randomNumbersTab = new int[maxNumberOfLines][numberOfPoints]; //将线上的点放在一个数组中
+    float[][] randomNumbersTab = new float[maxNumberOfLines][numberOfPoints]; //将线上的点放在一个数组中
+    private Context context;
+    private String userID;
+    private int privilege;
+    private String electricMac;
+    private String electricType;
+    private String electricNum;
+    private int page=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_chart);
         ButterKnife.bind(this);
+        context = this;
+        userID = SharedPreferencesManager.getInstance().getData(context,
+                SharedPreferencesManager.SP_FILE_GWELL,
+                SharedPreferencesManager.KEY_RECENTNAME);
+        privilege = MyApp.app.getPrivilege();
+        electricMac = getIntent().getExtras().getString("electricMac");
+        electricType = getIntent().getExtras().getInt("electricType")+"";
+        electricNum = getIntent().getExtras().getInt("electricNum")+"";
+        mvpPresenter.getElectricTypeInfo(userID,privilege+"",electricMac,electricType,electricNum,page+"",false);
         initView();
-        initData();
         initListener();
     }
 
     private void initListener() {
         //节点点击事件监听
         mLineChartView.setOnValueTouchListener(new ValueTouchListener());
-    }
-
-    private void initData() {
-        setPointsValues();          //设置每条线的节点值
-        setLinesDatas();            //设置每条线的一些属性
-        resetViewport();            //计算并绘图
     }
 
     private void initView() {
@@ -87,10 +103,10 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     /**
      * 利用随机数设置每条线对应节点的值
      */
-    private void setPointsValues() {
+    private void setPointsValues(List<TemperatureTime.ElectricBean> list) {
         for (int i = 0; i < maxNumberOfLines; ++i) {
             for (int j = 0; j < numberOfPoints; ++j) {
-                randomNumbersTab[i][j] = (new Random().nextInt(20) + 220);
+                randomNumbersTab[i][j] = (Float.parseFloat(list.get(j).getElectricValue()));
             }
         }
     }
@@ -98,17 +114,16 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     /**
      * 设置线的相关数据
      */
-    private void setLinesDatas() {
+    private void setLinesDatas(List<TemperatureTime.ElectricBean> list) {
         List<Line> lines = new ArrayList<>();
         ArrayList<AxisValue> axisValuesX = new ArrayList<>();
         //循环将每条线都设置成对应的属性
         for (int i = 0; i < numberOfLines; ++i) {
             //节点的值
             List<PointValue> values = new ArrayList<>();
-            long current = System.currentTimeMillis();
             for (int j = 0; j < numberOfPoints; ++j) {
                 values.add(new PointValue(j, randomNumbersTab[i][j]));
-                axisValuesX.add(new AxisValue(j).setLabel(formatMinutes(j,current)));
+                axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(5-j).getElectricTime())));
             }
 
             Line line = new Line(values);               //根据值来创建一条线
@@ -155,10 +170,9 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         mLineChartView.setLineChartData(mLineData);    //设置图表控件
     }
 
-    private String formatMinutes(int i,long current) {
-        long hisTime = 15*60*1000;
-        String timeStr = Utils.ConvertTimeByLong(current-hisTime*(11-i));
-        return timeStr;
+    private String getTime(String str){
+        String[] strings = str.split(" ");
+        return strings[1];
     }
 
     /**
@@ -175,13 +189,35 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         mLineChartView.setCurrentViewport(v);   //给当前的视图设置 相当于当前展示的图
     }
 
+    @Override
+    public void getDataSuccess(List<TemperatureTime.ElectricBean> temperatureTimes) {
+        setPointsValues(temperatureTimes);
+        setLinesDatas(temperatureTimes);
+        resetViewport();
+    }
+
+    @Override
+    public void getDataFail(String msg) {
+        T.showShort(context, msg);
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
     /**
      * 节点触摸监听
      */
     private class ValueTouchListener implements LineChartOnValueSelectListener {
         @Override
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
-            Toast.makeText(LineChartActivity.this, "电压值为: " + (int)value.getY(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(LineChartActivity.this, "电压值为: " + value.getY(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
