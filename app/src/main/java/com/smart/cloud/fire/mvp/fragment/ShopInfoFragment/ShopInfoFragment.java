@@ -102,7 +102,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         showFragment(FRAGMENT_ONE);
         addFire.setVisibility(View.VISIBLE);
         addFire.setImageResource(R.drawable.search);
-        smokeTotal.setVisibility(View.VISIBLE);
+//        smokeTotal.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.add_fire, R.id.area_condition, R.id.shop_type_condition, R.id.search_fire})
@@ -259,7 +259,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         topIndicator.setTabsDisplay(mContext, index);
         switch (index) {
             case 0:
-                smokeTotal.setVisibility(View.VISIBLE);
+//                smokeTotal.setVisibility(View.VISIBLE);
                 mvpPresenter.unSubscribe("allSmoke");
                 break;
             case 1:
@@ -267,7 +267,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                 mvpPresenter.unSubscribe("allCamera");
                 break;
             case 2:
-                smokeTotal.setVisibility(View.VISIBLE);
+//                smokeTotal.setVisibility(View.VISIBLE);
                 mvpPresenter.unSubscribe("lostSmoke");
                 break;
             default:
