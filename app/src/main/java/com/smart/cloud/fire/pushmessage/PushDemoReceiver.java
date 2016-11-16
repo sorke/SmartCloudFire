@@ -84,6 +84,38 @@ public class PushDemoReceiver extends BroadcastReceiver {
                                             alarmMsg = "电气探测器发出：过压报警";
                                         }
                                         break;
+                                    case 36:
+                                        int alarmType36 = pushAlarmMsg1.getAlarmType();
+                                        switch (alarmType36){
+                                            case 1:
+                                                alarmMsg = "电气探测器发出：漏电流故障报警";
+                                                break;
+                                            case 2:
+                                                alarmMsg = "电气探测器发出：温度故障报警";
+                                                break;
+                                            case 3:
+                                                alarmMsg = "电气探测器发出：供电中断报警";
+                                                break;
+                                            case 4:
+                                                alarmMsg = "电气探测器发出：错相报警";
+                                                break;
+                                            case 5:
+                                                alarmMsg = "电气探测器发出：缺相报警";
+                                                break;
+                                            case 6:
+                                                alarmMsg = "电气探测器发出：电弧故障报警";
+                                                break;
+                                            case 7:
+                                                alarmMsg = "电气探测器发出：负载故障报警";
+                                                break;
+                                            case 8:
+                                                alarmMsg = "电气探测器发出：短路故障报警";
+                                                break;
+                                            case 9:
+                                                alarmMsg = "电气探测器发出：断路故障报警";
+                                                break;
+                                        }
+                                        break;
                                     case 45://电气报警
                                         int alarmType2 = pushAlarmMsg1.getAlarmType();
                                         if(alarmType2!=0){

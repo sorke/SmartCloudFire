@@ -117,7 +117,7 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
                 }
                 int count = shopSmokeAdapter.getItemCount();
                 int itemCount = lastVisibleItem+2;
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count&&list.size()>=20) {
                     page = Integer.parseInt(page) + 1 + "";
                     mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
                 } else{

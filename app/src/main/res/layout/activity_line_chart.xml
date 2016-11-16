@@ -3,13 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lvc_main"
+        android:textColor="#ff0000"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="电压折线图(单位：V)"/>
+
     <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/lvc_main"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:layout_gravity="center"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
         android:layout_margin="10dp"
         android:transitionName="line" />
     <include layout="@layout/progress_bar"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lvc_main"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_toRightOf="@+id/btn_before"
+            android:background="@drawable/login_btn_bg"
+            android:text="下一页"/>
+        <Button
+            android:id="@+id/btn_before"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/cancel_alarm_btn_an"
+            android:text="上一页"/>
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -2,9 +2,12 @@ package com.smart.cloud.fire.mvp.LineChart;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.smart.cloud.fire.base.ui.MvpActivity;
@@ -18,6 +21,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import fire.cloud.smart.com.smartcloudfire.R;
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
@@ -38,6 +42,12 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     lecho.lib.hellocharts.view.LineChartView mLineChartView;//线性图表控件
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
+    @Bind(R.id.btn_next)
+    Button btnNext;
+    @Bind(R.id.btn_before)
+    Button btnBefore;
+    @Bind(R.id.title_tv)
+    TextView titleTv;
     private LineChartPresenter lineChartPresenter;
 
     /*=========== 数据相关 ==========*/
@@ -66,7 +76,9 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private String electricMac;
     private String electricType;
     private String electricNum;
-    private int page=1;
+    private int page = 1;
+    private List<TemperatureTime.ElectricBean> electricBeen;
+    private boolean haveDataed = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +91,10 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
                 SharedPreferencesManager.KEY_RECENTNAME);
         privilege = MyApp.app.getPrivilege();
         electricMac = getIntent().getExtras().getString("electricMac");
-        electricType = getIntent().getExtras().getInt("electricType")+"";
-        electricNum = getIntent().getExtras().getInt("electricNum")+"";
-        mvpPresenter.getElectricTypeInfo(userID,privilege+"",electricMac,electricType,electricNum,page+"",false);
+        electricType = getIntent().getExtras().getInt("electricType") + "";
+        electricNum = getIntent().getExtras().getInt("electricNum") + "";
+        electricBeen = new ArrayList<>();
+        mvpPresenter.getElectricTypeInfo(userID, privilege + "", electricMac, electricType, electricNum, page + "", false);
         initView();
         initListener();
     }
@@ -123,7 +136,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             List<PointValue> values = new ArrayList<>();
             for (int j = 0; j < numberOfPoints; ++j) {
                 values.add(new PointValue(j, randomNumbersTab[i][j]));
-                axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(5-j).getElectricTime())));
+                axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(5 - j).getElectricTime())));
             }
 
             Line line = new Line(values);               //根据值来创建一条线
@@ -144,12 +157,24 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         }
 
         Axis axisX = new Axis().setHasLines(true);                    //X轴
-        Axis axisY = new Axis().setHasLines(true);  //Y轴
-        axisX.setName("时间(min)");                //设置名称
-        axisY.setName("电压值(V)");
+        Axis axisY = new Axis().setHasLines(true);  //Y轴         //设置名称
+        switch (electricType) {
+            case "6":
+                titleTv.setText("电压折线图(单位：V)");
+                break;
+            case "7":
+                titleTv.setText("电流折线图(单位：A)");
+                break;
+            case "9":
+                titleTv.setText("温度折线图(单位：℃)");
+                break;
+        }
         axisX.setTextColor(Color.GRAY);//X轴灰色
         axisX.setMaxLabelChars(3);
         axisX.setValues(axisValuesX);
+        axisX.setHasTiltedLabels(true);
+        axisX.setTextSize(10);
+        axisX.setInside(true);
         axisY.setTextColor(Color.GRAY);
 
         mLineData = new LineChartData(lines);                      //将所有的线加入线数据类中
@@ -157,6 +182,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         mLineData.setAxisXBottom(axisX);            //设置X轴位置 下方
         mLineData.setAxisYLeft(axisY);
         mLineData.setValueLabelBackgroundColor(Color.BLUE);     //设置数据背景颜色
+        mLineData.setValueLabelTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
         //设置基准数(大概是数据范围)
         /* 其他的一些属性方法 可自行查看效果
          * mLineData.setValueLabelBackgroundAuto(true);            //设置数据背景是否跟随节点颜色
@@ -170,9 +196,14 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         mLineChartView.setLineChartData(mLineData);    //设置图表控件
     }
 
-    private String getTime(String str){
-        String[] strings = str.split(" ");
-        return strings[1];
+//    private String getTime(String str) {
+//        String[] strings = str.split(" ");
+//        return strings[1];
+//    }
+
+    private String getTime(String str) {
+        String strings = str.substring(5,str.length());
+        return strings;
     }
 
     /**
@@ -183,7 +214,18 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         final Viewport v = new Viewport(mLineChartView.getMaximumViewport());
         v.left = 0;                             //坐标原点在左下
         v.bottom = 0;
-        v.top = 400;                            //最高点为100
+        switch (electricType) {
+            case "6":
+                v.top = 400;
+                break;
+            case "7":
+                v.top = 8;
+                break;
+            case "9":
+                v.top = 250;
+                break;
+        }
+        //最高点为100
         v.right = numberOfPoints - 1;           //右边为点 坐标从0开始 点号从1 需要 -1
         mLineChartView.setMaximumViewport(v);   //给最大的视图设置 相当于原图
         mLineChartView.setCurrentViewport(v);   //给当前的视图设置 相当于当前展示的图
@@ -191,8 +233,23 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
 
     @Override
     public void getDataSuccess(List<TemperatureTime.ElectricBean> temperatureTimes) {
-        setPointsValues(temperatureTimes);
-        setLinesDatas(temperatureTimes);
+        int len = temperatureTimes.size();
+        if (len == 6) {
+            btnNext.setClickable(true);
+            btnNext.setBackgroundResource(R.drawable.login_btn_bg);
+            electricBeen.clear();
+            electricBeen.addAll(temperatureTimes);
+        } else if (len < 6) {
+            btnNext.setClickable(false);
+            btnNext.setBackgroundResource(R.drawable.cancel_alarm_btn_an);
+            for (int i = 0; i < len; i++) {
+                electricBeen.remove(0);
+                TemperatureTime.ElectricBean tElectricBean = temperatureTimes.get(i);
+                electricBeen.add(tElectricBean);
+            }
+        }
+        setPointsValues(electricBeen);
+        setLinesDatas(electricBeen);
         resetViewport();
     }
 
@@ -217,7 +274,17 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private class ValueTouchListener implements LineChartOnValueSelectListener {
         @Override
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
-            Toast.makeText(LineChartActivity.this, "电压值为: " + value.getY(), Toast.LENGTH_SHORT).show();
+            switch (electricType) {
+                case "6":
+                    Toast.makeText(LineChartActivity.this, "电压值为: " + value.getY() + "V", Toast.LENGTH_SHORT).show();
+                    break;
+                case "7":
+                    Toast.makeText(LineChartActivity.this, "电流值为: " + value.getY() + "A", Toast.LENGTH_SHORT).show();
+                    break;
+                case "9":
+                    Toast.makeText(LineChartActivity.this, "温度值为: " + value.getY() + "℃", Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
 
         @Override
@@ -229,5 +296,29 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     protected LineChartPresenter createPresenter() {
         lineChartPresenter = new LineChartPresenter(this);
         return lineChartPresenter;
+    }
+
+    @OnClick({R.id.btn_next, R.id.btn_before})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_next:
+                page = page + 1;
+                if (page == 2) {
+                    btnBefore.setClickable(true);
+                    btnBefore.setBackgroundResource(R.drawable.login_btn_bg);
+                }
+                mvpPresenter.getElectricTypeInfo(userID, privilege + "", electricMac, electricType, electricNum, page + "", false);
+                break;
+            case R.id.btn_before:
+                if (page > 1) {
+                    page = page - 1;
+                    if (page == 1) {
+                        btnBefore.setClickable(false);
+                        btnBefore.setBackgroundResource(R.drawable.cancel_alarm_btn_an);
+                    }
+                    mvpPresenter.getElectricTypeInfo(userID, privilege + "", electricMac, electricType, electricNum, page + "", false);
+                }
+                break;
+        }
     }
 }

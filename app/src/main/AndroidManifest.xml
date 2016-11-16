@@ -170,6 +170,11 @@
             android:theme="@style/AppTheme" />
 
         <activity
+            android:name="com.smart.cloud.fire.mvp.LineChart.LineChartActivityTest"
+            android:label="@string/line_chart_activity"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name="com.smart.cloud.fire.mvp.electric.ElectricActivity"
             android:label="@string/line_chart_activity"
             android:theme="@style/AppTheme" />

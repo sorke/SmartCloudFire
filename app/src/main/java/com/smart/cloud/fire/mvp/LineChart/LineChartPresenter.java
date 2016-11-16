@@ -29,12 +29,14 @@ public class LineChartPresenter extends BasePresenter<LineChartView> {
                 int resultCode = model.getErrorCode();
                 if(resultCode==0){
                     mvpView.getDataSuccess(model.getElectric());
+                }else{
+                    mvpView.getDataFail("无数据");
                 }
             }
 
             @Override
             public void onFailure(int code, String msg) {
-                mvpView.getDataFail("网络错误，请检查网络");
+//                mvpView.getDataFail("网络错误，请检查网络");
             }
 
             @Override
