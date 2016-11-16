@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include layout="@layout/title_bar" />
 
     <TextView
         android:id="@+id/title_tv"
@@ -16,8 +17,8 @@
 
     <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/lvc_main"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
         android:transitionName="line" />
@@ -34,13 +35,15 @@
             android:layout_height="35dp"
             android:layout_toRightOf="@+id/btn_before"
             android:background="@drawable/login_btn_bg"
+            android:textColor="#ffffff"
             android:text="下一页"/>
         <Button
             android:id="@+id/btn_before"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/cancel_alarm_btn_an"
+            android:textColor="#ffffff"
+            android:background="@drawable/next_btn_an"
             android:text="上一页"/>
     </RelativeLayout>
 

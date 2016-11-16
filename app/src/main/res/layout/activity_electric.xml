@@ -23,13 +23,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="报警阀值"/>
+            android:text="报警阈值"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="当前阀值"/>
+            android:text="当前阈值"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"

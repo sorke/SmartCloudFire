@@ -16,6 +16,7 @@ import com.smart.cloud.fire.global.TemperatureTime;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.T;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private LineChartData mLineData;                    //图表数据
     private int numberOfLines = 1;                      //图上折线/曲线的显示条数
     private int maxNumberOfLines = 4;                   //图上折线/曲线的最多条数
-    private int numberOfPoints = 6;                    //图上的节点数
+    private int numberOfPoints = 8;                    //图上的节点数
 
     /*=========== 状态相关 ==========*/
     private boolean isHasAxes = true;                   //是否显示坐标轴
@@ -119,7 +120,15 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private void setPointsValues(List<TemperatureTime.ElectricBean> list) {
         for (int i = 0; i < maxNumberOfLines; ++i) {
             for (int j = 0; j < numberOfPoints; ++j) {
-                randomNumbersTab[i][j] = (Float.parseFloat(list.get(j).getElectricValue()));
+                if(j>0&&j<7){
+                    String str = list.get(j-1).getElectricValue();
+//                    float f = Float.parseFloat(str);
+                    double d = Double.parseDouble(str);
+                    float f = new BigDecimal(str).floatValue();
+                    BigDecimal bigDecimal = new BigDecimal(d);
+                    float   f1   =  bigDecimal.setScale(6, BigDecimal.ROUND_HALF_UP).floatValue();
+                    randomNumbersTab[i][j] = (f);
+                }
             }
         }
     }
@@ -135,8 +144,10 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             //节点的值
             List<PointValue> values = new ArrayList<>();
             for (int j = 0; j < numberOfPoints; ++j) {
-                values.add(new PointValue(j, randomNumbersTab[i][j]));
-                axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(5 - j).getElectricTime())));
+                if(j>0&&j<7){
+                    values.add(new PointValue(j, randomNumbersTab[i][j]));
+                    axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(6 - j).getElectricTime())));
+                }
             }
 
             Line line = new Line(values);               //根据值来创建一条线
@@ -157,16 +168,19 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         }
 
         Axis axisX = new Axis().setHasLines(true);                    //X轴
-        Axis axisY = new Axis().setHasLines(true);  //Y轴         //设置名称
+        Axis axisY = new Axis().setHasLines(true);  //Y轴          //设置名称
         switch (electricType) {
             case "6":
-                titleTv.setText("电压折线图(单位：V)");
+                axisY.setName("电压值(V)");
+                titleTv.setText("电压折线图");
                 break;
             case "7":
-                titleTv.setText("电流折线图(单位：A)");
+                axisY.setName("电流值(A)");
+                titleTv.setText("电流折线图");
                 break;
             case "9":
-                titleTv.setText("温度折线图(单位：℃)");
+                axisY.setName("温度值(℃)");
+                titleTv.setText("温度折线图");
                 break;
         }
         axisX.setTextColor(Color.GRAY);//X轴灰色
@@ -216,7 +230,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         v.bottom = 0;
         switch (electricType) {
             case "6":
-                v.top = 400;
+                v.top = 300;
                 break;
             case "7":
                 v.top = 8;
@@ -241,7 +255,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             electricBeen.addAll(temperatureTimes);
         } else if (len < 6) {
             btnNext.setClickable(false);
-            btnNext.setBackgroundResource(R.drawable.cancel_alarm_btn_an);
+            btnNext.setBackgroundResource(R.drawable.next_btn_an);
             for (int i = 0; i < len; i++) {
                 electricBeen.remove(0);
                 TemperatureTime.ElectricBean tElectricBean = temperatureTimes.get(i);
@@ -314,7 +328,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
                     page = page - 1;
                     if (page == 1) {
                         btnBefore.setClickable(false);
-                        btnBefore.setBackgroundResource(R.drawable.cancel_alarm_btn_an);
+                        btnBefore.setBackgroundResource(R.drawable.next_btn_an);
                     }
                     mvpPresenter.getElectricTypeInfo(userID, privilege + "", electricMac, electricType, electricNum, page + "", false);
                 }

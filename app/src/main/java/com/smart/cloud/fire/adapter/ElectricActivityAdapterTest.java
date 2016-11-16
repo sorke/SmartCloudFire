@@ -1,6 +1,7 @@
 package com.smart.cloud.fire.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,10 +101,16 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
                     ((ItemViewHolder) holder).electricAlarmValue.setText("220V");
                     ((ItemViewHolder) holder).electricCurrentValue.setText(value + "V");
                     if (Double.parseDouble(value) - 220 > 0) {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("高压");
                     } else if (Double.parseDouble(value) - 220 < 0) {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("欠压");
                     } else {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(18, 184, 245));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(18, 184, 245));
                         ((ItemViewHolder) holder).electricStates.setText("正常");
                     }
                 }
@@ -117,12 +124,17 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
                     ((ItemViewHolder) holder).electricName.setText("电流"+ElectricTwo);
                     ((ItemViewHolder) holder).electricAlarmValue.setText("2A");
                     ((ItemViewHolder) holder).electricCurrentValue.setText(value7 + "A");
-                    ((ItemViewHolder) holder).electricStates.setText("正常");
                     if (Double.parseDouble(value7) - 2 > 0) {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("过流");
                     } else if (Double.parseDouble(value7) - 2 < 0) {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("低流");
                     } else {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(18, 184, 245));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(18, 184, 245));
                         ((ItemViewHolder) holder).electricStates.setText("正常");
                     }
                 }

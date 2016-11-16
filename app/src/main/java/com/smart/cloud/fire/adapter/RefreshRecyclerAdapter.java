@@ -125,6 +125,27 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
                 case 5:
                     ((ItemViewHolder) holder).smokeMac.setText("电气火灾探测器:");
+                    int alarmFamily = mNormalAlarmMessage.getAlarmFamily();
+                    switch (alarmFamily){
+                        case 36:
+                            ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_gz);
+                            break;
+                        case 43:
+                            ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_gy);
+                            break;
+                        case 44:
+                            ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_qy);
+                            break;
+                        case 45:
+                            ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_gl);
+                            break;
+                        case 46:
+                            ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_ld);
+                            break;
+                        case 47:
+                            ((ItemViewHolder) holder).alarmMarkImage.setImageResource(R.drawable.xx_gw);
+                            break;
+                    }
                     break;
             }
             RxView.clicks(((ItemViewHolder) holder).actionNowTv).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
