@@ -195,6 +195,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getAreaTypeFail(String msg, int type) {
+
     }
 
     @Override

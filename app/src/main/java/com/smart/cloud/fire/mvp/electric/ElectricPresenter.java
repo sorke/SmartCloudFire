@@ -25,9 +25,9 @@ public class ElectricPresenter extends BasePresenter<ElectricView>{
             mvpView.showLoading();
         }
         Observable mObservable = apiStores1.getOneElectricInfo(userId,privilege,mac);
-        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ElectricInfo>() {
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ElectricInfo<ElectricValue>>() {
             @Override
-            public void onSuccess(ElectricInfo model) {
+            public void onSuccess(ElectricInfo<ElectricValue> model) {
                 int resultCode = model.getErrorCode();
                 if(resultCode==0){
                     List<ElectricValue> electricList = model.getElectric();

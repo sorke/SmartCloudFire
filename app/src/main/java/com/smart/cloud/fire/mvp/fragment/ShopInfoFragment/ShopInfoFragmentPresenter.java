@@ -11,6 +11,7 @@ import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpAreaResult;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
 import com.smart.cloud.fire.mvp.fragment.MapFragment.Smoke;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.AllDevFragment.AllDevFragment;
+import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.Electric.ElectricFragment;
 import com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.OffLineDevFragment.OffLineDevFragment;
 import com.smart.cloud.fire.rxjava.ApiCallback;
 import com.smart.cloud.fire.rxjava.SubscriberCallBack;
@@ -253,17 +254,47 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
             mvpView.showLoading();
         }
         Observable mObservable = apiStores1.getAllElectricInfo(userId,privilege,page);
-        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ElectricInfo>() {
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ElectricInfo<Electric>>() {
             @Override
-            public void onSuccess(ElectricInfo model) {
+            public void onSuccess(ElectricInfo<Electric> model) {
                 int resultCode = model.getErrorCode();
                 if(resultCode==0){
-                    List<Electric> electricList = model.getSmoke();
+                    List<Electric> electricList = model.getElectric();
                     if(type==1){
                         mvpView.getDataSuccess(electricList);
                     }else{
                         mvpView.onLoadingMore(electricList);
                     }
+                }
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                mvpView.getDataFail("网络错误，请检查网络");
+            }
+
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+        }));
+    }
+
+//    userId=13622215085&privilege=2&areaId=14&placeTypeId=2&page
+    public void getNeedElectricInfo(String userId, String privilege, String areaId, String placeTypeId, String page, final ElectricFragment electricFragment){
+        mvpView.showLoading();
+        Observable mObservable = apiStores1.getNeedElectricInfo(userId,privilege,areaId,placeTypeId,page);
+        addSubscription(mObservable,new SubscriberCallBack<>(new ApiCallback<ElectricInfo<Electric>>() {
+            @Override
+            public void onSuccess(ElectricInfo<Electric> model) {
+                int resultCode = model.getErrorCode();
+                if(resultCode==0){
+                    List<Electric> electricList = model.getElectric();
+                    electricFragment.getDataSuccess(electricList);
+                }else{
+                    List<Electric> electricList = new ArrayList<>();
+                    electricFragment.getDataSuccess(electricList);
+                    electricFragment.getDataFail("无数据");
                 }
             }
 

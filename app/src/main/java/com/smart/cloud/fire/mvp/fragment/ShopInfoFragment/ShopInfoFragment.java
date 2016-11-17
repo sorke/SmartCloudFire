@@ -183,6 +183,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                             mvpPresenter.getSmokeSummary(userID,privilege+"",areaId);
                             break;
                         case FRAGMENT_TWO:
+                            mvpPresenter.getNeedElectricInfo(userID, privilege + "", areaId, shopTypeId,"",electricFragment);
                             break;
                         case FRAGMENT_THREE:
                             break;

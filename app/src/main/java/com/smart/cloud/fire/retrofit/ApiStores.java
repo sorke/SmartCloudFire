@@ -1,6 +1,8 @@
 package com.smart.cloud.fire.retrofit;
 
+import com.smart.cloud.fire.global.Electric;
 import com.smart.cloud.fire.global.ElectricInfo;
+import com.smart.cloud.fire.global.ElectricValue;
 import com.smart.cloud.fire.global.SmokeSummary;
 import com.smart.cloud.fire.global.TemperatureTime;
 import com.smart.cloud.fire.mvp.fragment.ConfireFireFragment.ConfireFireModel;
@@ -152,13 +154,13 @@ public interface ApiStores {
 
     @GET("getAllElectricInfo")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<ElectricInfo> getAllElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
-                                                @Query("page") String page);
+    Observable<ElectricInfo<Electric>> getAllElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
+                                                          @Query("page") String page);
 //    getOneElectricInfo?userId=13428282520&privilege=2&smokeMac=32110533
     @GET("getOneElectricInfo")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<ElectricInfo> getOneElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
-                                                 @Query("smokeMac") String smokeMac);
+    Observable<ElectricInfo<ElectricValue>> getOneElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
+                                                               @Query("smokeMac") String smokeMac);
 
 //    getElectricTypeInfo?userId=13428282520&privilege=2&smokeMac=32110533&electricType=6&electricNum=1&page=
     @GET("getElectricTypeInfo")
@@ -166,4 +168,10 @@ public interface ApiStores {
     Observable<TemperatureTime> getElectricTypeInfo(@Query("userId") String userId, @Query("privilege") String privilege,
                                                     @Query("smokeMac") String smokeMac, @Query("electricType") String electricType,
                                                     @Query("electricNum") String electricNum, @Query("page") String page);
+//    getNeedElectricInfo?userId=13622215085&privilege=2&areaId=14&placeTypeId=2&page
+    @GET("getNeedElectricInfo")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+    Observable<ElectricInfo<Electric>> getNeedElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
+                                                    @Query("areaId") String areaId, @Query("placeTypeId") String placeTypeId,
+                                                    @Query("page") String page);
 }

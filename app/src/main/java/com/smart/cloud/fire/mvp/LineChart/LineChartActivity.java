@@ -18,7 +18,9 @@ import com.smart.cloud.fire.utils.T;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -80,6 +82,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private int page = 1;
     private List<TemperatureTime.ElectricBean> electricBeen;
     private boolean haveDataed = true;
+    private Map<Integer,String> data = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,15 +121,13 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
      * 利用随机数设置每条线对应节点的值
      */
     private void setPointsValues(List<TemperatureTime.ElectricBean> list) {
+        data.clear();
         for (int i = 0; i < maxNumberOfLines; ++i) {
             for (int j = 0; j < numberOfPoints; ++j) {
                 if(j>0&&j<7){
                     String str = list.get(j-1).getElectricValue();
-//                    float f = Float.parseFloat(str);
-                    double d = Double.parseDouble(str);
+                    data.put(j,str);
                     float f = new BigDecimal(str).floatValue();
-                    BigDecimal bigDecimal = new BigDecimal(d);
-                    float   f1   =  bigDecimal.setScale(6, BigDecimal.ROUND_HALF_UP).floatValue();
                     randomNumbersTab[i][j] = (f);
                 }
             }
@@ -269,6 +270,9 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
 
     @Override
     public void getDataFail(String msg) {
+//        page= page-1;
+        btnNext.setClickable(false);
+        btnNext.setBackgroundResource(R.drawable.next_btn_an);
         T.showShort(context, msg);
     }
 
@@ -290,6 +294,8 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
             switch (electricType) {
                 case "6":
+                    int i = (int)value.getX();
+                    String str = data.get(i);
                     Toast.makeText(LineChartActivity.this, "电压值为: " + value.getY() + "V", Toast.LENGTH_SHORT).show();
                     break;
                 case "7":

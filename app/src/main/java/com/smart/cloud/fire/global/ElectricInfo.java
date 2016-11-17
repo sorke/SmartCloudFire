@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/15.
  */
-public class ElectricInfo {
+public class ElectricInfo<T> {
 
     /**
      * error : 获取烟感成功）
@@ -13,8 +13,7 @@ public class ElectricInfo {
      */
     private String error;
     private int errorCode;
-    private List<Electric> smoke;
-    private List<ElectricValue> Electric;
+    private List<T> Electric;
 
     public String getError() {
         return error;
@@ -32,19 +31,11 @@ public class ElectricInfo {
         this.errorCode = errorCode;
     }
 
-    public List<Electric> getSmoke() {
-        return smoke;
-    }
-
-    public void setSmoke(List<Electric> smoke) {
-        this.smoke = smoke;
-    }
-
-    public List<ElectricValue> getElectric() {
+    public List<T> getElectric() {
         return Electric;
     }
 
-    public void setElectric(List<ElectricValue> electric) {
+    public void setElectric(List<T> electric) {
         Electric = electric;
     }
 }
