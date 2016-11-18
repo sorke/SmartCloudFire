@@ -104,6 +104,7 @@ public class ElectricActivity extends MvpActivity<ElectricPresenter> implements 
 
     @Override
     public void getDataFail(String msg) {
+        swipeFreshLayout.setRefreshing(false);
         T.showShort(mContext,msg);
     }
 

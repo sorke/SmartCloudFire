@@ -141,7 +141,7 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
     }
 
     @Override
-    public void getDataSuccess(List<?> smokeList) {
+    public void getDataSuccess(List<?> smokeList,boolean search) {
         list.clear();
         list.addAll((List<Camera>)smokeList);
         shopCameraAdapter = new ShopCameraAdapter(mContext, list, mShopInfoFragmentPresenter);
@@ -152,6 +152,7 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
 
     @Override
     public void getDataFail(String msg) {
+        swipereFreshLayout.setRefreshing(false);
         T.showShort(mContext, msg);
         if(shopCameraAdapter!=null){
             shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);

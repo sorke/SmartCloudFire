@@ -147,7 +147,8 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
     }
 
     @Override
-    public void getDataSuccess(List<?> smokeList) {
+    public void getDataSuccess(List<?> smokeList,boolean search) {
+        research = search;
         list.clear();
         list.addAll((List<Smoke>)smokeList);
         shopSmokeAdapter = new ShopSmokeAdapter(mContext, list, mShopInfoFragmentPresenter);
@@ -159,6 +160,7 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
     @Override
     public void getDataFail(String msg) {
         T.showShort(mContext, msg);
+        swipereFreshLayout.setRefreshing(false);
         if(shopSmokeAdapter!=null){
             shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
         }

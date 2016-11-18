@@ -146,7 +146,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     }
 
     @Override
-    public void getDataSuccess(List<?> smokeList) {
+    public void getDataSuccess(List<?> smokeList,boolean search) {
         list.clear();
         list.addAll((List<Electric>)smokeList);
         electricFragmentAdapter = new ElectricFragmentAdapter(mContext, list, shopInfoFragmentPresenter);
@@ -165,6 +165,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getDataFail(String msg) {
+        swipereFreshLayout.setRefreshing(false);
         T.showShort(mContext, msg);
         if(electricFragmentAdapter!=null){
             electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);

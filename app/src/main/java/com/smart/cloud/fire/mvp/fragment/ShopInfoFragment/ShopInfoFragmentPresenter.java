@@ -45,14 +45,14 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                     List<Smoke> smokeList = model.getSmoke();
                     if(type==1){
                         if(list==null||list.size()==0){
-                            mvpView.getDataSuccess(smokeList);
+                            mvpView.getDataSuccess(smokeList,false);
                         }else if(list!=null&&list.size()>=20){
                             mvpView.onLoadingMore(smokeList);
                         }
                     }
                 }else{
                     List<Smoke> mSmokeList = new ArrayList<>();
-                    mvpView.getDataSuccess(mSmokeList);
+                    mvpView.getDataSuccess(mSmokeList,false);
                     mvpView.getDataFail("无数据");
                 }
             }
@@ -61,7 +61,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
             public void onFailure(int code, String msg) {
                 if(type!=1){
                     List<Smoke> mSmokeList = new ArrayList<>();
-                    mvpView.getDataSuccess(mSmokeList);
+                    mvpView.getDataSuccess(mSmokeList,false);
                 }
                 mvpView.getDataFail("网络错误");
             }
@@ -85,13 +85,13 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 if(resule==0){
                     List<Camera> cameraList = model.getCamera();
                     if(list==null||list.size()==0){
-                        mvpView.getDataSuccess(cameraList);
+                        mvpView.getDataSuccess(cameraList,false);
                     }else if(list!=null&&list.size()>=20){
                         mvpView.onLoadingMore(cameraList);
                     }
                 }else{
                     List<Camera> cameraList = new ArrayList<>();
-                    mvpView.getDataSuccess(cameraList);
+                    mvpView.getDataSuccess(cameraList,false);
                     mvpView.getDataFail("无数据");
                 }
             }
@@ -99,7 +99,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
             @Override
             public void onFailure(int code, String msg) {
                 List<Camera> cameraList = new ArrayList<>();
-                mvpView.getDataSuccess(cameraList);
+                mvpView.getDataSuccess(cameraList,false);
                 mvpView.getDataFail("网络错误");
             }
 
@@ -147,7 +147,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
         }));
     }
 
-    public void getNeedLossSmoke(String userId, String privilege, String areaId, String placeTypeId, final String page, boolean refresh, final OffLineDevFragment offLineDevFragment){
+    public void getNeedLossSmoke(String userId, String privilege, String areaId, String placeTypeId, final String page, boolean refresh, final int type,final List<Smoke> list,final OffLineDevFragment offLineDevFragment){
         if(!refresh){
             mvpView.showLoading();
         }
@@ -158,12 +158,18 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 int result=model.getErrorCode();
                 if(result==0){
                     List<Smoke> smokeList = model.getSmoke();
-                    if(smokeList.size()>0){
-                        offLineDevFragment.getDataSuccess(smokeList);
+                    if(type==1){
+                        if(list==null||list.size()==0){
+                            offLineDevFragment.getDataSuccess(smokeList,false);
+                        }else if(list!=null&&list.size()>=20){
+                            offLineDevFragment.onLoadingMore(smokeList);
+                        }
+                    }else{
+                        offLineDevFragment.getDataSuccess(smokeList,true);
                     }
                 }else{
                     List<Smoke> mSmokeList = new ArrayList<>();
-                    offLineDevFragment.getDataSuccess(mSmokeList);
+                    offLineDevFragment.getDataSuccess(mSmokeList,false);
                     offLineDevFragment.getDataFail("无数据");
                 }
 
@@ -191,7 +197,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                     int errorCode = model.getErrorCode();
                     if(errorCode==0){
                         List<Smoke> smokes = model.getSmoke();
-                        allDevFragment.getDataSuccess(smokes);
+                        allDevFragment.getDataSuccess(smokes,true);
                     }else {
                         mvpView.getDataFail("无数据");
                     }
@@ -261,7 +267,7 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 if(resultCode==0){
                     List<Electric> electricList = model.getElectric();
                     if(type==1){
-                        mvpView.getDataSuccess(electricList);
+                        mvpView.getDataSuccess(electricList,false);
                     }else{
                         mvpView.onLoadingMore(electricList);
                     }
@@ -290,10 +296,10 @@ public class ShopInfoFragmentPresenter extends BasePresenter<ShopInfoFragmentVie
                 int resultCode = model.getErrorCode();
                 if(resultCode==0){
                     List<Electric> electricList = model.getElectric();
-                    electricFragment.getDataSuccess(electricList);
+                    electricFragment.getDataSuccess(electricList,false);
                 }else{
                     List<Electric> electricList = new ArrayList<>();
-                    electricFragment.getDataSuccess(electricList);
+                    electricFragment.getDataSuccess(electricList,false);
                     electricFragment.getDataFail("无数据");
                 }
             }

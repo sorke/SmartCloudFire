@@ -188,7 +188,8 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                         case FRAGMENT_THREE:
                             break;
                         case FRAGMENT_FOUR:
-                            mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "", false, offLineDevFragment);
+                            mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "",false,0,null,offLineDevFragment);
+//                            mvpPresenter.getNeedLossSmoke(userID, privilege + "", areaId, shopTypeId, "", false, offLineDevFragment);
                             mvpPresenter.getSmokeSummary(userID,privilege+"",areaId);
                             break;
                         default:
@@ -324,7 +325,7 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     }
 
     @Override
-    public void getDataSuccess(List<?> smokeList) {
+    public void getDataSuccess(List<?> smokeList,boolean search) {
     }
 
     @Override

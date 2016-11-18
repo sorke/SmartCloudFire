@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,11 +46,13 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.btn_next)
-    Button btnNext;
+    ImageView btnNext;
     @Bind(R.id.btn_before)
-    Button btnBefore;
+    ImageView btnBefore;
     @Bind(R.id.title_tv)
     TextView titleTv;
+    @Bind(R.id.btn_new)
+    ImageView btnNew;
     private LineChartPresenter lineChartPresenter;
 
     /*=========== 数据相关 ==========*/
@@ -82,7 +84,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     private int page = 1;
     private List<TemperatureTime.ElectricBean> electricBeen;
     private boolean haveDataed = true;
-    private Map<Integer,String> data = new HashMap<>();
+    private Map<Integer, String> data = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,9 +126,11 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         data.clear();
         for (int i = 0; i < maxNumberOfLines; ++i) {
             for (int j = 0; j < numberOfPoints; ++j) {
-                if(j>0&&j<7){
-                    String str = list.get(j-1).getElectricValue();
-                    data.put(j,str);
+                if (j > 0 && j < 7) {
+                    String str = list.get(j - 1).getElectricValue();
+                    if (electricType.equals("7")) {
+                        data.put(j, str);
+                    }
                     float f = new BigDecimal(str).floatValue();
                     randomNumbersTab[i][j] = (f);
                 }
@@ -145,7 +149,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             //节点的值
             List<PointValue> values = new ArrayList<>();
             for (int j = 0; j < numberOfPoints; ++j) {
-                if(j>0&&j<7){
+                if (j > 0 && j < 7) {
                     values.add(new PointValue(j, randomNumbersTab[i][j]));
                     axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(6 - j).getElectricTime())));
                 }
@@ -217,7 +221,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
 //    }
 
     private String getTime(String str) {
-        String strings = str.substring(5,str.length());
+        String strings = str.substring(5, str.length());
         return strings;
     }
 
@@ -231,10 +235,10 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         v.bottom = 0;
         switch (electricType) {
             case "6":
-                v.top = 300;
+                v.top = 400;
                 break;
             case "7":
-                v.top = 8;
+                v.top = 50;
                 break;
             case "9":
                 v.top = 250;
@@ -251,12 +255,12 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         int len = temperatureTimes.size();
         if (len == 6) {
             btnNext.setClickable(true);
-            btnNext.setBackgroundResource(R.drawable.login_btn_bg);
+            btnNext.setBackgroundResource(R.drawable.next_selector);
             electricBeen.clear();
             electricBeen.addAll(temperatureTimes);
         } else if (len < 6) {
             btnNext.setClickable(false);
-            btnNext.setBackgroundResource(R.drawable.next_btn_an);
+            btnNext.setBackgroundResource(R.mipmap.next_an);
             for (int i = 0; i < len; i++) {
                 electricBeen.remove(0);
                 TemperatureTime.ElectricBean tElectricBean = temperatureTimes.get(i);
@@ -272,7 +276,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
     public void getDataFail(String msg) {
 //        page= page-1;
         btnNext.setClickable(false);
-        btnNext.setBackgroundResource(R.drawable.next_btn_an);
+        btnNext.setBackgroundResource(R.mipmap.next_an);
         T.showShort(context, msg);
     }
 
@@ -294,12 +298,12 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
             switch (electricType) {
                 case "6":
-                    int i = (int)value.getX();
-                    String str = data.get(i);
                     Toast.makeText(LineChartActivity.this, "电压值为: " + value.getY() + "V", Toast.LENGTH_SHORT).show();
                     break;
                 case "7":
-                    Toast.makeText(LineChartActivity.this, "电流值为: " + value.getY() + "A", Toast.LENGTH_SHORT).show();
+                    int i = (int) value.getX();
+                    String str = data.get(i);
+                    Toast.makeText(LineChartActivity.this, "电流值为: " + str + "A", Toast.LENGTH_SHORT).show();
                     break;
                 case "9":
                     Toast.makeText(LineChartActivity.this, "温度值为: " + value.getY() + "℃", Toast.LENGTH_SHORT).show();
@@ -318,14 +322,14 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
         return lineChartPresenter;
     }
 
-    @OnClick({R.id.btn_next, R.id.btn_before})
+    @OnClick({R.id.btn_next, R.id.btn_before,R.id.btn_new})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_next:
                 page = page + 1;
                 if (page == 2) {
                     btnBefore.setClickable(true);
-                    btnBefore.setBackgroundResource(R.drawable.login_btn_bg);
+                    btnBefore.setBackgroundResource(R.drawable.before_selector);
                 }
                 mvpPresenter.getElectricTypeInfo(userID, privilege + "", electricMac, electricType, electricNum, page + "", false);
                 break;
@@ -334,10 +338,18 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
                     page = page - 1;
                     if (page == 1) {
                         btnBefore.setClickable(false);
-                        btnBefore.setBackgroundResource(R.drawable.next_btn_an);
+                        btnBefore.setBackgroundResource(R.mipmap.prve_an);
                     }
                     mvpPresenter.getElectricTypeInfo(userID, privilege + "", electricMac, electricType, electricNum, page + "", false);
                 }
+                break;
+            case R.id.btn_new:
+                page = 1;
+                btnBefore.setClickable(false);
+                btnBefore.setBackgroundResource(R.mipmap.prve_an);
+                btnNext.setClickable(true);
+                btnNext.setBackgroundResource(R.drawable.next_selector);
+                mvpPresenter.getElectricTypeInfo(userID, privilege + "", electricMac, electricType, electricNum, page + "", false);
                 break;
         }
     }

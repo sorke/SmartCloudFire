@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.smart.cloud.fire.adapter.ShopCameraAdapter;
 import com.smart.cloud.fire.adapter.ShopSmokeAdapter;
 import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
@@ -51,7 +52,7 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
     private Context mContext;
     private List<Smoke> list;
     private boolean research = false;
-    private String page;
+    private int page;
     private String userID;
     private int privilege;
     private ShopInfoFragmentPresenter mShopInfoFragmentPresenter;
@@ -71,10 +72,10 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
                 SharedPreferencesManager.SP_FILE_GWELL,
                 SharedPreferencesManager.KEY_RECENTNAME);
         privilege = MyApp.app.getPrivilege();
-        page = "1";
+        page = 1;
         list = new ArrayList<>();
         refreshListView();
-        mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", "",false,this);
+        mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", page+"",false,1,list,OffLineDevFragment.this);
     }
 
     private void refreshListView() {
@@ -93,34 +94,43 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
         swipereFreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = "1";
+                page = 1;
                 list.clear();
-                mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", "",true,OffLineDevFragment.this);
+                mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", page+"",true,1,list,OffLineDevFragment.this);
                 mvpPresenter.getSmokeSummary(userID,privilege+"","");
             }
         });
 
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (research) {
-//                    if(shopSmokeAdapter!=null){
-//                        shopSmokeAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
-//                    }
-//                    return;
-//                }
-//                if(shopSmokeAdapter==null){
-//                    shopSmokeAdapter = new ShopSmokeAdapter(mContext,null,mShopInfoFragmentPresenter);
-//                }
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-//            }
-//        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (research) {
+                    if(shopSmokeAdapter!=null){
+                        shopSmokeAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
+                    }
+                    return;
+                }
+                if(shopSmokeAdapter==null){
+                    return;
+                }
+                int count = shopSmokeAdapter.getItemCount();
+                int itemCount = lastVisibleItem+2;
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count&&list.size()>=20) {
+                    page = page + 1 ;
+                    mvpPresenter.getNeedLossSmoke(userID, privilege + "", "", "", page+"",false,1,list,OffLineDevFragment.this);
+                } else{
+                    shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
+                }
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+            }
+        });
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -136,8 +146,11 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
     }
 
     @Override
-    public void getDataSuccess(List<?> smokeList) {
-        shopSmokeAdapter = new ShopSmokeAdapter(mContext, (List<Smoke>)smokeList, mShopInfoFragmentPresenter);
+    public void getDataSuccess(List<?> smokeList,boolean search) {
+        research = search;
+        list.clear();
+        list.addAll((List<Smoke>)smokeList);
+        shopSmokeAdapter = new ShopSmokeAdapter(mContext, list, mShopInfoFragmentPresenter);
         recyclerView.setAdapter(shopSmokeAdapter);
         swipereFreshLayout.setRefreshing(false);
         shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
@@ -145,6 +158,7 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
 
     @Override
     public void getDataFail(String msg) {
+        swipereFreshLayout.setRefreshing(false);
         T.showShort(mContext,msg);
     }
 
@@ -160,6 +174,10 @@ public class OffLineDevFragment extends MvpFragment<ShopInfoFragmentPresenter> i
 
     @Override
     public void onLoadingMore(List<?> smokeList) {
+        list.addAll((List<Smoke>)smokeList);
+        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.LOADING_MORE);
+        shopSmokeAdapter.addMoreItem(list);
+        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.PULLUP_LOAD_MORE);
     }
 
     @Override

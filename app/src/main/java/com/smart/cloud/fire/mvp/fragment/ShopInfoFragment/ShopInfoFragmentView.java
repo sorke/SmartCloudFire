@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Administrator on 2016/9/21.
  */
 public interface ShopInfoFragmentView {
-    void getDataSuccess(List<?> smokeList);
+    void getDataSuccess(List<?> smokeList,boolean research);
 
     void getDataFail(String msg);
 
