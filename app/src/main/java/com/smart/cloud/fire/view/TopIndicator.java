@@ -31,14 +31,17 @@ import fire.cloud.smart.com.smartcloudfire.R;
 public class TopIndicator extends RelativeLayout {
 
     private static final String TAG = "TopIndicator";
-    private int[] mDrawableIds = new int[] { R.drawable.yg_dh_tb_all,R.drawable.yg_dh_tb_dq,
+//    private int[] mDrawableIds = new int[] { R.drawable.yg_dh_tb_all,R.drawable.yg_dh_tb_dq,
+//            R.drawable.yg_dh_tb_zx, R.drawable.yg_dh_tb_lx};
+    private int[] mDrawableIds = new int[] { R.drawable.yg_dh_tb_all,
             R.drawable.yg_dh_tb_zx, R.drawable.yg_dh_tb_lx};
     private List<CheckedTextView> mCheckedList = new ArrayList<>();
     private List<LinearLayout> mLinearLayout = new ArrayList<>();
     private List<TextView> mTextView = new ArrayList<>();
     private List<View> mViewList = new ArrayList<>();
     // 顶部菜单的文字数组
-    private CharSequence[] mLabels = new CharSequence[] { "探测器", "电气火灾","视频", "故障"};
+//    private CharSequence[] mLabels = new CharSequence[] { "探测器", "电气火灾","视频", "故障"};
+    private CharSequence[] mLabels = new CharSequence[] { "探测器","视频", "故障"};
     private int mScreenWidth;
     private int mUnderLineWidth;
     private View mUnderLine;
