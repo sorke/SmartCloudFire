@@ -47,7 +47,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
             @Override
             public Observable<LoginModel> call(LoginModel loginModel) {
                 if(loginModel.getError_code().equals("0")){
-                    editSharePereference(context,loginModel,User,Pwd);
+                    editSharePreference(context,loginModel,User,Pwd);
                     return apiStores1.login(User);
                 }else {
                     Observable<LoginModel> observable = Observable.just(loginModel);
@@ -94,6 +94,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     }
                     @Override
                     public void onFailure(int code, String msg) {
+//                        loginYoosee(User,Pwd,context,type);
                         mvpView.getDataFail(msg);
                     }
                     @Override
@@ -105,7 +106,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 }));
     }
 
-    private void editSharePereference(Context mContext, LoginModel object, String userId, String userPwd){
+    private void editSharePreference(Context mContext, LoginModel object, String userId, String userPwd){
         String userID = "0"+String.valueOf((Integer.parseInt(object.getUserID())&0x7fffffff));
         SharedPreferencesManager.getInstance().putData(mContext,
                 SharedPreferencesManager.SP_FILE_GWELL,
