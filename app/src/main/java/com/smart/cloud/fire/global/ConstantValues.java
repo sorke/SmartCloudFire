@@ -29,6 +29,7 @@ public class ConstantValues {
         public static final int AGENCY_MAN = 2;
         public static final int ADMINISTATOR = 3;
         public static final int POLICEMAEN = 5;
+        public static final int SUPER_ADMIN = 4;
     }
 
     public static class Update{
