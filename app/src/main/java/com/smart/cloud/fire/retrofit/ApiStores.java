@@ -11,6 +11,8 @@ import com.smart.cloud.fire.mvp.fragment.MapFragment.HttpError;
 import com.smart.cloud.fire.mvp.login.model.LoginModel;
 import com.smart.cloud.fire.mvp.register.model.RegisterModel;
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -19,35 +21,39 @@ import rx.Observable;
 
 public interface ApiStores {
     //登录技威服务器
+    @FormUrlEncoded
     @POST("Users/LoginCheck.ashx")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<LoginModel> loginYooSee(@Query("User") String User, @Query("Pwd") String Pwd,
-                                       @Query("VersionFlag") String VersionFlag, @Query("AppOS") String AppOS,
-                                       @Query("AppVersion") String AppVersion);
+    Observable<LoginModel> loginYooSee(@Field("User") String User, @Field("Pwd") String Pwd,
+                                       @Field("VersionFlag") String VersionFlag, @Field("AppOS") String AppOS,
+                                       @Field("AppVersion") String AppVersion);
     //登录本地服务器
     @GET("login")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     Observable<LoginModel> login(@Query("userId") String userId);
 
     //获取短信验证码
+    @FormUrlEncoded
     @POST("Users/PhoneCheckCode.ashx")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<RegisterModel> getMesageCode(@Query("CountryCode") String countryCode, @Query("PhoneNO") String phoneNO
-            , @Query("AppVersion") String appVersion);
+    Observable<RegisterModel> getMesageCode(@Field("CountryCode") String countryCode, @Field("PhoneNO") String phoneNO
+            , @Field("AppVersion") String appVersion);
 
     //检查短信验证码
+    @FormUrlEncoded
     @POST("Users/PhoneVerifyCodeCheck.ashx")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<RegisterModel> verifyPhoneCode(@Query("CountryCode") String countryCode,@Query("PhoneNO") String phoneNO
-            ,@Query("VerifyCode") String verifyCode);
+    Observable<RegisterModel> verifyPhoneCode(@Field("CountryCode") String countryCode,@Field("PhoneNO") String phoneNO
+            ,@Field("VerifyCode") String verifyCode);
 
     //注册
+    @FormUrlEncoded
     @POST("Users/RegisterCheck.ashx")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<RegisterModel> register(@Query("VersionFlag") String versionFlag,@Query("Email") String email
-            ,@Query("CountryCode") String countryCode,@Query("PhoneNO") String phoneNO
-            ,@Query("Pwd") String pwd,@Query("RePwd") String rePwd
-            ,@Query("VerifyCode") String verifyCode,@Query("IgnoreSafeWarning") String ignoreSafeWarning);
+    Observable<RegisterModel> register(@Field("VersionFlag") String versionFlag,@Field("Email") String email
+            ,@Field("CountryCode") String countryCode,@Field("PhoneNO") String phoneNO
+            ,@Field("Pwd") String pwd,@Field("RePwd") String rePwd
+            ,@Field("VerifyCode") String verifyCode,@Field("IgnoreSafeWarning") String ignoreSafeWarning);
 
     //获取用户所有的烟感
     @GET("getAllSmoke")
@@ -125,7 +131,7 @@ public interface ApiStores {
     Observable<HttpError> bindCameraSmoke(@Query("cameraId") String cameraId, @Query("smoke") String smoke);
 
     //绑定烟感与摄像头
-    @POST("getCid")
+    @GET("getCid")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     Observable<HttpError> bindAlias(@Query("alias") String alias, @Query("cid") String cid,@Query("projectName") String projectName);
 
