@@ -19,6 +19,7 @@ public class HttpError<T> {
 
     private String error;
     private int errorCode;
+    private  String state;
     private List<Smoke> smoke;
     private List<Camera> camera;
     private ArrayList<ShopType> placeType;
@@ -79,5 +80,13 @@ public class HttpError<T> {
 
     public void setElectric(List<ElectricInfo> electric) {
         Electric = electric;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

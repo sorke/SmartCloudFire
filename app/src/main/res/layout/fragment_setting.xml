@@ -18,13 +18,21 @@
             android:src="@drawable/zh_touxiang"
             />
         <TextView
+            android:id="@+id/line_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/setting_image"
+            android:textColor="#ffffff"
+            android:layout_marginTop="5dp" />
+        <TextView
             android:id="@+id/setting_user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1236456456"
             android:textColor="#ffffff"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_below="@id/setting_image"
             />
         <RelativeLayout

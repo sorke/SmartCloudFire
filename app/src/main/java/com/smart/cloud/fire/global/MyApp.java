@@ -23,6 +23,7 @@ import fire.cloud.smart.com.smartcloudfire.R;
  */
 public class MyApp extends Application {
     public static MyApp app;
+    public String pushState;
     private NotificationManager mNotificationManager;
     private Notification mNotification;
     public static final int NOTIFICATION_DOWN_ID = 0x53256562;
@@ -57,6 +58,14 @@ public class MyApp extends Application {
 
     public int getPrivilege(){
         return privilege;
+    }
+
+    public String getPushState() {
+        return pushState;
+    }
+
+    public void setPushState(String pushState) {
+        this.pushState = pushState;
     }
 
     /**

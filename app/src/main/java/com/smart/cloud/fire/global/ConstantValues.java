@@ -39,6 +39,7 @@ public class ConstantValues {
     }
 
     public static class Action{
+        public static final String GET_GE_TUI_PUSH_CID = "GET_GE_TUI_PUSH_CID";
         public static final String RECEIVE_MSG = PACKAGE_NAME+"RECEIVE_MSG";
         public final static String ACTION_UPDATE = PACKAGE_NAME+"ACTION_UPDATE";
 

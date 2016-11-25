@@ -30,18 +30,14 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
     TextView settingUserId;
     @Bind(R.id.setting_user_code)
     TextView settingUserCode;
-    @Bind(R.id.app_update)
-    RelativeLayout appUpdate;
-    @Bind(R.id.setting_help_about)
-    RelativeLayout settingHelpAbout;
     @Bind(R.id.setting_help_rela)
     RelativeLayout settingHelpRela;
-    @Bind(R.id.setting_help_exit)
-    RelativeLayout settingHelpExit;
     @Bind(R.id.mProgressBar)
     ProgressBar mProgressBar;
     @Bind(R.id.setting_camera_relative)
     RelativeLayout settingCameraRelative;
+    @Bind(R.id.line_state)
+    TextView lineState;
     private Context mContext;
 
     @Override
@@ -68,6 +64,13 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
                 SharedPreferencesManager.KEY_RECENTNAME);
         settingUserId.setText(userID);
         settingUserCode.setText(username);
+        String state = MyApp.app.getPushState();
+        if(state.equals("Online")){
+            lineState.setText("在线");
+        }
+        if(state.equals("Offline")){
+            lineState.setText("离线");
+        }
         int privilege = MyApp.app.getPrivilege();
         if (privilege == 3) {
             settingHelpRela.setVisibility(View.VISIBLE);
@@ -75,7 +78,7 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
         }
     }
 
-    @OnClick({R.id.app_update, R.id.setting_help_about, R.id.setting_help_rela, R.id.setting_help_exit,R.id.setting_camera_relative})
+    @OnClick({R.id.app_update, R.id.setting_help_about, R.id.setting_help_rela, R.id.setting_help_exit, R.id.setting_camera_relative})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.app_update:
@@ -137,6 +140,6 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
 
     @Override
     public void bindResult(String msg) {
-        T.showShort(mContext,msg);
+        T.showShort(mContext, msg);
     }
 }

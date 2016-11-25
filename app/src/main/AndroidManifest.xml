@@ -145,7 +145,7 @@
             android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_add_camera_fourth" />
         <service
-            android:name="com.smart.cloud.fire.service.SetTagService"
+            android:name="com.smart.cloud.fire.geTuiPush.GeTuiService"
             android:enabled="true"
             android:exported="true"></service>
         <receiver

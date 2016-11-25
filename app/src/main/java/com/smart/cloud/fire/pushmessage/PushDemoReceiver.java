@@ -17,10 +17,10 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.igexin.sdk.PushConsts;
+import com.smart.cloud.fire.global.ConstantValues;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.mvp.Alarm.AlarmActivity;
 import com.smart.cloud.fire.mvp.Alarm.UserAlarmActivity;
-import com.smart.cloud.fire.utils.SharedPreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -192,10 +192,10 @@ public class PushDemoReceiver extends BroadcastReceiver {
                 // 获取ClientID(CID)
                 // 第三方应用需要将CID上传到第三方服务器，并且将当前用户帐号和CID进行关联，以便日后通过用户帐号查找CID进行消息推送
                 String cid = bundle.getString("clientid");
-                SharedPreferencesManager.getInstance().putData(MyApp.app,
-                        SharedPreferencesManager.SP_FILE_GWELL,
-                        SharedPreferencesManager.CID,
-                        cid);
+                Intent in = new Intent();
+                in.putExtra("cid",cid);
+                in.setAction(ConstantValues.Action.GET_GE_TUI_PUSH_CID);
+                MyApp.app.sendBroadcast(in);
                 break;
             default:
                 break;

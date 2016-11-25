@@ -15,7 +15,6 @@ import com.smart.cloud.fire.mvp.login.LoginActivity;
 import com.smart.cloud.fire.mvp.login.SplashActivity;
 import com.smart.cloud.fire.mvp.register.presenter.RegisterPresenter;
 import com.smart.cloud.fire.mvp.register.view.RegisterView;
-import com.smart.cloud.fire.utils.IfSetTag;
 import com.smart.cloud.fire.utils.T;
 
 import java.util.concurrent.TimeUnit;
@@ -111,7 +110,6 @@ public class RegisterPhoneActivity extends MvpActivity<RegisterPresenter> implem
     @Override
     public void register() {
         T.showShort(mContext,"注册成功,正在登陆");
-        new IfSetTag().ifSetTag(RegisterPhoneActivity.this,phoneNO);
         Intent login = new Intent(mContext, SplashActivity.class);
         startActivity(login);
         finish();
