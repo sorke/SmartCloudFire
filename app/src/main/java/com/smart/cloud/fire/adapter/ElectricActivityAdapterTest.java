@@ -37,6 +37,7 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
     private int ElectricOne=0;
     private int ElectricTwo=0;
+    private int ElectricFour=0;
     private int ElectricThree = 0;
 
     @Override
@@ -97,17 +98,17 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
                     ElectricOne = ElectricOne+1;
                     ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
-                    ((ItemViewHolder) holder).electricName.setText("电压"+ElectricOne);
+                    ((ItemViewHolder) holder).electricName.setText("电压");
                     ((ItemViewHolder) holder).electricAlarmValue.setText("264V");
                     ((ItemViewHolder) holder).electricCurrentValue.setText(value + "V");
                     if (Double.parseDouble(value) - 264 > 0) {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("高压");
-//                    } else if (Double.parseDouble(value) - 264 < 0) {
-//                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
-//                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
-//                        ((ItemViewHolder) holder).electricStates.setText("欠压");
+                    } else if (Double.parseDouble(value) - 176 < 0) {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setText("欠压");
                     } else {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(18, 184, 245));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(18, 184, 245));
@@ -118,20 +119,16 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
             case 7:
                 String value7 = electric.getValue();
                 if (value7.length() > 0) {
-                    ElectricTwo = ElectricTwo+1;
+//                    ElectricTwo = ElectricTwo+1;
                     ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
-                    ((ItemViewHolder) holder).electricName.setText("电流"+ElectricTwo);
+                    ((ItemViewHolder) holder).electricName.setText("电流");
                     ((ItemViewHolder) holder).electricAlarmValue.setText("24A");
                     ((ItemViewHolder) holder).electricCurrentValue.setText(value7 + "A");
                     if (Double.parseDouble(value7) - 24 > 0) {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("过流");
-//                    } else if (Double.parseDouble(value7) - 24 < 0) {
-//                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
-//                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
-//                        ((ItemViewHolder) holder).electricStates.setText("低流");
                     } else {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(18, 184, 245));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(18, 184, 245));
@@ -139,17 +136,46 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
                     }
                 }
                 break;
-//            case 9:
-//                String value97 = electric.getValue();
-//                if (value97.length() > 0) {
-//                    ElectricThree = ElectricThree+1;
-//                    ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
-//                    ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
-//                    ((ItemViewHolder) holder).electricName.setText("温度"+ElectricThree);
-//                    ((ItemViewHolder) holder).electricAlarmValue.setText("220V");
-//                    ((ItemViewHolder) holder).electricCurrentValue.setText(value97);
-//                    ((ItemViewHolder) holder).electricStates.setText("正常");}
-//                break;
+            case 8:
+                String value8 = electric.getValue();
+                if (value8.length() > 0) {
+                    ElectricFour = ElectricFour+1;
+                    ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
+                    ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
+                    ((ItemViewHolder) holder).electricName.setText("漏电流");
+                    ((ItemViewHolder) holder).electricAlarmValue.setText("500mA");
+                    ((ItemViewHolder) holder).electricCurrentValue.setText(value8 + "A");
+                    if (Double.parseDouble(value8) - 500 > 0) {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setText("漏电流");
+                    } else {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(18, 184, 245));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(18, 184, 245));
+                        ((ItemViewHolder) holder).electricStates.setText("正常");
+                    }
+                }
+                break;
+            case 9:
+                String value97 = electric.getValue();
+                if (value97.length() > 0) {
+                    ElectricFour = ElectricFour+1;
+                    ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
+                    ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
+                    ((ItemViewHolder) holder).electricName.setText("温度");
+                    ((ItemViewHolder) holder).electricAlarmValue.setText("60℃");
+                    ((ItemViewHolder) holder).electricCurrentValue.setText(value97 + "℃");
+                    if (Double.parseDouble(value97) - 60 > 0) {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
+                        ((ItemViewHolder) holder).electricStates.setText("高温");
+                    } else {
+                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(18, 184, 245));
+                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(18, 184, 245));
+                        ((ItemViewHolder) holder).electricStates.setText("正常");
+                    }
+                }
+                break;
         }
 
         holder.itemView.setTag(electric);

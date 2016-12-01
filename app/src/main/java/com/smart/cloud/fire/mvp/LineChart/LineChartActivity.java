@@ -183,6 +183,10 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
                 axisY.setName("电流值(A)");
                 titleTv.setText("电流折线图");
                 break;
+            case "8":
+                axisY.setName("漏电流(mA)");
+                titleTv.setText("漏电流线图");
+                break;
             case "9":
                 axisY.setName("温度值(℃)");
                 titleTv.setText("温度折线图");
@@ -240,8 +244,11 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             case "7":
                 v.top = 50;
                 break;
+            case "8":
+                v.top = 700;
+                break;
             case "9":
-                v.top = 250;
+                v.top = 80;
                 break;
         }
         //最高点为100
@@ -304,6 +311,9 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
                     int i = (int) value.getX();
                     String str = data.get(i);
                     Toast.makeText(LineChartActivity.this, "电流值为: " + str + "A", Toast.LENGTH_SHORT).show();
+                    break;
+                case "8":
+                    Toast.makeText(LineChartActivity.this, "漏电流值为: " + value.getY() + "mA", Toast.LENGTH_SHORT).show();
                     break;
                 case "9":
                     Toast.makeText(LineChartActivity.this, "温度值为: " + value.getY() + "℃", Toast.LENGTH_SHORT).show();
