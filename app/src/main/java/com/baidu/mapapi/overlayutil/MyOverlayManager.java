@@ -62,6 +62,9 @@ public class MyOverlayManager extends OverlayManager {
             ArrayList<BitmapDescriptor> giflist2 = new ArrayList<>();
             giflist2.add(viewList.get(3));
             giflist2.add(viewList.get(4));
+            ArrayList<BitmapDescriptor> giflistDq = new ArrayList<>();
+            giflistDq.add(viewList.get(5));
+            giflistDq.add(viewList.get(1));
             for (Smoke smoke : mapNormalSmoke) {
                 Camera mCamera = smoke.getCamera();
                 int alarmState = smoke.getIfDealAlarm();
@@ -71,16 +74,7 @@ public class MyOverlayManager extends OverlayManager {
                     double latitude = Double.parseDouble(mCamera.getLatitude());
                     double longitude = Double.parseDouble(mCamera.getLongitude());
                     LatLng latLng = new LatLng(latitude, longitude);
-                    if(alarmState==0){
-                        overlayOptionses.add(new MarkerOptions().position(latLng).icons(giflist2).extraInfo(bundle)
-                                .zIndex(0).period(10)
-                                .animateType(MarkerOptions.MarkerAnimateType.drop));
-                    }else{
-                        overlayOptionses.add(new MarkerOptions().position(latLng).icon(viewList.get(3)).extraInfo(bundle)
-                                .zIndex(0).draggable(true).perspective(true)
-                                .animateType(MarkerOptions.MarkerAnimateType.drop));
-                    }
-
+                    markMap(latLng,overlayOptionses,alarmState,giflist2,viewList.get(3),bundle);
                 }else{
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("mNormalSmoke",smoke);
@@ -88,34 +82,34 @@ public class MyOverlayManager extends OverlayManager {
                     double longitude = Double.parseDouble(smoke.getLongitude());
                     LatLng l = new LatLng(latitude, longitude);
                     int devType = smoke.getDeviceType();
-                    if(devType==1){
-                        if(alarmState==0){
-                            overlayOptionses.add(new MarkerOptions().position(l).icons(giflist).extraInfo(bundle)
-                                    .zIndex(0).period(10)
-                                    .animateType(MarkerOptions.MarkerAnimateType.drop));
-                        }else{
-                            overlayOptionses.add(new MarkerOptions().position(l).icon(viewList.get(0)).extraInfo(bundle)
-                                    .zIndex(0).draggable(true).perspective(true)
-                                    .animateType(MarkerOptions.MarkerAnimateType.drop));
-                        }
-                    }else{
-                        if(alarmState==0){
-                            overlayOptionses.add(new MarkerOptions().position(l).icons(giflistRQ).extraInfo(bundle)
-                                    .zIndex(0).period(10)
-                                    .animateType(MarkerOptions.MarkerAnimateType.drop));
-                        }else{
-                            overlayOptionses.add(new MarkerOptions().position(l).icon(viewList.get(2)).extraInfo(bundle)
-                                    .zIndex(0).draggable(true).perspective(true)
-                                    .animateType(MarkerOptions.MarkerAnimateType.drop));
-                        }
+                    switch (devType){
+                        case 1:
+                            markMap(l,overlayOptionses,alarmState,giflist,viewList.get(0),bundle);
+                            break;
+                        case 2:
+                            markMap(l,overlayOptionses,alarmState,giflistRQ,viewList.get(2),bundle);
+                            break;
+                        case 5:
+                            markMap(l,overlayOptionses,alarmState,giflistDq,viewList.get(5),bundle);
+                            break;
                     }
-
                 }
             }
         }
         return overlayOptionses;
     }
 
-
+    private void markMap(LatLng latLng,List<OverlayOptions> overlayOptionses,int alarmState,
+                         ArrayList<BitmapDescriptor> bitmapDescriptors,BitmapDescriptor bitmapDescriptor, Bundle bundle){
+        if(alarmState==0){
+            overlayOptionses.add(new MarkerOptions().position(latLng).icons(bitmapDescriptors).extraInfo(bundle)
+                    .zIndex(0).period(10)
+                    .animateType(MarkerOptions.MarkerAnimateType.drop));
+        }else{
+            overlayOptionses.add(new MarkerOptions().position(latLng).icon(bitmapDescriptor).extraInfo(bundle)
+                    .zIndex(0).draggable(true).perspective(true)
+                    .animateType(MarkerOptions.MarkerAnimateType.drop));
+        }
+    }
 }
 
