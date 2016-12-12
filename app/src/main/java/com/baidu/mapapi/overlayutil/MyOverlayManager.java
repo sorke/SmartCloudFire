@@ -68,29 +68,28 @@ public class MyOverlayManager extends OverlayManager {
             for (Smoke smoke : mapNormalSmoke) {
                 Camera mCamera = smoke.getCamera();
                 int alarmState = smoke.getIfDealAlarm();
+                Bundle bundle = new Bundle();
                 if(mCamera!=null){
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("mNormalSmoke",mCamera);
                     double latitude = Double.parseDouble(mCamera.getLatitude());
                     double longitude = Double.parseDouble(mCamera.getLongitude());
                     LatLng latLng = new LatLng(latitude, longitude);
+                    bundle.putSerializable("mNormalSmoke",mCamera);
                     markMap(latLng,overlayOptionses,alarmState,giflist2,viewList.get(3),bundle);
                 }else{
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("mNormalSmoke",smoke);
                     double latitude = Double.parseDouble(smoke.getLatitude());
                     double longitude = Double.parseDouble(smoke.getLongitude());
-                    LatLng l = new LatLng(latitude, longitude);
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    bundle.putSerializable("mNormalSmoke",smoke);
                     int devType = smoke.getDeviceType();
                     switch (devType){
                         case 1:
-                            markMap(l,overlayOptionses,alarmState,giflist,viewList.get(0),bundle);
+                            markMap(latLng,overlayOptionses,alarmState,giflist,viewList.get(0),bundle);
                             break;
                         case 2:
-                            markMap(l,overlayOptionses,alarmState,giflistRQ,viewList.get(2),bundle);
+                            markMap(latLng,overlayOptionses,alarmState,giflistRQ,viewList.get(2),bundle);
                             break;
                         case 5:
-                            markMap(l,overlayOptionses,alarmState,giflistDq,viewList.get(5),bundle);
+                            markMap(latLng,overlayOptionses,alarmState,giflistDq,viewList.get(5),bundle);
                             break;
                     }
                 }
@@ -99,14 +98,14 @@ public class MyOverlayManager extends OverlayManager {
         return overlayOptionses;
     }
 
-    private void markMap(LatLng latLng,List<OverlayOptions> overlayOptionses,int alarmState,
+    private void markMap(LatLng latLng,List<OverlayOptions> overlayOptions,int alarmState,
                          ArrayList<BitmapDescriptor> bitmapDescriptors,BitmapDescriptor bitmapDescriptor, Bundle bundle){
         if(alarmState==0){
-            overlayOptionses.add(new MarkerOptions().position(latLng).icons(bitmapDescriptors).extraInfo(bundle)
+            overlayOptions.add(new MarkerOptions().position(latLng).icons(bitmapDescriptors).extraInfo(bundle)
                     .zIndex(0).period(10)
                     .animateType(MarkerOptions.MarkerAnimateType.drop));
         }else{
-            overlayOptionses.add(new MarkerOptions().position(latLng).icon(bitmapDescriptor).extraInfo(bundle)
+            overlayOptions.add(new MarkerOptions().position(latLng).icon(bitmapDescriptor).extraInfo(bundle)
                     .zIndex(0).draggable(true).perspective(true)
                     .animateType(MarkerOptions.MarkerAnimateType.drop));
         }
