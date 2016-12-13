@@ -45,14 +45,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" >
+            android:process=":remote">
             <intent-filter>
-                <action android:name="com.baidu.location.service_v2.2" >
-                </action>
+                <action android:name="com.baidu.location.service_v2.2" />
             </intent-filter>
         </service>
 
@@ -60,16 +58,18 @@
             android:name="BaiduMobAd_STAT_ID"
             android:value="48ae76de3f" />
 
-        <!-- 生产模式key
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="F0GrSzPf0G6As4uGGRGbSFsIYLqOFmKT" />-->
-
         <!--
-        测试模式key-->
+        生产模式key        -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="7GItMm71Df8oQNe4tusL3ms8RFIL1Ft7" />
+            android:value="F0GrSzPf0G6As4uGGRGbSFsIYLqOFmKT" />
+
+
+
+        <!-- 测试模式key
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="7GItMm71Df8oQNe4tusL3ms8RFIL1Ft7" />-->
 
         <activity
             android:name="com.smart.cloud.fire.mvp.login.SplashActivity"
@@ -79,24 +79,21 @@
             android:theme="@style/customBackground">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.smart.cloud.fire.mvp.register.RegisterPhoneActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name="com.smart.cloud.fire.mvp.login.LoginActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name="com.smart.cloud.fire.mvp.main.MainActivity"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name="com.smart.cloud.fire.ui.ApMonitorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -107,7 +104,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.smart.cloud.fire.ui.BNDemoGuideActivity"
             android:label="@string/title_activity_alarm"
@@ -121,13 +117,11 @@
         <activity
             android:name="com.smart.cloud.fire.ui.AboutActivity"
             android:label="@string/title_activity_about" />
-
         <activity
             android:name="com.obsessive.zbar.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
-
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.smart.cloud.fire.mvp.camera.AddCameraFirstActivity"
             android:label="@string/title_activity_add_camera_first" />
@@ -142,12 +136,14 @@
             android:label="@string/title_activity_add_wait_acticity" />
         <activity
             android:name="com.smart.cloud.fire.mvp.camera.AddCameraFourthActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:label="@string/title_activity_add_camera_fourth" />
+            android:label="@string/title_activity_add_camera_fourth"
+            android:windowSoftInputMode="adjustPan" />
+
         <service
             android:name="com.smart.cloud.fire.geTuiPush.GeTuiService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
         <receiver
             android:name="com.smart.cloud.fire.pushmessage.PushDemoReceiver"
             android:exported="false">
@@ -168,22 +164,28 @@
             android:name="com.smart.cloud.fire.mvp.LineChart.LineChartActivity"
             android:label="@string/line_chart_activity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name="com.smart.cloud.fire.mvp.LineChart.LineChartActivityTest"
             android:label="@string/line_chart_activity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name="com.smart.cloud.fire.mvp.electric.ElectricActivity"
             android:label="@string/line_chart_activity"
             android:theme="@style/AppTheme" />
+
         <service
             android:name="com.smart.cloud.fire.service.DaemonService"
-            android:process="com.example.maat.daemon"/>
+            android:process="com.example.maat.daemon" />
         <service
             android:name="com.smart.cloud.fire.service.RemoteService"
-            android:process=":pushservice"/>
- </application>
+            android:process=":pushservice" />
+
+        <activity android:name="com.smart.cloud.fire.mvp.sdcard.SDCardActivity" />
+        <activity android:name="com.smart.cloud.fire.mvp.playBack.PlayBackListActivity" />
+        <activity android:name="com.smart.cloud.fire.mvp.playBack.PlayBackActivity" />
+        <activity android:name="com.smart.cloud.fire.mvp.recordProject.RecordProjectActivity" />
+        <activity android:name="com.smart.cloud.fire.mvp.printScreen.PrintScreenActivity" />
+        <activity android:name="com.smart.cloud.fire.mvp.printScreen.ImageSeeActivity"></activity>
+    </application>
 
 </manifest>

@@ -7,20 +7,22 @@ import java.io.Serializable;
  */
 public class PushAlarmMsg implements Serializable{
 
+
     /**
-     * address : 808
-     * alarmTime : 2016-10-28 17:56:50:223
+     * address : 中国广东省广州市天河区黄埔大道西540号
+     * alarmFamily : 1
+     * alarmTime : 2016-12-13 14:42:07
      * alarmType : 202
-     * areaId : 测试区
-     * camera : null
-     * deviceType : 2
+     * areaId : 王之领地
+     * camera : {"cameraId":"3120987","cameraPwd":"123"}
+     * deviceType : 1
      * ifDealAlarm : 0
-     * latitude : 23.131620
-     * longitude : 113.350284
-     * mac : 1D3E1730
-     * name : 燃气
-     * placeAddress : 广东省广州市天河区黄埔大道西550号
-     * placeType : 住宅
+     * latitude : 24.131832
+     * longitude : 113.350209
+     * mac : AFCC43CC
+     * name : 8
+     * placeAddress :
+     * placeType : 烧烤
      * principal1 :
      * principal1Phone :
      * principal2 :
@@ -28,14 +30,20 @@ public class PushAlarmMsg implements Serializable{
      */
 
     private String address;
+    private int alarmFamily;
     private String alarmTime;
     private int alarmType;
     private String areaId;
-    private Object camera;
+    /**
+     * cameraId : 3120987
+     * cameraPwd : 123
+     */
+
+    private CameraBean camera;
     private int deviceType;
     private int ifDealAlarm;
-    private double latitude;
-    private double longitude;
+    private String latitude;
+    private String longitude;
     private String mac;
     private String name;
     private String placeAddress;
@@ -44,7 +52,6 @@ public class PushAlarmMsg implements Serializable{
     private String principal1Phone;
     private String principal2;
     private String principal2Phone;
-    private int alarmFamily;
 
     public String getAddress() {
         return address;
@@ -52,6 +59,14 @@ public class PushAlarmMsg implements Serializable{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getAlarmFamily() {
+        return alarmFamily;
+    }
+
+    public void setAlarmFamily(int alarmFamily) {
+        this.alarmFamily = alarmFamily;
     }
 
     public String getAlarmTime() {
@@ -78,11 +93,11 @@ public class PushAlarmMsg implements Serializable{
         this.areaId = areaId;
     }
 
-    public Object getCamera() {
+    public CameraBean getCamera() {
         return camera;
     }
 
-    public void setCamera(Object camera) {
+    public void setCamera(CameraBean camera) {
         this.camera = camera;
     }
 
@@ -102,19 +117,19 @@ public class PushAlarmMsg implements Serializable{
         this.ifDealAlarm = ifDealAlarm;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
@@ -182,11 +197,24 @@ public class PushAlarmMsg implements Serializable{
         this.principal2Phone = principal2Phone;
     }
 
-    public int getAlarmFamily() {
-        return alarmFamily;
-    }
+    public static class CameraBean implements Serializable{
+        private String cameraId;
+        private String cameraPwd;
 
-    public void setAlarmFamily(int alarmFamily) {
-        this.alarmFamily = alarmFamily;
+        public String getCameraId() {
+            return cameraId;
+        }
+
+        public void setCameraId(String cameraId) {
+            this.cameraId = cameraId;
+        }
+
+        public String getCameraPwd() {
+            return cameraPwd;
+        }
+
+        public void setCameraPwd(String cameraPwd) {
+            this.cameraPwd = cameraPwd;
+        }
     }
 }

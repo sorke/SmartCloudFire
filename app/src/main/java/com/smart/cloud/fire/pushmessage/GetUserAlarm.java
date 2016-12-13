@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2016/10/25.
  */
-public class GetUserAlarm implements Serializable {
+public class GetUserAlarm implements Serializable{
 
     /**
      * address : 中国广东省深圳市宝安区X880(长凤路)
@@ -32,6 +32,9 @@ public class GetUserAlarm implements Serializable {
     private String smoke;
     private String callerName;
     private int deviceType;
+
+    protected GetUserAlarm() {
+    }
 
     public String getAddress() {
         return address;
@@ -128,4 +131,5 @@ public class GetUserAlarm implements Serializable {
     public void setDeviceType(int deviceType) {
         this.deviceType = deviceType;
     }
+
 }

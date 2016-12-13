@@ -207,8 +207,8 @@ public class PushDemoReceiver extends BroadcastReceiver {
         mPushAlarmMsg.setAddress(dataJson.getString("address"));
         mPushAlarmMsg.setAlarmType(dataJson.getInt("alarmType"));
         mPushAlarmMsg.setAreaId(dataJson.getString("areaId"));
-        mPushAlarmMsg.setLatitude(Double.parseDouble(dataJson.getString("latitude")));
-        mPushAlarmMsg.setLongitude(Double.parseDouble(dataJson.getString("longitude")));
+        mPushAlarmMsg.setLatitude(dataJson.getString("latitude"));
+        mPushAlarmMsg.setLongitude(dataJson.getString("longitude"));
         mPushAlarmMsg.setName(dataJson.getString("name"));
         mPushAlarmMsg.setPlaceAddress(dataJson.getString("placeAddress"));
         mPushAlarmMsg.setIfDealAlarm(dataJson.getInt("ifDealAlarm"));
@@ -221,7 +221,13 @@ public class PushDemoReceiver extends BroadcastReceiver {
         mPushAlarmMsg.setDeviceType(dataJson.getInt("deviceType"));
         mPushAlarmMsg.setAlarmFamily(dataJson.getInt("alarmFamily"));
         try{
-            mPushAlarmMsg.setCamera(dataJson.getJSONObject("camera"));
+            JSONObject jsonObject =  dataJson.getJSONObject("camera");
+            if(jsonObject!=null) {
+                PushAlarmMsg.CameraBean cameraBean = new PushAlarmMsg.CameraBean();
+                cameraBean.setCameraId(jsonObject.getString("cameraId"));
+                cameraBean.setCameraPwd(jsonObject.getString("cameraPwd"));
+                mPushAlarmMsg.setCamera(cameraBean);
+            }
         }catch (Exception e){
         }
         mPushAlarmMsg.setMac(dataJson.getString("mac"));

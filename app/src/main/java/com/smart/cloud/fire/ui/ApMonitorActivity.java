@@ -52,6 +52,10 @@ import com.smart.cloud.fire.global.AppConfig;
 import com.smart.cloud.fire.global.ConstantValues;
 import com.smart.cloud.fire.global.Contact;
 import com.smart.cloud.fire.global.NpcCommon;
+import com.smart.cloud.fire.mvp.playBack.PlayBackListActivity;
+import com.smart.cloud.fire.mvp.printScreen.PrintScreenActivity;
+import com.smart.cloud.fire.mvp.recordProject.RecordProjectActivity;
+import com.smart.cloud.fire.mvp.sdcard.SDCardActivity;
 import com.smart.cloud.fire.utils.NetSpeed;
 import com.smart.cloud.fire.utils.SharedPreferencesManager;
 import com.smart.cloud.fire.utils.Utils;
@@ -866,30 +870,30 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
 //                startActivity(i13);
 //                reject();
 //                break;
-//            case R.id.sd_card_im://sd卡信息
-//                Intent i12 = new Intent(mContext,SDCardActivity.class);
-//                i12.putExtra("contact", mContact);
-//                startActivity(i12);
-//                reject();
-//                break;
-//            case R.id.play_back_im://回放
-//                Intent i1 = new Intent(mContext,PlayBackListActivity.class);
-//                i1.putExtra("contact", mContact);
-//                startActivity(i1);
-//                reject();
-//                break;
-//            case R.id.share_dev_im://视频录制
-//                Intent i11 = new Intent(mContext,RecordProjectActivity.class);
-//                i11.putExtra("contact", mContact);
-//                startActivity(i11);
-//                reject();
-//                break;
-//            case R.id.image_im:
-//                Intent i = new Intent(mContext,PrintScreenActivity.class);
-//                i.putExtra("contact", mContact);
-//                startActivity(i);
-//                reject();
-//                break;
+            case R.id.sd_card_im://sd卡信息
+                Intent i12 = new Intent(mContext,SDCardActivity.class);
+                i12.putExtra("contact", mContact);
+                startActivity(i12);
+                reject();
+                break;
+            case R.id.play_back_im://回放
+                Intent i1 = new Intent(mContext,PlayBackListActivity.class);
+                i1.putExtra("contact", mContact);
+                startActivity(i1);
+                reject();
+                break;
+            case R.id.share_dev_im://视频录制
+                Intent i11 = new Intent(mContext,RecordProjectActivity.class);
+                i11.putExtra("contact", mContact);
+                startActivity(i11);
+                reject();
+                break;
+            case R.id.image_im:
+                Intent i = new Intent(mContext,PrintScreenActivity.class);
+                i.putExtra("contact", mContact);
+                startActivity(i);
+                reject();
+                break;
             case R.id.iv_full_screen:
                 ScrrenOrientation = Configuration.ORIENTATION_LANDSCAPE;
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

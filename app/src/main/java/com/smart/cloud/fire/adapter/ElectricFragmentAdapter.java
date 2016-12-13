@@ -101,10 +101,10 @@ public class ElectricFragmentAdapter extends RecyclerView.Adapter<RecyclerView.V
             int state = normalSmoke.getNetState();
             switch (state){
                 case 0:
-                    ((ItemViewHolder) holder).state.setText("欠压报警");
+                    ((ItemViewHolder) holder).state.setText("离线");
                     break;
                 case 1:
-                    ((ItemViewHolder) holder).state.setText("高压报警");
+                    ((ItemViewHolder) holder).state.setText("在线");
                     break;
                 default:
                     break;
