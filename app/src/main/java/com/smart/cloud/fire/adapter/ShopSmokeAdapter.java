@@ -154,7 +154,7 @@ public class ShopSmokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemViewType(int position) {
         // 最后一个item设置为footerView
-        if (position + 1 == getItemCount()) {
+        if (position == getItemCount()) {
             return TYPE_FOOTER;
         } else {
             return TYPE_ITEM;
@@ -163,7 +163,7 @@ public class ShopSmokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return listNormalSmoke.size()+1;
+        return listNormalSmoke.size();
     }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素

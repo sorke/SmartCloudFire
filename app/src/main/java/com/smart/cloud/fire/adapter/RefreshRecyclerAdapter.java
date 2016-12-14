@@ -208,7 +208,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
         // 最后一个item设置为footerView
-        if (position + 1 == getItemCount()) {
+        if (position == getItemCount()) {
             return TYPE_FOOTER;
         } else {
             return TYPE_ITEM;
@@ -217,7 +217,7 @@ public class RefreshRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return messageModelList.size() + 1;
+        return messageModelList.size();
     }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素

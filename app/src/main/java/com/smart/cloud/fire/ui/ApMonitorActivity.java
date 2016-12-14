@@ -52,6 +52,7 @@ import com.smart.cloud.fire.global.AppConfig;
 import com.smart.cloud.fire.global.ConstantValues;
 import com.smart.cloud.fire.global.Contact;
 import com.smart.cloud.fire.global.NpcCommon;
+import com.smart.cloud.fire.mvp.modifyCameraInfo.ModifyCameraPwdActivity;
 import com.smart.cloud.fire.mvp.playBack.PlayBackListActivity;
 import com.smart.cloud.fire.mvp.printScreen.PrintScreenActivity;
 import com.smart.cloud.fire.mvp.recordProject.RecordProjectActivity;
@@ -864,12 +865,12 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
     public void onClick(View v) {
         // TODO Auto-generated method stub
         switch (v.getId()) {
-//            case R.id.setting_im://修改名称和密码
-//                Intent i13 = new Intent(mContext,ModifyCameraInfoActivity.class);
-//                i13.putExtra("contact", mContact);
-//                startActivity(i13);
-//                reject();
-//                break;
+            case R.id.setting_im://修改名称和密码
+                Intent i13 = new Intent(mContext,ModifyCameraPwdActivity.class);
+                i13.putExtra("contact", mContact);
+                startActivity(i13);
+                reject();
+                break;
             case R.id.sd_card_im://sd卡信息
                 Intent i12 = new Intent(mContext,SDCardActivity.class);
                 i12.putExtra("contact", mContact);

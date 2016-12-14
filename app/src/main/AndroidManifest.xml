@@ -58,18 +58,17 @@
             android:name="BaiduMobAd_STAT_ID"
             android:value="48ae76de3f" />
 
-        <!--
-        生产模式key        -->
+        <!--         生产模式key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="F0GrSzPf0G6As4uGGRGbSFsIYLqOFmKT" />
 
-
-
-        <!-- 测试模式key
+        <!--
+        测试模式key
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="7GItMm71Df8oQNe4tusL3ms8RFIL1Ft7" />-->
+            android:value="7GItMm71Df8oQNe4tusL3ms8RFIL1Ft7" />
+        -->
 
         <activity
             android:name="com.smart.cloud.fire.mvp.login.SplashActivity"
@@ -185,7 +184,8 @@
         <activity android:name="com.smart.cloud.fire.mvp.playBack.PlayBackActivity" />
         <activity android:name="com.smart.cloud.fire.mvp.recordProject.RecordProjectActivity" />
         <activity android:name="com.smart.cloud.fire.mvp.printScreen.PrintScreenActivity" />
-        <activity android:name="com.smart.cloud.fire.mvp.printScreen.ImageSeeActivity"></activity>
+        <activity android:name="com.smart.cloud.fire.mvp.printScreen.ImageSeeActivity" />
+        <activity android:name="com.smart.cloud.fire.mvp.modifyCameraInfo.ModifyCameraPwdActivity"></activity>
     </application>
 
 </manifest>

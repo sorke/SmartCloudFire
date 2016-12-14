@@ -210,7 +210,6 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
 
     @Override
     public void finishRequest() {
-
     }
 
     @Override

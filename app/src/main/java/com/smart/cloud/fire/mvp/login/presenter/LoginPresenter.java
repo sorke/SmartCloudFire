@@ -28,8 +28,97 @@ import rx.functions.Func1;
  * Created by Administrator on 2016/9/19.
  */
 public class LoginPresenter extends BasePresenter<LoginView> {
+    private int loginCount=0;
     public LoginPresenter(LoginView view) {
         attachView(view);
+    }
+
+    public void loginYooSee(final String User, final String Pwd, final Context context, final int type) {
+        String AppVersion = MyUtils.getBitProcessingVersion();
+        MD5 md = new MD5();
+        String password = md.getMD5ofStr(Pwd);
+        if(type==1){
+            mvpView.showLoading();
+        }
+        Random random = new Random();
+        int value = random.nextInt(4);
+        String userId;
+        if (Utils.isNumeric(User)) {
+                userId = "+86-"+User;
+        }else{
+            mvpView.getDataFail("用户不存在");
+            return;
+        }
+        Observable<LoginModel> observable = apiStores[value].loginYooSee(userId, password, "1", "3", AppVersion);
+        addSubscription(observable,new SubscriberCallBack<>(new ApiCallback<LoginModel>() {
+            @Override
+            public void onSuccess(LoginModel model) {
+                String errorCode = model.getError_code();
+                if(errorCode.equals("0")){
+                    editSharePreference(context,model,User,Pwd);
+                    loginServer(User);
+                }else{
+                    mvpView.hideLoading();
+                    switch (errorCode){
+                        case "2":
+                            T.showShort(context,"用户不存在");
+                            break;
+                        case "3":
+                            T.showShort(context,"密码错误");
+                            break;
+                        case "9":
+                            T.showShort(context,"用户名不能为空");
+                            break;
+                        default:
+                            break;
+                    }
+                    if(type==0){
+                        mvpView.autoLoginFail();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                if(loginCount<4){
+                    loginCount=loginCount+1;
+                    loginYooSee(User,Pwd,context,type);
+                }else{
+                    mvpView.hideLoading();
+                    mvpView.getDataFail("网络错误，请检查网络");
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+            }
+        }));
+    }
+
+    private void loginServer(String userId){
+        Observable<LoginModel> observable = apiStores1.login(userId);
+        addSubscription(observable,new SubscriberCallBack<>(new ApiCallback<LoginModel>() {
+            @Override
+            public void onSuccess(LoginModel model) {
+                int errorCode = model.getErrorCode();
+                if(errorCode==0){
+                    MyApp.app.setPrivilege(model.getPrivilege());
+                    mvpView.getDataSuccess(model);
+                }else{
+                    mvpView.getDataFail("登录失败，请重新登录");
+                }
+            }
+
+            @Override
+            public void onFailure(int code, String msg) {
+                mvpView.getDataFail("网络错误，请检查网络");
+            }
+
+            @Override
+            public void onCompleted() {
+                mvpView.hideLoading();
+            }
+        }));
     }
 
     public void loginYoosee(final String User, final String Pwd, final Context context, final int type) {

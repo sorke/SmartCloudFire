@@ -180,4 +180,8 @@ public interface ApiStores {
     Observable<ElectricInfo<Electric>> getNeedElectricInfo(@Query("userId") String userId, @Query("privilege") String privilege,
                                                     @Query("areaId") String areaId, @Query("placeTypeId") String placeTypeId,
                                                     @Query("page") String page);
+
+    @FormUrlEncoded
+    @POST("changeCameraPwd")
+    Observable<HttpError> changeCameraPwd(@Field("cameraId") String cameraId, @Field("cameraPwd") String cameraPwd);
 }
