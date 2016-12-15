@@ -96,19 +96,20 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
                 String value = electric.getValue();
                 if (value.length() > 0) {
                     ElectricOne = ElectricOne+1;
+                    int electricThreshold = electric.getElectricThreshold();
                     ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricName.setText("电压");
-                    ((ItemViewHolder) holder).electricAlarmValue.setText("264V");
+                    ((ItemViewHolder) holder).electricAlarmValue.setText(electricThreshold+"V");
                     ((ItemViewHolder) holder).electricCurrentValue.setText(value + "V");
-                    if (Double.parseDouble(value) - 264 > 0) {
+                    if (Double.parseDouble(value) - electricThreshold > 0) {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("高压");
-                    } else if (Double.parseDouble(value) - 176 < 0) {
-                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
-                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
-                        ((ItemViewHolder) holder).electricStates.setText("欠压");
+//                    } else if (Double.parseDouble(value) - 176 < 0) {
+//                        ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
+//                        ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
+//                        ((ItemViewHolder) holder).electricStates.setText("欠压");
                     } else {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(18, 184, 245));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(18, 184, 245));
@@ -119,13 +120,13 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
             case 7:
                 String value7 = electric.getValue();
                 if (value7.length() > 0) {
-//                    ElectricTwo = ElectricTwo+1;
+                    int electricThreshold = electric.getElectricThreshold();
                     ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricName.setText("电流");
-                    ((ItemViewHolder) holder).electricAlarmValue.setText("24A");
+                    ((ItemViewHolder) holder).electricAlarmValue.setText(electricThreshold+ "A");
                     ((ItemViewHolder) holder).electricCurrentValue.setText(value7 + "A");
-                    if (Double.parseDouble(value7) - 24 > 0) {
+                    if (Double.parseDouble(value7) - electricThreshold > 0) {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("过流");
@@ -140,12 +141,13 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
                 String value8 = electric.getValue();
                 if (value8.length() > 0) {
                     ElectricFour = ElectricFour+1;
+                    int electricThreshold = electric.getElectricThreshold();
                     ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricName.setText("漏电流");
-                    ((ItemViewHolder) holder).electricAlarmValue.setText("500mA");
-                    ((ItemViewHolder) holder).electricCurrentValue.setText(value8 + "A");
-                    if (Double.parseDouble(value8) - 500 > 0) {
+                    ((ItemViewHolder) holder).electricAlarmValue.setText(electricThreshold+ "mA");
+                    ((ItemViewHolder) holder).electricCurrentValue.setText(value8 + "mA");
+                    if (Double.parseDouble(value8) - electricThreshold > 0) {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("漏电流");
@@ -160,12 +162,13 @@ public class ElectricActivityAdapterTest extends RecyclerView.Adapter<RecyclerVi
                 String value97 = electric.getValue();
                 if (value97.length() > 0) {
                     ElectricFour = ElectricFour+1;
+                    int electricThreshold = electric.getElectricThreshold();
                     ((ItemViewHolder) holder).tvImage.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricLin.setVisibility(View.VISIBLE);
                     ((ItemViewHolder) holder).electricName.setText("温度");
-                    ((ItemViewHolder) holder).electricAlarmValue.setText("60℃");
+                    ((ItemViewHolder) holder).electricAlarmValue.setText(electricThreshold+ "℃");
                     ((ItemViewHolder) holder).electricCurrentValue.setText(value97 + "℃");
-                    if (Double.parseDouble(value97) - 60 > 0) {
+                    if (Double.parseDouble(value97) - electricThreshold > 0) {
                         ((ItemViewHolder) holder).electricCurrentValue.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setTextColor(Color.rgb(224, 47, 27));
                         ((ItemViewHolder) holder).electricStates.setText("高温");

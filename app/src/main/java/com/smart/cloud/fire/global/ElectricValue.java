@@ -50,9 +50,18 @@ public class ElectricValue {
         private int electricType;
         private int id;
         private String value;
+        private int ElectricThreshold;
 
         public int getId() {
             return id;
+        }
+
+        public int getElectricThreshold() {
+            return ElectricThreshold;
+        }
+
+        public void setElectricThreshold(int electricThreshold) {
+            ElectricThreshold = electricThreshold;
         }
 
         public void setId(int id) {
