@@ -50,6 +50,7 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
     private int lastVisibleItem;
     private Context mContext;
     private List<Camera> list;
+    private int loadMoreCount;
     private boolean research = false;
     private String page;
     private String userID;
@@ -109,15 +110,14 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
                     }
                     return;
                 }
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 2 == shopCameraAdapter.getItemCount()) {
-                    if (list != null && list.size() >= 20 && research == false) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == shopCameraAdapter.getItemCount()) {
+                    if (list != null &&loadMoreCount >= 20 && research == false) {
                         page = Integer.parseInt(page) + 1 + "";
                         mvpPresenter.getAllCamera(userID, privilege + "", page, list,true);
+                    }else{
+                        T.showShort(mContext,"已经没有更多数据了");
                     }
-                } else{
-                    shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.NO_DATA);
                 }
-                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -142,6 +142,7 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
 
     @Override
     public void getDataSuccess(List<?> smokeList,boolean search) {
+        loadMoreCount = smokeList.size();
         list.clear();
         list.addAll((List<Camera>)smokeList);
         shopCameraAdapter = new ShopCameraAdapter(mContext, list, mShopInfoFragmentPresenter);
@@ -171,10 +172,9 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
 
     @Override
     public void onLoadingMore(List<?> smokeList) {
+        loadMoreCount = smokeList.size();
         list.addAll((List<Camera>)smokeList);
         shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.LOADING_MORE);
-        shopCameraAdapter.addMoreItem(list);
-        shopCameraAdapter.changeMoreStatus(ShopCameraAdapter.PULLUP_LOAD_MORE);
     }
 
     @Override

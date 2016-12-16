@@ -57,6 +57,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
     private LinearLayoutManager linearLayoutManager;
     private int lastVisibleItem;
     private List<Electric> list;
+    private int loadMoreCount;
     private boolean research = false;
     private String page;
 
@@ -114,14 +115,15 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
                     return;
                 }
                 int count = electricFragmentAdapter.getItemCount();
-                int itemCount = lastVisibleItem+2;
+                int itemCount = lastVisibleItem+1;
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count) {
-                    page = Integer.parseInt(page) + 1 + "";
-                    mvpPresenter.getAllElectricInfo(userID, privilege + "", page,2,true);
-                } else{
-                    electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
+                    if(loadMoreCount>=20){
+                        page = Integer.parseInt(page) + 1 + "";
+                        mvpPresenter.getAllElectricInfo(userID, privilege + "", page,2,true);
+                    }else{
+                        T.showShort(mContext,"已经没有更多数据了");
+                    }
                 }
-                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -147,6 +149,7 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void getDataSuccess(List<?> smokeList,boolean search) {
+        loadMoreCount = smokeList.size();
         list.clear();
         list.addAll((List<Electric>)smokeList);
         electricFragmentAdapter = new ElectricFragmentAdapter(mContext, list, shopInfoFragmentPresenter);
@@ -184,10 +187,9 @@ public class ElectricFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
 
     @Override
     public void onLoadingMore(List<?> smokeList) {
+        loadMoreCount = smokeList.size();
         list.addAll((List<Electric>)smokeList);
         electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.LOADING_MORE);
-        electricFragmentAdapter.addMoreItem(list);
-        electricFragmentAdapter.changeMoreStatus(ShopSmokeAdapter.PULLUP_LOAD_MORE);
     }
 
     @Override

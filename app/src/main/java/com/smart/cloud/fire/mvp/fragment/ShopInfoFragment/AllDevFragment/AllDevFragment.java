@@ -52,6 +52,7 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
     private int lastVisibleItem;
     private Context mContext;
     private List<Smoke> list;
+    private int loadMoreCount;
     private boolean research = false;
     private String page;
     private String userID;
@@ -116,14 +117,15 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
                     return;
                 }
                 int count = shopSmokeAdapter.getItemCount();
-                int itemCount = lastVisibleItem+2;
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && itemCount == count&&list.size()>=20) {
-                    page = Integer.parseInt(page) + 1 + "";
-                    mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
-                } else{
-                    shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
+//                int itemCount = lastVisibleItem+2;
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem+1 == count) {
+                    if(loadMoreCount>=20){
+                        page = Integer.parseInt(page) + 1 + "";
+                        mvpPresenter.getAllSmoke(userID, privilege + "", page, list, 1,true);
+                    }else{
+                        T.showShort(mContext,"已经没有更多数据了");
+                    }
                 }
-                mProgressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -149,12 +151,13 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
     @Override
     public void getDataSuccess(List<?> smokeList,boolean search) {
         research = search;
+        loadMoreCount = smokeList.size();
         list.clear();
         list.addAll((List<Smoke>)smokeList);
         shopSmokeAdapter = new ShopSmokeAdapter(mContext, list, mShopInfoFragmentPresenter);
         recyclerView.setAdapter(shopSmokeAdapter);
         swipereFreshLayout.setRefreshing(false);
-        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
+//        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.NO_DATA);
     }
 
     @Override
@@ -178,10 +181,11 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
 
     @Override
     public void onLoadingMore(List<?> smokeList) {
+        loadMoreCount = smokeList.size();
         list.addAll((List<Smoke>)smokeList);
         shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.LOADING_MORE);
-        shopSmokeAdapter.addMoreItem(list);
-        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.PULLUP_LOAD_MORE);
+//        shopSmokeAdapter.addMoreItem(list);
+//        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.PULLUP_LOAD_MORE);
     }
 
     @Override

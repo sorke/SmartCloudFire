@@ -106,6 +106,7 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     private CollectFragmentPresenter collectFragmentPresenter;
     private boolean research = false;
     private List<AlarmMessageModel> messageModelList;
+    private int loadMoreCount;
     boolean isDpShow = false;
     private boolean wheelScrolled = false;
     private int selected_Date;
@@ -179,12 +180,12 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
                     return;
                 }
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {
-                    if (messageModelList != null && messageModelList.size() >= 20 && research == false) {
+                    if (loadMoreCount >= 20 && research == false) {
                         page = Integer.parseInt(page) + 1 + "";
                         mvpPresenter.getAllAlarm(userID, privilege + "", page, 1, "", "", "", "");
                         mProgressBar.setVisibility(View.GONE);
                     }else{
-                        adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
+                        T.showShort(mContext,"已经没有更多数据了");
                     }
                 }
             }
@@ -482,12 +483,12 @@ public class CollectFragment extends MvpFragment<CollectFragmentPresenter> imple
     public void getDataSuccess(List<AlarmMessageModel> alarmMessageModels) {
         int pageInt = Integer.parseInt(page);
         if (messageModelList != null && messageModelList.size() >= 20 && pageInt > 1) {
+            loadMoreCount=alarmMessageModels.size();
             messageModelList.addAll(alarmMessageModels);
-            adapter.changeMoreStatus(RefreshRecyclerAdapter.LOADING_MORE);
-            adapter.addMoreItem(messageModelList);
             adapter.changeMoreStatus(RefreshRecyclerAdapter.NO_DATA);
         } else {
             messageModelList = new ArrayList<>();
+            loadMoreCount=alarmMessageModels.size();
             messageModelList.addAll(alarmMessageModels);
             adapter = new RefreshRecyclerAdapter(getActivity(), messageModelList, collectFragmentPresenter, userID, privilege + "");
             demoRecycler.setAdapter(adapter);
