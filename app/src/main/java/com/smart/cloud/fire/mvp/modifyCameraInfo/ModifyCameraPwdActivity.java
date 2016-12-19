@@ -112,6 +112,8 @@ public class ModifyCameraPwdActivity extends MvpActivity<ModifyCameraPwdPresente
         contact.contactPassword = pwd;
         Intent in = new Intent(mContext, ApMonitorActivity.class);
         in.putExtra("contact",contact);
+        in.putExtra("ifRefreshPwd",true);
+        startActivity(in);
         finish();
     }
 

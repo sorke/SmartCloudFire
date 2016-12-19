@@ -1,7 +1,10 @@
 package com.smart.cloud.fire.mvp.fragment.ShopInfoFragment.CameraFragment;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +20,7 @@ import android.widget.ProgressBar;
 import com.smart.cloud.fire.adapter.ShopCameraAdapter;
 import com.smart.cloud.fire.base.ui.MvpFragment;
 import com.smart.cloud.fire.global.Area;
+import com.smart.cloud.fire.global.ConstantValues;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.ShopType;
 import com.smart.cloud.fire.global.SmokeSummary;
@@ -75,8 +79,28 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
         page = "1";
         list = new ArrayList<>();
         refreshListView();
+        regFilter();
         mvpPresenter.getAllCamera(userID, privilege + "", page, list,false);
     }
+    private void regFilter() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConstantValues.Action.REFRESH_CAMERA_PWD);
+        mContext.registerReceiver(mReceiver, filter);
+    }
+
+    BroadcastReceiver mReceiver=new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            // TODO Auto-generated method stub
+
+            if(intent.getAction().equals(ConstantValues.Action.REFRESH_CAMERA_PWD)){
+                page = "1";
+                list.clear();
+                mvpPresenter.getAllCamera(userID, privilege + "", page, list,false);
+            }
+        }
+    };
 
     private void refreshListView() {
         //设置刷新时动画的颜色，可以设置4个
@@ -212,5 +236,6 @@ public class CameraFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        mContext.unregisterReceiver(mReceiver);
     }
 }

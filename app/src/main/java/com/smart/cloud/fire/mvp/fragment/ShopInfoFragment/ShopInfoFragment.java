@@ -1,6 +1,7 @@
 package com.smart.cloud.fire.mvp.fragment.ShopInfoFragment;
 
 import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -29,6 +30,7 @@ import com.smart.cloud.fire.utils.Utils;
 import com.smart.cloud.fire.view.TopIndicator;
 import com.smart.cloud.fire.view.XCDropDownListViewMapSearch;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -321,6 +323,21 @@ public class ShopInfoFragment extends MvpFragment<ShopInfoFragmentPresenter> imp
         }
         if (electricFragment != null) {
             electricFragment = null;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 

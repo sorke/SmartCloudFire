@@ -135,6 +135,7 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
     private Handler mhandler = new Handler();
     NetSpeed speed;
     private TextView net_speed_tv;
+    private boolean ifRefreshPwd=false;
 	/*
 	 * 平均码流
 	高清1280*720 ： 平均170KB/S
@@ -168,6 +169,7 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
                         mContact.contactId);
         ipcList=getIntent().getStringArrayExtra("ipcList");
         number=getIntent().getIntExtra("number", -1);
+        ifRefreshPwd=getIntent().getBooleanExtra("ifRefreshPwd", false);
         connectType=getIntent().getIntExtra("connectType", ConstantValues.ConnectType.P2PCONNECT);
         isSurpportOpenDoor=getIntent().getBooleanExtra("isSurpportOpenDoor", false);
         isCustomCmdAlarm=getIntent().getBooleanExtra("isCustomCmdAlarm", false);
@@ -819,6 +821,9 @@ public class ApMonitorActivity extends BaseMonitorActivity implements OnClickLis
         }
         Intent refreshContans = new Intent();
         refreshContans.setAction(ConstantValues.Action.REFRESH_CONTANTS);
+        if(ifRefreshPwd){
+            refreshContans.setAction(ConstantValues.Action.REFRESH_CAMERA_PWD);
+        }
         mContext.sendBroadcast(refreshContans);
         speed.stopCalculateNetSpeed();
         SharedPreferencesManager.getInstance()
