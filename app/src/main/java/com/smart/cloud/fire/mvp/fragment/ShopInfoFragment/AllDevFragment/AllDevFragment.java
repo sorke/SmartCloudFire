@@ -184,8 +184,6 @@ public class AllDevFragment extends MvpFragment<ShopInfoFragmentPresenter> imple
         loadMoreCount = smokeList.size();
         list.addAll((List<Smoke>)smokeList);
         shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.LOADING_MORE);
-//        shopSmokeAdapter.addMoreItem(list);
-//        shopSmokeAdapter.changeMoreStatus(ShopSmokeAdapter.PULLUP_LOAD_MORE);
     }
 
     @Override

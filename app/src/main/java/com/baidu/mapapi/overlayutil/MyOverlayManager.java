@@ -69,7 +69,7 @@ public class MyOverlayManager extends OverlayManager {
                 Camera mCamera = smoke.getCamera();
                 int alarmState = smoke.getIfDealAlarm();
                 Bundle bundle = new Bundle();
-                if(mCamera!=null){
+                if(mCamera!=null&&mCamera.getLatitude().length()>0){
                     double latitude = Double.parseDouble(mCamera.getLatitude());
                     double longitude = Double.parseDouble(mCamera.getLongitude());
                     LatLng latLng = new LatLng(latitude, longitude);
