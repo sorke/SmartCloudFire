@@ -33,7 +33,7 @@ public class GetUserAlarm implements Serializable{
     private String callerName;
     private int deviceType;
 
-    protected GetUserAlarm() {
+    public GetUserAlarm() {
     }
 
     public String getAddress() {

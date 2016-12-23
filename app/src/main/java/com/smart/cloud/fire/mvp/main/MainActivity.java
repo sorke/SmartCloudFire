@@ -26,7 +26,6 @@ import com.igexin.sdk.PushManager;
 import com.p2p.core.P2PHandler;
 import com.p2p.core.update.UpdateManager;
 import com.smart.cloud.fire.base.ui.MvpActivity;
-import com.smart.cloud.fire.geTuiPush.GeTuiService;
 import com.smart.cloud.fire.global.ConstantValues;
 import com.smart.cloud.fire.global.MainService;
 import com.smart.cloud.fire.global.MyApp;
@@ -80,6 +79,8 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
         initView();
         regFilter();
         startService(new Intent(MainActivity.this, RemoteService.class));
+        PushManager.getInstance().initialize(this.getApplicationContext(), com.smart.cloud.fire.geTuiPush.DemoPushService.class);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), com.smart.cloud.fire.geTuiPush.DemoIntentService.class);
     }
 
     private void initView() {
@@ -102,12 +103,7 @@ public class MainActivity extends MvpActivity<MainPresenter> implements MainView
                 mvpPresenter.replaceFragment(checkedId, otherFrameLayout, mainContent);
             }
         });
-        String userID = SharedPreferencesManager.getInstance().getData(mContext,
-                SharedPreferencesManager.SP_FILE_GWELL,
-                SharedPreferencesManager.KEY_RECENTNAME);
-        Intent setTagIntent = new Intent(MyApp.app,GeTuiService.class);
-        setTagIntent.putExtra("UserNum",userID);
-        MyApp.app.startService(setTagIntent);
+
     }
 
     private void connect() {

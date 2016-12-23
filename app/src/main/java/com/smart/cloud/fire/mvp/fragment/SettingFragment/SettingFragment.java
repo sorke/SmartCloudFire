@@ -64,13 +64,15 @@ public class SettingFragment extends MvpFragment<SettingFragmentPresenter> imple
                 SharedPreferencesManager.KEY_RECENTNAME);
         settingUserId.setText(userID);
         settingUserCode.setText(username);
-//        String state = MyApp.app.getPushState();
-//        if(state.equals("Online")){
-//            lineState.setText("在线");
-//        }
-//        if(state.equals("Offline")){
-//            lineState.setText("离线");
-//        }
+        String state = MyApp.app.getPushState();
+        if(state!=null&&state.length()>0){
+            if(state.equals("Online")){
+                lineState.setText("在线");
+            }
+            if(state.equals("Offline")){
+                lineState.setText("离线");
+            }
+        }
         int privilege = MyApp.app.getPrivilege();
         if (privilege == 3) {
             settingHelpRela.setVisibility(View.VISIBLE);
