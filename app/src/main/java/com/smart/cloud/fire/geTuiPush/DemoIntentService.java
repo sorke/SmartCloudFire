@@ -69,16 +69,27 @@ public class DemoIntentService extends GTIntentService {
                 switch (deviceType){
                     case 1://烟感
                     case 2://燃气
-                        String message;
+                    case 7://声光
+                    case 8://手报
+                        String message = null;
                         int alarmType = dataJson.getInt("alarmType");
-                        if(deviceType==1){
-                            if(alarmType==202) {
-                                message="发生火灾";
-                            }else{
-                                message="烟感电量低，请更换电池";
-                            }
-                        }else{
-                            message="燃气发生泄漏";
+                        switch (deviceType){
+                            case 1:
+                                if(alarmType==202) {
+                                    message="发生火灾";
+                                }else{
+                                    message="烟感电量低，请更换电池";
+                                }
+                                break;
+                            case 2:
+                                message="燃气发生泄漏";
+                                break;
+                            case 7:
+                                message="声光发出报警";
+                                break;
+                            case 8:
+                                message="手动报警";
+                                break;
                         }
                         PushAlarmMsg mPushAlarmMsg = jsJson(dataJson);
                         Random random1 = new Random();

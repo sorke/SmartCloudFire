@@ -81,22 +81,43 @@ public class ShopSmokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             int devType = normalSmoke.getDeviceType();
             if(devType!=5){
                 int netStates = normalSmoke.getNetState();
-                if(devType==1){
-                    if (netStates == 0) {
-                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
-                    } else {
-                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
-                    }
-                }else{
-                    if (netStates == 0) {
-                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj_lx);
-                    } else {
-                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj);
-                    }
+                switch (devType){
+                    case 1:
+                        if (netStates == 0) {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
+                        } else {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
+                        }
+                        break;
+                    case 2:
+                        if (netStates == 0) {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj_lx);
+                        } else {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj);
+                        }
+                        break;
+                    case 7:
+                        if (netStates == 0) {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sg_ygtubiao_sxj_lx);
+                        } else {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sg_ygtubiao_sxj);
+                        }
+                        break;
+                    case 8:
+                        if (netStates == 0) {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sb_ygtubiao_sxj_lx);
+                        } else {
+                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sb_ygtubiao_sxj);
+                        }
+                        break;
                 }
 
                 ((ItemViewHolder) holder).groupTvAddress.setText(normalSmoke.getAddress());

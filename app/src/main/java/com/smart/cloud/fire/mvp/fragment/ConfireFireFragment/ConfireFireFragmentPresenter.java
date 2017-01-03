@@ -64,10 +64,20 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
 
     public void getOneSmoke(String userId,String privilege,String smokeMac){
         mvpView.showLoading();
-        if(smokeMac.startsWith("R")){
-            smokeMac = smokeMac.replace("R","");
-        }else if(smokeMac.startsWith("Q")){
-            smokeMac = smokeMac.replace("Q","");
+        String macStr = (String) smokeMac.subSequence(0, 1);
+        switch (macStr){
+            case "R":
+                smokeMac = smokeMac.replace("R","");
+                break;
+            case "Q":
+                smokeMac = smokeMac.replace("Q","");
+                break;
+            case "G":
+                smokeMac = smokeMac.replace("G","");
+                break;
+            case "S":
+                smokeMac = smokeMac.replace("S","");
+                break;
         }
         if(smokeMac!=null&&smokeMac.length()>0){
             Observable mObservable = apiStores1.getOneSmoke(userId,smokeMac,privilege);
@@ -153,16 +163,28 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
             mvpView.addSmokeResult("请填选择区域",1);
             return;
         }
-        String deviceType;
-        if(smokeMac.startsWith("R")){
-            smokeMac = smokeMac.replace("R","");
-            deviceType="2";
-        }else if(smokeMac.startsWith("Q")){
-            smokeMac = smokeMac.replace("Q","");
-            deviceType="5";
-        }else{
-            deviceType="1";
+        String deviceType="1";
+
+        String macStr = (String) smokeMac.subSequence(0, 1);
+        switch (macStr){
+            case "R":
+                smokeMac = smokeMac.replace("R","");
+                deviceType="2";
+                break;
+            case "Q":
+                smokeMac = smokeMac.replace("Q","");
+                deviceType="5";
+                break;
+            case "G":
+                smokeMac = smokeMac.replace("G","");//声光报警器 6
+                deviceType="7";
+                break;
+            case "S":
+                smokeMac = smokeMac.replace("S","");//手动报警，显示 7
+                deviceType="8";
+                break;
         }
+
         mvpView.showLoading();
         Observable mObservable = apiStores1.addSmoke(userID,smokeName,privilege,smokeMac,address,
                 longitude,latitude,placeAddress,placeTypeId,principal1,principal1Phone,principal2,

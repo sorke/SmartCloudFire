@@ -60,6 +60,11 @@ public interface ApiStores {
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     Observable<HttpError> getAllSmoke(@Query("userId") String userId, @Query("privilege") String privilege,@Query("page") String page);
 
+//    @FormUrlEncoded
+//    @POST("getAllSmoke")
+//    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+//    Observable<HttpError> getAllSmoke(@Field("userId") String userId, @Field("privilege") String privilege,@Field("page") String page);
+
     //获取用户所有的摄像头
     @GET("getAllCamera")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
@@ -95,6 +100,7 @@ public interface ApiStores {
 
     //添加烟感
     @GET("addSmoke")
+    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
     Observable<ConfireFireModel> addSmoke(@Query("userId") String userId, @Query("smokeName") String smokeName,
                                           @Query("privilege") String privilege, @Query("smokeMac") String smokeMac,
                                           @Query("address") String address, @Query("longitude") String longitude,
@@ -103,6 +109,19 @@ public interface ApiStores {
                                           @Query("principal1Phone") String principal1Phone, @Query("principal2") String principal2,
                                           @Query("principal2Phone") String principal2Phone, @Query("areaId") String areaId,
                                           @Query("repeater") String repeater,@Query("camera") String camera,@Query("deviceType") String deviceType);
+
+//    @FormUrlEncoded
+//    @POST("addSmoke")
+//    @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
+//    Observable<ConfireFireModel> addSmoke(@Field("userId") String userId, @Field("smokeName") String smokeName,
+//                                          @Field("privilege") String privilege, @Field("smokeMac") String smokeMac,
+//                                          @Field("address") String address, @Field("longitude") String longitude,
+//                                          @Field("latitude") String latitude, @Field("placeAddress") String placeAddress,
+//                                          @Field("placeTypeId") String placeTypeId, @Field("principal1") String principal1,
+//                                          @Field("principal1Phone") String principal1Phone, @Field("principal2") String principal2,
+//                                          @Field("principal2Phone") String principal2Phone, @Field("areaId") String areaId,
+//                                          @Field("repeater") String repeater,@Field("camera") String camera,@Field("deviceType") String deviceType);
+
     //获取用户报警消息
     @GET("getAllAlarm")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")

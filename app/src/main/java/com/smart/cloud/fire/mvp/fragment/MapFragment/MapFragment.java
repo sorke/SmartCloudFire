@@ -167,6 +167,10 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
                 R.layout.image_test2, null);
         View viewDq = LayoutInflater.from(mContext).inflate(
                 R.layout.image_test_dq, null);
+        View viewSG = LayoutInflater.from(mContext).inflate(
+                R.layout.image_sg_mark, null);
+        View viewSB = LayoutInflater.from(mContext).inflate(
+                R.layout.image_sb_mark, null);
         BitmapDescriptor bdA = BitmapDescriptorFactory
                 .fromView(viewA);
         BitmapDescriptor bdDq = BitmapDescriptorFactory
@@ -175,6 +179,10 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
                 .fromView(viewB);
         BitmapDescriptor bdRQ = BitmapDescriptorFactory
                 .fromView(viewRQ);
+        BitmapDescriptor bdSG = BitmapDescriptorFactory
+                .fromView(viewSG);
+        BitmapDescriptor bdSB = BitmapDescriptorFactory
+                .fromView(viewSB);
         BitmapDescriptor cameraImage = BitmapDescriptorFactory
                 .fromView(view);
         BitmapDescriptor cameraImage2 = BitmapDescriptorFactory
@@ -186,6 +194,8 @@ public class MapFragment extends MvpFragment<MapFragmentPresenter> implements Ma
         listView.add(cameraImage);
         listView.add(cameraImage2);
         listView.add(bdDq);
+        listView.add(bdSG);
+        listView.add(bdSB);
         return listView;
     }
 

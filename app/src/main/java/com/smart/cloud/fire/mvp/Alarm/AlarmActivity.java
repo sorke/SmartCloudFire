@@ -116,26 +116,27 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
         smokeMarkPhoneTv.setText(mPushAlarmMsg.getPrincipal2Phone());
         alarmInfo.setText(mPushAlarmMsg.getPlaceAddress() + mPushAlarmMsg.getAddress());
         alarmTime.setText(mPushAlarmMsg.getAlarmTime());
-        int devType = mPushAlarmMsg.getDeviceType();
-        switch (devType) {
-            case 1:
-                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
-                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
-                mAlarmType.setText(alarmMsg);
-                break;
-            case 2:
-                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
-                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
-                mAlarmType.setText(alarmMsg);
-                break;
-            case 5:
-                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
-                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
-                mAlarmType.setText(alarmMsg);
-                break;
-            default:
-                break;
-        }
+//        int devType = mPushAlarmMsg.getDeviceType();
+        alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
+        mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
+        mAlarmType.setText(alarmMsg);
+//        switch (devType) {
+//            case 1:
+//
+//                break;
+//            case 2:
+//                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
+//                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
+//                mAlarmType.setText(alarmMsg);
+//                break;
+//            case 5:
+//                alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
+//                mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
+//                mAlarmType.setText(alarmMsg);
+//                break;
+//            default:
+//                break;
+//        }
         alarmInit();
         RxView.clicks(alarmLeadToBtn).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Action1<Void>() {
             @Override
