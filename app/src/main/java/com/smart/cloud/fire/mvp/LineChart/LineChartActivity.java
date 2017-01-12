@@ -265,7 +265,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             btnNext.setBackgroundResource(R.drawable.next_selector);
             electricBeen.clear();
             electricBeen.addAll(temperatureTimes);
-        } else if (len < 6) {
+        } else if (len < 6&&electricBeen.size()>0) {
             btnNext.setClickable(false);
             btnNext.setBackgroundResource(R.mipmap.next_an);
             for (int i = 0; i < len; i++) {
@@ -273,6 +273,8 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
                 TemperatureTime.ElectricBean tElectricBean = temperatureTimes.get(i);
                 electricBeen.add(tElectricBean);
             }
+        }else if(len < 6&&electricBeen.size()==0){
+            T.showShort(mActivity,"无数据");
         }
         setPointsValues(electricBeen);
         setLinesDatas(electricBeen);

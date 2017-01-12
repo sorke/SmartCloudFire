@@ -79,72 +79,88 @@ public class ShopSmokeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((ItemViewHolder) holder).repeaterRela.setVisibility(View.VISIBLE);
             final Smoke normalSmoke = listNormalSmoke.get(position);
             int devType = normalSmoke.getDeviceType();
-            if(devType!=5){
-                int netStates = normalSmoke.getNetState();
-                switch (devType){
-                    case 1:
-                        if (netStates == 0) {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
-                        } else {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
-                        }
-                        break;
-                    case 2:
-                        if (netStates == 0) {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj_lx);
-                        } else {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj);
-                        }
-                        break;
-                    case 7:
-                        if (netStates == 0) {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sg_ygtubiao_sxj_lx);
-                        } else {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sg_ygtubiao_sxj);
-                        }
-                        break;
-                    case 8:
-                        if (netStates == 0) {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sb_ygtubiao_sxj_lx);
-                        } else {
-                            ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
-                            ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sb_ygtubiao_sxj);
-                        }
-                        break;
-                }
-
-                ((ItemViewHolder) holder).groupTvAddress.setText(normalSmoke.getAddress());
-                ((ItemViewHolder) holder).groupTv.setText(normalSmoke.getName());
-                ((ItemViewHolder) holder).repeaterNameTv.setText(normalSmoke.getPlaceType());
-                ((ItemViewHolder) holder).repeaterMacTv.setText(normalSmoke.getAreaName());
-                ((ItemViewHolder) holder).groupPrincipal1.setText(normalSmoke.getPrincipal1());
-                ((ItemViewHolder) holder).groupPhone1.setText(normalSmoke.getPrincipal1Phone());
-                ((ItemViewHolder) holder).groupPrincipal2.setText(normalSmoke.getPrincipal2());
-                ((ItemViewHolder) holder).groupPhone2.setText(normalSmoke.getPrincipal2Phone());
-                ((ItemViewHolder) holder).repeaterTv2.setText(normalSmoke.getRepeater());
-                ((ItemViewHolder) holder).groupPhone1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String phoneOne = normalSmoke.getPrincipal1Phone();
-                        mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneOne);
+            int netStates = normalSmoke.getNetState();
+            switch (devType){
+                case 1:
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
                     }
-                });
-                ((ItemViewHolder) holder).groupPhone2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String phoneTwo = normalSmoke.getPrincipal2Phone();
-                        mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneTwo);
+                    break;
+                case 2:
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj_lx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.rq_ygtubiao_sxj);
                     }
-                });
-                holder.itemView.setTag(position);
+                    break;
+                case 5:
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.dq_ygtubiao_slx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.dq_ygtubiao_sxj);
+                    }
+                    break;
+                case 7:
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sg_ygtubiao_sxj_lx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sg_ygtubiao_sxj);
+                    }
+                    break;
+                case 8:
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sb_ygtubiao_sxj_lx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.sb_ygtubiao_sxj);
+                    }
+                    break;
+                case 9:
+                    if (netStates == 0) {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_lx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_lx);
+                    } else {
+                        ((ItemViewHolder) holder).categoryGroupLin.setBackgroundResource(R.drawable.alarm_rela_zx_bg);
+                        ((ItemViewHolder) holder).groupImage.setImageResource(R.drawable.yg_yg_zx);
+                    }
+                    break;
             }
+
+            ((ItemViewHolder) holder).groupTvAddress.setText(normalSmoke.getAddress());
+            ((ItemViewHolder) holder).groupTv.setText(normalSmoke.getName());
+            ((ItemViewHolder) holder).repeaterNameTv.setText(normalSmoke.getPlaceType());
+            ((ItemViewHolder) holder).repeaterMacTv.setText(normalSmoke.getAreaName());
+            ((ItemViewHolder) holder).groupPrincipal1.setText(normalSmoke.getPrincipal1());
+            ((ItemViewHolder) holder).groupPhone1.setText(normalSmoke.getPrincipal1Phone());
+            ((ItemViewHolder) holder).groupPrincipal2.setText(normalSmoke.getPrincipal2());
+            ((ItemViewHolder) holder).groupPhone2.setText(normalSmoke.getPrincipal2Phone());
+            ((ItemViewHolder) holder).repeaterTv2.setText(normalSmoke.getRepeater());
+            ((ItemViewHolder) holder).groupPhone1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String phoneOne = normalSmoke.getPrincipal1Phone();
+                    mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneOne);
+                }
+            });
+            ((ItemViewHolder) holder).groupPhone2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String phoneTwo = normalSmoke.getPrincipal2Phone();
+                    mShopInfoFragmentPresenter.telPhoneAction(mContext,phoneTwo);
+                }
+            });
+            holder.itemView.setTag(position);
         } else if (holder instanceof FootViewHolder) {
             FootViewHolder footViewHolder = (FootViewHolder) holder;
             switch (load_more_status) {

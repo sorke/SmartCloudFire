@@ -66,11 +66,11 @@ public class MyOverlayManager extends OverlayManager {
             giflistDq.add(viewList.get(5));
             giflistDq.add(viewList.get(1));
             ArrayList<BitmapDescriptor> giflistSG = new ArrayList<>();
-            giflistDq.add(viewList.get(6));
-            giflistDq.add(viewList.get(1));
+            giflistSG.add(viewList.get(6));
+            giflistSG.add(viewList.get(1));
             ArrayList<BitmapDescriptor> giflistSB = new ArrayList<>();
-            giflistDq.add(viewList.get(7));
-            giflistDq.add(viewList.get(1));
+            giflistSB.add(viewList.get(7));
+            giflistSB.add(viewList.get(1));
             for (Smoke smoke : mapNormalSmoke) {
                 Camera mCamera = smoke.getCamera();
                 int alarmState = smoke.getIfDealAlarm();

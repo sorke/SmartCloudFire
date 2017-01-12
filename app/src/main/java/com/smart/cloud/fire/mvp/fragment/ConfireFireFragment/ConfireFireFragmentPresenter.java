@@ -78,6 +78,9 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
             case "S":
                 smokeMac = smokeMac.replace("S","");
                 break;
+            case "J":
+                smokeMac = smokeMac.replace("J","");
+                break;
         }
         if(smokeMac!=null&&smokeMac.length()>0){
             Observable mObservable = apiStores1.getOneSmoke(userId,smokeMac,privilege);
@@ -182,6 +185,10 @@ public class ConfireFireFragmentPresenter extends BasePresenter<ConfireFireFragm
             case "S":
                 smokeMac = smokeMac.replace("S","");//手动报警，显示 7
                 deviceType="8";
+                break;
+            case "J":
+                smokeMac = smokeMac.replace("J","");//三江设备
+                deviceType="9";
                 break;
         }
 

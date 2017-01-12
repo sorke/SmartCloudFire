@@ -35,9 +35,9 @@ public class ElectricPresenter extends BasePresenter<ElectricView>{
                     for(ElectricValue electricValue : electricList){
                         int electricType = electricValue.getElectricType();
                         List<ElectricValue.ElectricValueBean> list = electricValue.getElectricValue();
-                        for(ElectricValue.ElectricValueBean electricValueBean : list){
-                            electricValueBean.setElectricType(electricType);
-                            electricValueBeen.add(electricValueBean);
+                        for(ElectricValue.ElectricValueBean electric: list){
+                            electric.setElectricType(electricType);
+                            electricValueBeen.add(electric);
                         }
                     }
                     mvpView.getDataSuccess(electricValueBeen);

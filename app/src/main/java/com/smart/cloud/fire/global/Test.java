@@ -9,20 +9,20 @@ public class Test {
 
 
     /**
-     * Electric : [{"electricTime":"2016-12-23 16:40:01","electricType":6,"electricValue":[{"id":1,"value":"218.51"}]},{"electricTime":"2016-12-23 16:40:01","electricType":7,"electricValue":[{"ElectricThreshold":5,"id":1,"value":"0.000"}]}]
      * error : 获取单个电气设备成功
      * errorCode : 0
+     * electric : [{"electricTime":"2017-01-09 17:24:51","electricType":8,"electricValue":[{"id":1,"value":"0.000","ElectricThreshold":"500"}]},{"electricTime":"2017-01-09 17:24:51","electricType":9,"electricValue":[{"id":1,"value":"27.96","ElectricThreshold":"60.00"},{"id":2,"value":"28.73","ElectricThreshold":"60.00"},{"id":3,"value":"27.90","ElectricThreshold":"60.00"},{"id":4,"value":"26.93","ElectricThreshold":"60.00"}]},{"electricTime":"2017-01-09 17:24:51","electricType":6,"electricValue":[{"id":1,"value":"0.00","ElectricThreshold":"187\\242"},{"id":2,"value":"0.00","ElectricThreshold":"187\\242"},{"id":3,"value":"0.00","ElectricThreshold":"187\\242"}]},{"electricTime":"2017-01-09 17:24:51","electricType":7,"electricValue":[{"id":1,"value":"0.000","ElectricThreshold":"6"},{"id":2,"value":"0.000","ElectricThreshold":"6"},{"id":3,"value":"0.000","ElectricThreshold":"6"},{"id":4,"value":"0.000","ElectricThreshold":"6"}]}]
      */
 
     private String error;
     private int errorCode;
     /**
-     * electricTime : 2016-12-23 16:40:01
-     * electricType : 6
-     * electricValue : [{"id":1,"value":"218.51"}]
+     * electricTime : 2017-01-09 17:24:51
+     * electricType : 8
+     * electricValue : [{"id":1,"value":"0.000","ElectricThreshold":"500"}]
      */
 
-    private List<ElectricBean> Electric;
+    private List<ElectricBean> electric;
 
     public String getError() {
         return error;
@@ -41,11 +41,11 @@ public class Test {
     }
 
     public List<ElectricBean> getElectric() {
-        return Electric;
+        return electric;
     }
 
-    public void setElectric(List<ElectricBean> Electric) {
-        this.Electric = Electric;
+    public void setElectric(List<ElectricBean> electric) {
+        this.electric = electric;
     }
 
     public static class ElectricBean {
@@ -53,7 +53,8 @@ public class Test {
         private int electricType;
         /**
          * id : 1
-         * value : 218.51
+         * value : 0.000
+         * ElectricThreshold : 500
          */
 
         private List<ElectricValueBean> electricValue;
@@ -85,6 +86,7 @@ public class Test {
         public static class ElectricValueBean {
             private int id;
             private String value;
+            private String ElectricThreshold;
 
             public int getId() {
                 return id;
@@ -100,6 +102,14 @@ public class Test {
 
             public void setValue(String value) {
                 this.value = value;
+            }
+
+            public String getElectricThreshold() {
+                return ElectricThreshold;
+            }
+
+            public void setElectricThreshold(String ElectricThreshold) {
+                this.ElectricThreshold = ElectricThreshold;
             }
         }
     }
