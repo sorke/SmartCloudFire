@@ -99,16 +99,17 @@ public interface ApiStores {
                                              @Query("privilege") String privilege);
 
     //添加烟感
-    @GET("addSmoke")
+    @FormUrlEncoded
+    @POST("addSmoke")
     @Headers("Content-Type: application/x-www-form-urlencoded;charset=utf-8")
-    Observable<ConfireFireModel> addSmoke(@Query("userId") String userId, @Query("smokeName") String smokeName,
-                                          @Query("privilege") String privilege, @Query("smokeMac") String smokeMac,
-                                          @Query("address") String address, @Query("longitude") String longitude,
-                                          @Query("latitude") String latitude, @Query("placeAddress") String placeAddress,
-                                          @Query("placeTypeId") String placeTypeId, @Query("principal1") String principal1,
-                                          @Query("principal1Phone") String principal1Phone, @Query("principal2") String principal2,
-                                          @Query("principal2Phone") String principal2Phone, @Query("areaId") String areaId,
-                                          @Query("repeater") String repeater,@Query("camera") String camera,@Query("deviceType") String deviceType);
+    Observable<ConfireFireModel> addSmoke(@Field("userId") String userId, @Field("smokeName") String smokeName,
+                                          @Field("privilege") String privilege, @Field("smokeMac") String smokeMac,
+                                          @Field("address") String address, @Field("longitude") String longitude,
+                                          @Field("latitude") String latitude, @Field("placeAddress") String placeAddress,
+                                          @Field("placeTypeId") String placeTypeId, @Field("principal1") String principal1,
+                                          @Field("principal1Phone") String principal1Phone, @Field("principal2") String principal2,
+                                          @Field("principal2Phone") String principal2Phone, @Field("areaId") String areaId,
+                                          @Field("repeater") String repeater,@Field("camera") String camera,@Field("deviceType") String deviceType);
 
 //    @FormUrlEncoded
 //    @POST("addSmoke")

@@ -105,7 +105,7 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
 
     private void init() {
         cameraBean = mPushAlarmMsg.getCamera();
-        if(cameraBean!=null){
+        if(cameraBean!=null&&cameraBean.getCameraId()!=null&&cameraBean.getCameraPwd()!=null){
             alarmDoItBtn.setVisibility(View.VISIBLE);
         }else{
             alarmDoItBtn.setVisibility(View.GONE);
@@ -119,7 +119,7 @@ public class AlarmActivity extends MvpActivity<AlarmPresenter> implements AlarmV
 //        int devType = mPushAlarmMsg.getDeviceType();
         alarmFkImg.setBackgroundResource(R.drawable.allarm_bg_selector);
         mAlarmType.setTextColor(getResources().getColor(R.color.hj_color_text));
-        mAlarmType.setText(alarmMsg);
+        mAlarmType.setText(mPushAlarmMsg.getName()+alarmMsg);
 //        switch (devType) {
 //            case 1:
 //

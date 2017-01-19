@@ -151,7 +151,7 @@ public class LineChartActivity extends MvpActivity<LineChartPresenter> implement
             for (int j = 0; j < numberOfPoints; ++j) {
                 if (j > 0 && j < 7) {
                     values.add(new PointValue(j, randomNumbersTab[i][j]));
-                    axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(6 - j).getElectricTime())));
+                    axisValuesX.add(new AxisValue(j).setLabel(getTime(list.get(j-1).getElectricTime())));
                 }
             }
 
