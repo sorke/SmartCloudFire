@@ -30,6 +30,7 @@ import com.smart.cloud.fire.global.AppConfig;
 import com.smart.cloud.fire.global.ConstantValues;
 import com.smart.cloud.fire.global.MyApp;
 import com.smart.cloud.fire.global.NpcCommon;
+import com.smart.cloud.fire.global.TemperatureTime;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -889,5 +890,13 @@ public class Utils {
         return false;
     }
 
+    public static int getMax(List<TemperatureTime.ElectricBean> electricBeen){
+        int max = (int) Float.parseFloat(electricBeen.get(0).getElectricValue());
+        for(TemperatureTime.ElectricBean electricBean : electricBeen){
+            int value = (int)Float.parseFloat(electricBean.getElectricValue());
+            if (max < value) max = value;
+        }
+        return max;
+    }
 }
 
