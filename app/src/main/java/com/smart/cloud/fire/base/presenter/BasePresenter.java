@@ -26,7 +26,7 @@ public class BasePresenter<V> implements Presenter<V> {
         public V mvpView;
         public ApiStores[] apiStores = {AppClient.retrofit(ConstantValues.SERVER_YOOSEE_IP_ONE).create(ApiStores.class),
                 AppClient.retrofit(ConstantValues.SERVER_YOOSEE_IP_TWO).create(ApiStores.class),
-                AppClient.retrofit(ConstantValues.SERVER_YOOSEE_IP_THREE).create(ApiStores.class),
+                AppClient.retrofit(ConstantValues.SERVER_YOOSEE_IP_TWO).create(ApiStores.class),
                 AppClient.retrofit(ConstantValues.SERVER_YOOSEE_IP_FOUR).create(ApiStores.class)};
         public ApiStores apiStores1 = AppClient.retrofit(ConstantValues.SERVER_IP_NEW).create(ApiStores.class);
         public ApiStores apiStores3 = AppClient.retrofit(ConstantValues.SERVER_IP_NEW_TEST).create(ApiStores.class);
